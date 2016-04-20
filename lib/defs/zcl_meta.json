@@ -5,16 +5,18 @@
             "params":[
                 {"attrId":"uint16"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 2
         },
-        "readRsp": {
+        "readRsp": { 
             "cmdId": 1,
             "params":[
                 {"attrId":"uint16"}, 
                 {"status":"uint8"},
-                {"attrVal":"variable"}
+                {"extra":"readRsp"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 3
         },
         "write": {
             "cmdId": 2,
@@ -23,7 +25,8 @@
                 {"dataType":"uint8"}, 
                 {"attrData": "variable"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
         "writeUndiv": {
             "cmdId": 3,
@@ -32,7 +35,8 @@
                 {"dataType":"uint8"}, 
                 {"attrData": "variable"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
         "writeRsp": {
             "cmdId": 4,
@@ -40,7 +44,8 @@
                 {"status":"uint8"}, 
                 {"attrId":"uint16"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 3
         },
         "writeNoRsp": {
             "cmdId": 5,
@@ -49,12 +54,18 @@
                 {"dataType":"uint8"}, 
                 {"attrData": "variable"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
-        "configReport": {
+        "configReport": { 
             "cmdId": 6,
-            "params":[], //todo
-            "direction":0
+            "params":[
+                {"direction":"uint8"},
+                {"attrId":"uint16"},
+                {"extra":"configReport"}
+            ],
+            "direction":0,
+            "knownBufLen": 3
         },
         "configReportRsp": {
             "cmdId": 7,
@@ -63,7 +74,8 @@
                 {"direction": "uint8"}, 
                 {"attrId": "uint16"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 4
         },
         "readReportConfig": {
             "cmdId": 8,
@@ -71,12 +83,19 @@
                 {"direction": "uint8"}, 
                 {"attrId": "uint16"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
-        "readReportConfigRsp": {
+        "readReportConfigRsp": { 
             "cmdId": 9,
-            "params":[], //todo
-            "direction":1
+            "params":[
+                {"status":"uint8"},
+                {"direction":"uint8"},
+                {"attrId":"uint16"},
+                {"extra":"readReportConfigRsp"}
+            ],
+            "direction":1,
+            "knownBufLen": 4
         },
         "report": {
             "cmdId": 10,
@@ -85,7 +104,8 @@
                 {"dataType":"uint8"}, 
                 {"attrData":"variable"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
         "defaultRsp": {
             "cmdId": 11,
@@ -93,15 +113,17 @@
                 {"cmdId":"uint8"}, 
                 {"statusCode":"uint8"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 2
         },
         "discover": {
             "cmdId": 12,
             "params":[
-                {"startAttrId":"uint16le"}, 
+                {"startAttrId":"uint16"}, 
                 {"maxAttrIds":"uint8"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
         "discoverRsp": {
             "cmdId": 13,
@@ -109,7 +131,8 @@
                 {"attrId": "uint16"},
                 {"dataType":"uint8"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 3
         },
         "readStruct": {
             "cmdId": 14,
@@ -117,7 +140,8 @@
                 {"attrId":"uint16"},
                 {"selector":"selector"} 
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 2
         },
         "writeStrcut": {
             "cmdId": 15,
@@ -125,9 +149,10 @@
                 {"attrId":"uint16"},
                 {"selector":"selector"},
                 {"dataType":"uint8"},
-                {"attrVal":"multi"}
+                {"attrData":"multi"}
             ],
-            "direction":0
+            "direction":0,
+            "knownBufLen": 3
         },
         "writeStrcutRsp": {
             "cmdId": 16,
@@ -136,7 +161,8 @@
                 {"attrId":"uint16"},
                 {"selector":"selector"}
             ],
-            "direction":1
+            "direction":1,
+            "knownBufLen": 3
         }
     },
     "functional": {
