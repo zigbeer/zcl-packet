@@ -738,26 +738,26 @@
             "LockDoor":{
                 "cmdId":0,
                 "params":[
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "UnlockDoor":{
                 "cmdId":1,
                 "params":[
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "ToggleDoor":{
                 "cmdId":2,
                 "params":[
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "UnlockWithTimeout":{
                 "cmdId":3,
                 "params":[
                     {"timeout":"uint16"},
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "GetLogRecord":{
@@ -772,7 +772,7 @@
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "GetPinCode":{
@@ -893,7 +893,7 @@
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":0},
             "GetRfidCode":{
@@ -945,7 +945,7 @@
                     {"source":"uint8"},
                     {"eventidalarmcode":"uint8"},
                     {"userid":"uint16"},
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":1},
             "SetPinCodeRsp":{
@@ -960,7 +960,7 @@
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
-                    {"pincodevalue":"buffer"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":1},
             "ClearPinCodeRsp":{
@@ -1082,7 +1082,7 @@
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
-                    {"pincodevalue":"uint8"}
+                    {"pincodevalue":"octet_str"}
                 ],
                 "direction":1},
             "ClearRfidCodeRsp":{
