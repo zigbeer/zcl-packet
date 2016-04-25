@@ -150,12 +150,25 @@
     },
     "functional": {
         "GenBasic": {
+            "cmd": [
+                ["resetFactDefault", 0],
+            ],
             "ResetFactDefault":{
                 "cmdId":0,
                 "params":[],
                 "direction":0}
         },
         "GenIdentify": {
+            "cmd": [
+                ["identify", 0],
+                ["identifyQuery", 1],
+                ["ezmodeInvoke", 2],
+                ["updateCommissionState", 3],
+                ["triggerEffect", 64],
+            ],
+            "cmdRsp": [
+                ["identifyQueryRsp", 0],
+            ],
             "Identify":{
                 "cmdId":0,
                 "params":[
@@ -194,6 +207,20 @@
                 "direction":1}
         },
         "GenGroups": {
+            "cmd": [
+                ["add", 0],
+                ["view", 1],
+                ["getMembership", 2],
+                ["remove", 3],
+                ["removeAll", 4],
+                ["addIfIdentifying", 5],
+            ],
+            "cmdRsp": [
+                ["addRsp", 0],
+                ["viewRsp", 1],
+                ["getMembershipRsp", 2],
+                ["removeRsp", 3],
+            ],
             "Add":{
                 "cmdId":0,
                 "params":[
@@ -263,6 +290,29 @@
                 "direction":1}
         },
         "GenScenes": {
+            "cmd": [
+                ["add", 0],
+                ["view", 1],
+                ["remove", 2],
+                ["removeAll", 3],
+                ["store", 4],
+                ["recall", 5],
+                ["getSceneMembership", 6],
+                ["enhancedAdd", 64],
+                ["enhancedView", 65],
+                ["copy", 66],
+            ],
+            "cmdRsp": [
+                ["addRsp", 0],
+                ["viewRsp", 1],
+                ["removeRsp", 2],
+                ["removeAllRsp", 3],
+                ["storeRsp", 4],
+                ["getSceneMembershipRsp", 6],
+                ["enhancedAddRsp", 64],
+                ["enhancedViewRsp", 65],
+                ["copyRsp", 66],
+            ],
             "Add":{
                 "cmdId":0,
                 "params":[
@@ -421,6 +471,14 @@
                 "direction":1}
         },
         "GenOnOff": {
+            "cmd": [
+                ["off", 0],
+                ["on", 1],
+                ["toggle", 2],
+                ["offWithEffect", 64],
+                ["onWithRecallGlobalScene", 65],
+                ["onWithTimedOff", 66],
+            ],
             "Off":{
                 "cmdId":0,
                 "params":[],
@@ -455,6 +513,16 @@
                 "direction":0}
         },
         "GenLevelControl": {
+            "cmd": [
+                ["moveToLevel", 0],
+                ["move", 1],
+                ["step", 2],
+                ["stop", 3],
+                ["moveToLevelWithOnOff", 4],
+                ["moveWithOnOff", 5],
+                ["stepWithOnOff", 6],
+                ["stopWithOnOff", 7],
+            ],
             "MoveToLevel":{
                 "cmdId":0,
                 "params":[
@@ -509,6 +577,18 @@
                 "direction":0}
         },
         "GenAlarms": {
+            "cmd": [
+                ["reset", 0],
+                ["resetAll", 1],
+                ["get", 2],
+                ["resetLog", 3],
+                ["publishEventLog", 4],
+            ],
+            "cmdRsp": [
+                ["alarm", 0],
+                ["getRsp", 1],
+                ["getEventLog", 2],
+            ],
             "Reset":{
                 "cmdId":0,
                 "params":[
@@ -554,6 +634,19 @@
                 "direction":1}
         },
         "GenLocation": {
+            "cmd": [
+                ["setAbsolute", 0],
+                ["setDevCfg", 1],
+                ["getDevCfg", 2],
+                ["getData", 3],
+            ],
+            "cmdRsp": [
+                ["devCfgRsp", 0],
+                ["dataRsp", 1],
+                ["dataNotif", 2],
+                ["compactDataNotif", 3],
+                ["rssiPing", 4],
+            ],
             "SetAbsolute":{
                 "cmdId":0,
                 "params":[
@@ -693,6 +786,18 @@
                 "direction":1}
         },
         "GenCommissioning": {
+            "cmd": [
+                ["restartDevice", 0],
+                ["saveStartupParams", 1],
+                ["restoreStartupParams", 2],
+                ["resetStartupParams", 3],
+            ],
+            "cmdRsp": [
+                ["restartDeviceRsp", 0],
+                ["saveStartupParamsRsp", 1],
+                ["restoreStartupParamsRsp", 2],
+                ["resetStartupParamsRsp", 3],
+            ],
             "RestartDevice":{
                 "cmdId":0,
                 "params":[
@@ -748,6 +853,64 @@
                 "direction":1}
         },
         "ClosuresDoorLock": {
+            "cmd": [
+                ["lockDoor", 0],
+                ["unlockDoor", 1],
+                ["toggleDoor", 2],
+                ["unlockWithTimeout", 3],
+                ["getLogRecord", 4],
+                ["setPinCode", 5],
+                ["getPinCode", 6],
+                ["clearPinCode", 7],
+                ["clearAllPinCodes", 8],
+                ["setUserStatus", 9],
+                ["getUserStatus", 10],
+                ["setWeekDaySchedule", 11],
+                ["getWeekDaySchedule", 12],
+                ["clearWeekDaySchedule", 13],
+                ["setYearDaySchedule", 14],
+                ["getYearDaySchedule", 15],
+                ["clearYearDaySchedule", 16],
+                ["setHolidaySchedule", 17],
+                ["getHolidaySchedule", 18],
+                ["clearHolidaySchedule", 19],
+                ["setUserType", 20],
+                ["getUserType", 21],
+                ["setRfidCode", 22],
+                ["getRfidCode", 23],
+                ["clearRfidCode", 24],
+                ["clearAllRfidCodes", 25],
+            ],
+            "cmdRsp": [
+                ["lockDoorRsp", 0],
+                ["unlockDoorRsp", 1],
+                ["toggleDoorRsp", 2],
+                ["unlockWithTimeoutRsp", 3],
+                ["getLogRecordRsp", 4],
+                ["setPinCodeRsp", 5],
+                ["getPinCodeRsp", 6],
+                ["clearPinCodeRsp", 7],
+                ["clearAllPinCodesRsp", 8],
+                ["setUserStatusRsp", 9],
+                ["getUserStatusRsp", 10],
+                ["setWeekDayScheduleRsp", 11],
+                ["getWeekDayScheduleRsp", 12],
+                ["clearWeekDayScheduleRsp", 13],
+                ["setYearDayScheduleRsp", 14],
+                ["getYearDayScheduleRsp", 15],
+                ["clearYearDayScheduleRsp", 16],
+                ["setHolidayScheduleRsp", 17],
+                ["getHolidayScheduleRsp", 18],
+                ["clearHolidayScheduleRsp", 19],
+                ["setUserTypeRsp", 20],
+                ["getUserTypeRsp", 21],
+                ["setRfidCodeRsp", 22],
+                ["getRfidCodeRsp", 23],
+                ["clearRfidCodeRsp", 24],
+                ["clearAllRfidCodesRsp", 25],
+                ["operationEventNotification", 32],
+                ["programmingEventNotification", 33],
+            ],
             "LockDoor":{
                 "cmdId":0,
                 "params":[
@@ -1136,6 +1299,15 @@
                 "direction":1}
         },
         "ClosuresWindowConvering": {
+            "cmd": [
+                ["upOpen", 0],
+                ["downClose", 1],
+                ["stop", 2],
+                ["goToLiftValue", 4],
+                ["goToLiftPercentage", 5],
+                ["goToTiltValue", 7],
+                ["goToTiltPercentage", 8],
+            ],
             "UpOpen":{
                 "cmdId":0,
                 "params":[],
@@ -1174,6 +1346,17 @@
                 "direction":0}
         },
         "HvacThermostat": {
+            "cmd": [
+                ["setpointRaiseLower", 0],
+                ["setWeeklySchedule", 1],
+                ["getWeeklySchedule", 2],
+                ["clearWeeklySchedule", 3],
+                ["getRelayStatusLog", 4],
+            ],
+            "cmdRsp": [
+                ["getWeeklyScheduleRsp", 0],
+                ["getRelayStatusLogRsp", 1],
+            ],
             "SetpointRaiseLower":{
                 "cmdId":0,
                 "params":[
@@ -1227,6 +1410,25 @@
                 "direction":1}
         },
         "LightingColorControl": {
+            "cmd": [
+                ["moveToHue", 0],
+                ["moveHue", 1],
+                ["stepHue", 2],
+                ["moveToSaturation", 3],
+                ["moveSaturation", 4],
+                ["stepSaturation", 5],
+                ["moveToHueAndSaturation", 6],
+                ["moveToColor", 7],
+                ["moveColor", 8],
+                ["stepColor", 9],
+                ["moveToColorTemp", 10],
+                ["enhancedMoveToHue", 64],
+                ["enhancedMoveHue", 65],
+                ["enhancedStepHue", 66],
+                ["enhancedMoveToHueAndSaturation", 67],
+                ["colorLoopSet", 68],
+                ["stopMoveStep", 71],
+            ],
             "MoveToHue":{
                 "cmdId":0,
                 "params":[
@@ -1365,6 +1567,13 @@
                 "direction":0}
         },
         "SsIasZone": {
+            "cmd": [
+                ["enrollRsp", 0],
+            ],
+            "cmdRsp": [
+                ["statusChangeNotification", 0],
+                ["enrollReq", 1],
+            ],
             "EnrollRsp":{
                 "cmdId":0,
                 "params":[
@@ -1388,6 +1597,29 @@
                 "direction":1}
         },
         "SsIasAce": {
+            "cmd": [
+                ["arm", 0],
+                ["bypass", 1],
+                ["emergency", 2],
+                ["fire", 3],
+                ["panic", 4],
+                ["getZoneIDMap", 5],
+                ["getZoneInfo", 6],
+                ["getPanelStatus", 7],
+                ["getBypassedZoneList", 8],
+                ["getZoneStatus", 9],
+            ],
+            "cmdRsp": [
+                ["armRsp", 0],
+                ["getZoneIDMapRsp", 1],
+                ["getZoneInfoRsp", 2],
+                ["zoneStatusChanged", 3],
+                ["panelStatusChanged", 4],
+                ["getPanelStatusRsp", 5],
+                ["setBypassedZoneList", 6],
+                ["bypassRsp", 7],
+                ["getZoneStatusRsp", 8],
+            ],
             "Arm":{
                 "cmdId":0,
                 "params":[
@@ -1527,6 +1759,10 @@
                 "direction":1}
         },
         "SsIasWd": {
+            "cmd": [
+                ["startWarning", 0],
+                ["squawk", 1],
+            ],
             "StartWarning":{
                 "cmdId":0,
                 "params":[
@@ -1542,6 +1778,13 @@
                 "direction":0}
         },
         "PiGenericTunnel": {
+            "cmd": [
+                ["matchProtocolAddr", 0],
+            ],
+            "cmdRsp": [
+                ["matchProtocolAddrRsp", 0],
+                ["advertiseProtocolAddr", 1],
+            ],
             "MatchProtocolAddr":{
                 "cmdId":0,
                 "params":[
@@ -1563,6 +1806,9 @@
                 "direction":1}
         },
         "PiBacnetProtocolTunnel": {
+            "cmd": [
+                ["transferNPDU", 0],
+            ],
             "TransferNPDU":{
                 "cmdId":0,
                 "params":[
@@ -1571,6 +1817,14 @@
                 "direction":0}
         },
         "HaApplianceEventsAlerts": {
+            "cmd": [
+                ["getAlerts", 0],
+            ],
+            "cmdRsp": [
+                ["getAlertsRsp", 0],
+                ["alertsNotification", 1],
+                ["eventNotification", 2],
+            ],
             "GetAlerts":{
                 "cmdId":0,
                 "params":[],
@@ -1598,6 +1852,16 @@
                 "direction":1}
         },
         "HaApplianceStatistics": {
+            "cmd": [
+                ["log", 0],
+                ["logQueue", 1],
+            ],
+            "cmdRsp": [
+                ["logNotification", 0],
+                ["logRsp", 1],
+                ["logQueueRsp", 2],
+                ["statisticsAvailable", 3],
+            ],
             "Log":{
                 "cmdId":0,
                 "params":[
@@ -1642,6 +1906,14 @@
                 "direction":1}
         },
         "HaElectricalMeasurement": {
+            "cmd": [
+                ["getProfileInfo", 0],
+                ["getMeasurementProfile", 1],
+            ],
+            "cmdRsp": [
+                ["getProfileInfoRsp", 0],
+                ["getMeasurementProfileRsp", 1],
+            ],
             "GetProfileInfo":{
                 "cmdId":0,
                 "params":[],
