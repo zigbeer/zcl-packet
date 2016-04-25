@@ -1,0 +1,32 @@
+{
+  "name": "zcl-packet",
+  "version": "0.0.0",
+  "description": "zcl-packet is a framer and parser for ZigBee Cluster Library packet.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackchased/zcl-packet.git"
+  },
+  "keywords": [
+    "zcl",
+    "zigbee"
+  ],
+  "author": "Jack Wu <jackchased@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jackchased/zcl-packet/issues"
+  },
+  "homepage": "https://github.com/jackchased/zcl-packet#readme",
+  "dependencies": {
+    "concentrate": "^0.2.3",
+    "dissolve-chunks": "^1.0.2",
+    "enum": "^2.3.0"
+  },
+  "devDependencies": {
+    "chance": "^1.0.2",
+    "should": "^8.3.1"
+  }
+}
