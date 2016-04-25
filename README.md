@@ -75,9 +75,9 @@ foundPacket.parse(function () {
 <a name="APIs"></a>
 ## 2. APIs  
 
-* [new ZclPacket()]
-* frame()
-* parse()
+* [new ZclPacket()](#zPacketCls)
+* [frame()](#zclFrame)
+* [parse()](#zclParse)
 
 *******************
 
@@ -100,9 +100,49 @@ foundPacket.parse(function () {
 ```javascript
 var ZclPacket = require('zcl-packet');
     
-var foundPacket = new ZPacket('foundation'),
-    funcPacket = new ZPacket('functional');
+var foundPacket = new ZclPacket('foundation'),
+    funcPacket = new ZclPacket('functional');
 ```
+
+***********************
+
+<a name="zclFrame"></a>
+#### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload)
+
+Build ZCL command object to a rau buffer.
+
+**Arguments:**
+    1. `frameCntl`(_Object_): 
+    2. `manuCode`(_Number_): 
+    3. `seqNum`(_Number_): 
+    4. `cmd`(_String_ | _Number_):
+    5. `zclPayload`(_Object_ | _Arrar_):
+
+**Returns:**
+    * (_Buffer_): ZCL raw buffer
+
+
+
+***********************
+
+<a name="zclParse"></a>
+#### .parse(zclBuf, callback)
+
+Parse ZCL buffer to a readable object. 
+
+**Arguments:**
+    1. `zBuf`(_Buffer_): ZCL foundation buffer to be parsed.
+    2. `callback` (_Function_): `function (err, result) {...}`. Get called when the zcl buffer is parsed.
+
+**Returns:**
+    * (none)  
+
+**Examples:**
+
+```javascript
+// Here is a example of parsing 
+```
+
 
 
 ### 2.1 Foundation CLass
@@ -129,29 +169,6 @@ Create a new instance of Foundation class
 var Foundation = require('zcl-packet').foundation;
 
 var foundPacket = new Foundation();
-```
-
-***********************
-
-#### .frame(frameCntl, manufCode, )
-
-***********************
-
-#### .parse(zBuf, callback)
-
-Parse ZCL foundation buffer to a readable object. 
-
-**Arguments:**
-    * zBuf (_Buffer_): ZCL foundation buffer to be parsed.
-    * callback (_Function_): `function (err, result) {...}`. Get called when the zcl buffer is parsed.
-
-**Returns:**
-    * (none)  
-
-**Examples:**
-
-```javascript
-// Here is a example of parsing 
 ```
 
 <br />
