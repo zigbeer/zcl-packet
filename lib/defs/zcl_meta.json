@@ -149,7 +149,7 @@
         }
     },
     "functional": {
-        "GenBasic": {
+        "genBasic": {
             "cmd": [
                 ["resetFactDefault", 0]
             ],
@@ -158,7 +158,7 @@
                 "params":[],
                 "direction":0}
         },
-        "GenIdentify": {
+        "genIdentify": {
             "cmd": [
                 ["identify", 0],
                 ["identifyQuery", 1],
@@ -206,7 +206,7 @@
                 ],
                 "direction":1}
         },
-        "GenGroups": {
+        "genGroups": {
             "cmd": [
                 ["add", 0],
                 ["view", 1],
@@ -289,7 +289,7 @@
                 ],
                 "direction":1}
         },
-        "GenScenes": {
+        "genScenes": {
             "cmd": [
                 ["add", 0],
                 ["view", 1],
@@ -470,7 +470,7 @@
                 ],
                 "direction":1}
         },
-        "GenOnOff": {
+        "genOnOff": {
             "cmd": [
                 ["off", 0],
                 ["on", 1],
@@ -512,7 +512,7 @@
                 ],
                 "direction":0}
         },
-        "GenLevelControl": {
+        "genLevelCtrl": {
             "cmd": [
                 ["moveToLevel", 0],
                 ["move", 1],
@@ -576,7 +576,7 @@
                 "params":[],
                 "direction":0}
         },
-        "GenAlarms": {
+        "genAlarms": {
             "cmd": [
                 ["reset", 0],
                 ["resetAll", 1],
@@ -633,7 +633,7 @@
                 "params":[],
                 "direction":1}
         },
-        "GenLocation": {
+        "genRssiLocation": {
             "cmd": [
                 ["setAbsolute", 0],
                 ["setDevCfg", 1],
@@ -785,7 +785,7 @@
                 ],
                 "direction":1}
         },
-        "GenCommissioning": {
+        "genCommissioning": {
             "cmd": [
                 ["restartDevice", 0],
                 ["saveStartupParams", 1],
@@ -852,7 +852,7 @@
                 ],
                 "direction":1}
         },
-        "ClosuresDoorLock": {
+        "closuresDoorLock": {
             "cmd": [
                 ["lockDoor", 0],
                 ["unlockDoor", 1],
@@ -1298,7 +1298,7 @@
                 ],
                 "direction":1}
         },
-        "ClosuresWindowConvering": {
+        "closuresWindowCovering": {
             "cmd": [
                 ["upOpen", 0],
                 ["downClose", 1],
@@ -1345,7 +1345,7 @@
                 ],
                 "direction":0}
         },
-        "HvacThermostat": {
+        "hvacThermostat": {
             "cmd": [
                 ["setpointRaiseLower", 0],
                 ["setWeeklySchedule", 1],
@@ -1409,7 +1409,7 @@
                 ],
                 "direction":1}
         },
-        "LightingColorControl": {
+        "lightingColorCtrl": {
             "cmd": [
                 ["moveToHue", 0],
                 ["moveHue", 1],
@@ -1566,7 +1566,7 @@
                 ],
                 "direction":0}
         },
-        "SsIasZone": {
+        "ssIasZone": {
             "cmd": [
                 ["enrollRsp", 0]
             ],
@@ -1596,7 +1596,7 @@
                 ],
                 "direction":1}
         },
-        "SsIasAce": {
+        "ssIasAce": {
             "cmd": [
                 ["arm", 0],
                 ["bypass", 1],
@@ -1758,7 +1758,7 @@
                 ],
                 "direction":1}
         },
-        "SsIasWd": {
+        "ssIasWd": {
             "cmd": [
                 ["startWarning", 0],
                 ["squawk", 1]
@@ -1777,7 +1777,7 @@
                 ],
                 "direction":0}
         },
-        "PiGenericTunnel": {
+        "piGenericTunnel": {
             "cmd": [
                 ["matchProtocolAddr", 0]
             ],
@@ -1805,7 +1805,7 @@
                 ],
                 "direction":1}
         },
-        "PiBacnetProtocolTunnel": {
+        "piBacnetProtocolTunnel": {
             "cmd": [
                 ["transferNPDU", 0]
             ],
@@ -1816,7 +1816,7 @@
                 ],
                 "direction":0}
         },
-        "HaApplianceEventsAlerts": {
+        "haApplianceEventsAlerts": {
             "cmd": [
                 ["getAlerts", 0]
             ],
@@ -1851,7 +1851,7 @@
                 ],
                 "direction":1}
         },
-        "HaApplianceStatistics": {
+        "haApplianceStatistics": {
             "cmd": [
                 ["log", 0],
                 ["logQueue", 1]
@@ -1905,7 +1905,7 @@
                 ],
                 "direction":1}
         },
-        "HaElectricalMeasurement": {
+        "haElectricalMeasurement": {
             "cmd": [
                 ["getProfileInfo", 0],
                 ["getMeasurementProfile", 1]
