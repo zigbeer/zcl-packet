@@ -17,6 +17,8 @@
     2.2 [Functional Class](#FuncCls)  
 
 3. [Appendix](#Appendix)  
+    3.1 [ZCL Foundation Command Reference Table](#foundCmdTbl)
+    3.2 [ZCL Functional Command Reference Tables](#funcCmdTbl)
 
 4. [Contributors](#Contributors)  
 5. [License](#License)  
@@ -43,6 +45,8 @@ If you are making a public profile device, such as a power meter intended to be 
 
 (2) ZCL Foundation: Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the ZCL foundation which is work across any cluster in the ZCL. Only those endpoints that support the ZigBee Cluster Library support the ZCL foundation commands. 
 
+//ZCL Foundation: Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the ZCL foundation which is work across any cluster in the ZCL. Only those endpoints that support the ZigBee Cluster Library support the ZCL foundation commands. 
+
 <br />
 
 <a name="Installation"></a>
@@ -55,12 +59,12 @@ If you are making a public profile device, such as a power meter intended to be 
 <a name="Usage"></a>
 ### 1.3 Usage  
 
-**zcl-packet** exports as a Constructor denoted as `ZclPacket` in this document. You can create an instance with cmdType `foundation` or `functional` and just simply call `parse()` and `frame()` method to parse/build zcl packet you need.
+**zcl-packet** exports as a Constructor denoted as `Zcl` in this document. You can create an instance with cmdType `foundation` or `functional` and just simply call `parse()` and `frame()` method to parse/build zcl packet you need.
 
 //  It has two properties: `foundation` and `functional`, they are using for process foundation and functional command packet, respectively.
 
 ```javascript
-var ZclPacket = require('zcl-packet'),
+var Zcl = require('zcl-packet'),
     foundPacket = new ZPacket('foundation');
 
 foundPacket.frame(); //TODO
@@ -75,16 +79,16 @@ foundPacket.parse(function () {
 <a name="APIs"></a>
 ## 2. APIs  
 
-* [new ZclPacket()](#zPacketCls)
+* [new Zcl()](#zPacketCls)
 * [frame()](#zclFrame)
 * [parse()](#zclParse)
 
 *******************
 
-### ZclPacket Class
+### Zcl Class
 
 <a name="zPacketCls"></a>
-#### new ZclPacket(cmdType[, clusterId])
+#### new Zcl(cmdType[, clusterId])
 
 **Arguments:**
 
@@ -98,10 +102,10 @@ foundPacket.parse(function () {
 **Examples:**
 
 ```javascript
-var ZclPacket = require('zcl-packet');
+var Zcl = require('zcl-packet');
     
-var foundPacket = new ZclPacket('foundation'),
-    funcPacket = new ZclPacket('functional');
+var foundPacket = new Zcl('foundation'),
+    funcPacket = new Zcl('functional', );
 ```
 
 ***********************
@@ -112,63 +116,116 @@ var foundPacket = new ZclPacket('foundation'),
 Build ZCL command object to a rau buffer.
 
 **Arguments:**
-    1. `frameCntl`(_Object_): 
-    2. `manuCode`(_Number_): 
-    3. `seqNum`(_Number_): 
-    4. `cmd`(_String_ | _Number_):
-    5. `zclPayload`(_Object_ | _Arrar_):
+
+    1. `frameCntl`(_Object_): Frame Control. The following table shows the details of each property.
+    2. `manuCode`(_Number_): Manufacturer Code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.
+    3. `seqNum`(_Number_): Transaction Sequence Number. This argument is 8-bit.
+    4. `cmd`(_String_ | _Number_): Command Name(string) or Command Identifier(number).
+    5. `zclPayload`(_Object_ | _Arrar_): ZCL Frame Payload. It contains information specific to individual command types.
+
+    | Property       | Type  | Mandatory |Description                                         |
+    | -------------- | ----- | --------- | -------------------------------------------------- |
+    | frameType      | 2-bit | required  | Frame type, 0 or 1 means foundation or functional. |
+    | manufSpec      | 1-bit | required  | Manufacturer specific                              |
+    | direction      | 1-bit | required  | Direction                                          |
+    | disDefaultRsp  | 1-bit | required  | Disable default response                           |
+
 
 **Returns:**
     * (_Buffer_): ZCL raw buffer
 
+**Example:**
 
+```javascript
+// Here is an example of building foundation payload
+var foundPacket = new Zcl('foundation');
+var frameCntl1 = {
+        frameType: 0,
+        manufSpec: 0,
+        direction: 0,
+        disDefaultRsp: 0
+    },
+    foundPayload = [
+        { attrId: 0x1234, dataType: 0x41, attrData: 'hello' },
+        { attrId: 0xabcd, dataType: 0x24, attrData: [100, 2406] },
+        { attrId: 0x1234, dataType: 0x08, attrData: 60 }
+    ],
+    foundBuf;
+
+foundBuf = foundPacket.frame(frameCntl1, 0, 0, 'write', foundPayload);
+
+// Here is an example of building functional payload
+var funcPacket = new Zcl('functional', 0x0004);
+var frameCntl2 = {
+        frameType: 0,
+        manufSpec: 1,
+        direction: 0,
+        disDefaultRsp: 0
+    },
+    funcPayload = {
+        groupid: 0x0001,
+        groupname: 'group1'
+    },
+    funcBuf;
+
+funcBuf = funcPacket.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload);
+```
 
 ***********************
 
 <a name="zclParse"></a>
 #### .parse(zclBuf, callback)
 
-Parse ZCL buffer to a readable object. 
+Parse ZCL buffer to a readable ZCL payload object. 
 
 **Arguments:**
-    1. `zBuf`(_Buffer_): ZCL foundation buffer to be parsed.
+
+    1. `zclBuf`(_Buffer_): ZCL raw buffer to be parsed.
     2. `callback` (_Function_): `function (err, result) {...}`. Get called when the zcl buffer is parsed.
 
 **Returns:**
+
     * (none)  
 
 **Examples:**
 
 ```javascript
-// Here is a example of parsing 
-```
+// Here is a example of parsing foundation raw buffer.
+var foundPacket = new Zcl('foundation');
+var foundBuf = new Buffer([00, 00, 02, 34, 12, 41, 05, 68, 65, 6c, 6c, 6f, cd, ab, 24, 66, 09, 00, 00, 64, 34, 12, 08, 3c]);
 
+foundPacket.parse('write', function(err, result) {
+    if (!err)
+        console.log(result);
+        // result equal to
+        // {
+        //     frameCntl: { frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 }
+        //     seqNum: 0,
+        //     cmd: 2, // write
+        //     payload: [
+        //         { attrId: 0x1234, dataType: 0x41, attrData: 'hello' },
+        //         { attrId: 0xabcd, dataType: 0x24, attrData: [100, 2406] },
+        //         { attrId: 0x1234, dataType: 0x08, attrData: 60 }
+        //     ]
+        // }
+});
 
+// Here is a example of parsing functional raw buffer.
+var funcPacket = new Zcl('functional', 0x0004);
+var funcBuf = new Buffer([04, aa, aa ,01, 00, 01, 00, 06, 67, 72, 6f, 75, 70, 31]);
 
-### 2.1 Foundation CLass
-
-Exposed by `require('zcl-packet').foundation`
-
-An instance of thia class is denoted as **foundPacket**. It has two method `parse()` and `frame()` to parse oe build ZCL foundation command packet.
-
-*******************
-
-#### new Foundation()
-
-Create a new instance of Foundation class
-
-**Arguments:**
-    * (none)
-
-**Returns:**
-    * (none)  
-
-**Examples:**
-
-```javascript
-var Foundation = require('zcl-packet').foundation;
-
-var foundPacket = new Foundation();
+foundPacket.parse('add', function(err, result) {
+    if (!err)
+        console.log(result);
+        // result equal to
+        // {
+        //     frameCntl: { frameType: 0, manufSpec: 1, direction: 0, disDefaultRsp: 0 }
+        //     manufCode: 0xaaaa
+        //     seqNum: 1,
+        //     cmd: 0, // add
+        //     payload: { groupid: 0x0001, groupname: 'group1' }
+        // }
+});
 ```
 
 <br />
@@ -176,6 +233,64 @@ var foundPacket = new Foundation();
 <a name="Appendix"></a>
 ## 3. Appendix  
 
+<br />
+
+<a name="foundCmdTbl"></a>
+### 3.1 ZCL Foundation Command Related Tables
+
+* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster. 
+* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant information of each attribute, attribute information format will vary depending on the command. 
+
+(1) Foundation Command Description Table
+The following table describe payload format of each command. Here is the description of each column in the table:
+    
+        * Cmd-API
+        * Cmd-ID
+        * Description
+        * Payload
+        * Parameter Types
+
+|       Cmd-API       | Cmd-ID |              Description              |            Payload            |           Field Types          |
+| ------------------- | ------ | ------------------------------------- | ----------------------------- | ------------------------------ |
+| read                | 0      | Read attributes                       | [ readRec, ... ]              | None                           |
+| readRsp             | 1      | Read attributes response              | [ readStatusRec, ... ]        | None                           |
+| write               | 2      | Write attributes                      | [ writeRec, ... ]             | None                           |
+| writeUndiv          | 3      | Write attributes undivided            | [ writeRec, ... ]             | None                           |
+| writeRsp            | 4      | Write attributes response             | [ writeStatusRec, ... ]       | None                           |
+| writeNoRsp          | 5      | Write attributes no response          | [ writeRec, ...]              | None                           |
+| configReport        | 6      | Configure reporting                   | [ attrRptCfgRec, ...]         | None                           |
+| configReportRsp     | 7      | Configure reporting response          | [ attrStatusRec, ...]         | None                           |
+| readReportConfig    | 8      | Read reporting configuration          | [ attrRec, ... ]              | None                           |
+| readReportConfigRsp | 9      | Read reporting configuration response | [ attrRptCfgRec, ... ]        | None                           |
+| report              | 10     | Report attributes                     | [ attrReport, ...]            | None                           |
+| defaultRsp          | 11     | Default response                      | { cmdId, statusCode }         | uint8, uint8                   |
+| discover            | 12     | Discover attributes                   | { startAttrId, maxAttrIds }   | uint16, uint8                  |
+| discoverRsp         | 13     | Discover attributes response          | { discComplete, attrInfos }   | uint16, array(attrInfo)        |
+| readStruct          | 14     | Read attributes structured            | [ readAttrRec ... ]           | None                           |
+| writeStrcut         | 15     | Write attributes structured           | [ writeAttrRec, ... ]         | None                           |
+| writeStrcutRsp      | 16     | Write attributes structured response  | [ writeAttrStstusRec, ... ]   | None                           |
+
+
+|       Cmd-API       |              Field Names             |         Field Types        |
+| ------------------- | ------------------------------------ | -------------------------- |
+| readRec             | attrId                               | uint16                     |
+| readStatusRec       | attrId, status, TODO                 | uint16, uint8              |
+| writeRec            | attrId, dataType, attrData           | uint16, uin8, TODO         |
+| writeStatusRec      | status, attrId                       | uint8, uint16              |
+| attrRptCfgRec       | direction, attrId, TODO              | uint8, uint16,             |
+| attrStatusRec       | status, direction, attrId            | uint8, uint8, uint16       |
+| attrRec             | direction, attrId                    | uint8, uint16              |
+| attrRptCfgRec       | status, direction, attrId, TODO      | uint8, uint8, uint16, TODO |
+| attrReport          | attrID, dataType, attrData           | uint16, uin8, TODO         |
+| attrInfo            | attrId, dataType                     | uint16, uint8              |
+| readAttrRec         | attrId, selector                     | uint16, TODO               |
+| writeAttrRec        | attrId, selector, dataType, attrData | uint16, TODO, uint8, TODO  |
+| writeAttrStstusRec  | status, attrId, selector             | uint8, attrId, TODO        |
+
+<br />
+
+<a name="funcCmdTbl"></a>
+### 3.2 ZCL Functional Command Reference Table
 
 <br />
 
