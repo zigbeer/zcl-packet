@@ -233,7 +233,9 @@ zclFunctional.parse(funcBuf, function(err, result) {
 ### 3.1 ZCL Foundation Command Reference Table
 
 * ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.   
-* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute, attribute record format will vary depending on foundation command.  
+* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
+
+* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)]().
 
 <a neme="foundCmdDescTbl></a>
 #### Foundation Command Description Table  
@@ -273,30 +275,46 @@ The following table describe payload format of foundation commands. Here is the 
 | writeStrcut         | 15     | Write attributes structured           | [ writeAttrRec, ... ]         | None                           |
 | writeStrcutRsp      | 16     | Write attributes structured response  | [ writeAttrStstusRec, ... ]   | None                           |
 
+**********************************************
+
 <a neme="attrRecTbl></a>
 #### Attribute Record Table
 
-|       Cmd-API       |              Field Names                 |         Field Types        |     Judge Field    |
-| ------------------- | ---------------------------------------- | -------------------------- |--------------------|
-| readRec             | { attrId }                               | uint16                     |None                |
-| readStatusRec       | { attrId, status }                       | uint16, uint8              |status(0)           |
-|                     |                                          |                            |status(1)           |
-| readStatusRec       | { attrId, status }                       | uint16, uint8              |None                |
-| writeRec            | { attrId, dataType, attrData }           | uint16, uin8, TODO         |None                |
-| writeStatusRec      | { status, attrId }                       | uint8, uint16              |None                |
-| attrRptCfgRec       | { direction, attrId }                    | uint8, uint16,             |direction(0)           |
-| attrStatusRec       | { status, direction, attrId }            | uint8, uint8, uint16       |None                |
-| attrRec             | { direction, attrId }                    | uint8, uint16              |None                |
-| attrRptCfgRec       | { status, direction, attrId }            | uint8, uint8, uint16, TODO |status              |
-| attrReport          | { attrID, dataType, attrData }           | uint16, uin8, TODO         |None                |
-| attrInfo            | { attrId, dataType }                     | uint16, uint8              |None                |
-| readAttrRec         | { attrId, selector }                     | uint16, TODO               |None                |
-| writeAttrRec        | { attrId, selector, dataType, attrData } | uint16, TODO, uint8, TODO  |None                |
-| writeAttrStstusRec  | { status, attrId, selector }             | uint8, attrId, TODO        |None                |
+The following table list each type of attribute record and describe their format.
 
+**Note**: The detail of `multi` and `selector` field type can be found in [Data Unit Table](#dataUnitTbl).
+
+|      Cmd-API       |              Field Names                 |         Field Types            |     Judge Field     |               Additional Field Names              |            Additional Field Types          |
+| ------------------ | ---------------------------------------- | ------------------------------ | ------------------- | ------------------------------------------------- | ------------------------------------------ |
+| readRec            | { attrId }                               | uint16                         | None                | None                                              | None                                       |          
+| readStatusRec      | { attrId, status }                       | uint16, uint8                  | status(0)           | None                                              | None                                       |
+|                    |                                          |                                | status(1)           | dataType, attrData                                | uint8, multi                               |
+| readStatusRec      | { attrId, status }                       | uint16, uint8                  | None                | None                                              | None                                       |
+| writeRec           | { attrId, dataType, attrData }           | uint16, uin8, multi            | None                | None                                              | None                                       |
+| writeStatusRec     | { status, attrId }                       | uint8, uint16                  | None                | None                                              | None                                       |
+| attrRptCfgRec      | { direction, attrId }                    | uint8, uint16                  | direction(0)        | dataType, minRepIntval, maxRepIntval, [repChange] | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                          |                                | direction(1)        | timeout                                           | uint16                                     |
+| attrStatusRec      | { status, direction, attrId }            | uint8, uint8, uint16           | None                | None                                              | None                                       |
+| attrRec            | { direction, attrId }                    | uint8, uint16                  | None                | None                                              | None                                       |
+| attrRptCfgRec      | { status, direction, attrId }            | uint8, uint8, uint16           | status(0)           | dataType, minRepIntval, maxRepIntval, [repChange] | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                          |                                | status(1)           | timeout                                           | uint16                                     |
+| attrReport         | { attrID, dataType, attrData }           | uint16, uin8, multi            | None                | None                                              | None                                       |
+| attrInfo           | { attrId, dataType }                     | uint16, uint8                  | None                | None                                              | None                                       |
+| readAttrRec        | { attrId, selector }                     | uint16, selector               | None                | None                                              | None                                       |
+| writeAttrRec       | { attrId, selector, dataType, attrData } | uint16, selector, uint8, multi | None                | None                                              | None                                       |
+| writeAttrStstusRec | { status, attrId, selector }             | uint8, attrId, selector        | None                | None                                              | None                                       |
+
+**********************************************
+
+<a neme="dataUnitTbl></a>
 #### Data Unit Table
 
-
+| Data Unit | Judge Field          | Field Names                   | Field Types           |
+|-----------|----------------------|-------------------------------|-----------------------|
+| multi     | dataType(72, 80, 81) | { elmType, numElms, elmVals } | uint8, uint16, array(depends(`elmType`))  |
+|           | dataType(76)         | { numElms, structElms }       | uint16, array(`struct`) |
+| selector  | None                 | { indicator, indexes }        | uint8, array(depends(`indicator`))          |
+| struct    | None                 | { elmType, elmVal }           | uint8, depends(`elmType`)       |
 
 <br />
 
