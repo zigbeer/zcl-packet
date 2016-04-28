@@ -56,7 +56,7 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 
 To use zcl-packet, just new an instance with `cmdType` from the Zcl class. The property `cmdType` indicates the command type of `'foundation'` or `'functional'`.  
 
-Here is an quick example and the parsed/framed result can be found in the [parse() API](#API_parse)/[frame() API](#API_frame) section.
+Here is an quick example and the detail of parsed/framed result can be found in the [parse() API](#API_parse)/[frame() API](#API_frame) section.
 
 ```js
 var Zcl = require('zcl-packet'),
@@ -66,7 +66,7 @@ var Zcl = require('zcl-packet'),
 // build a ZCL raw buffer
 zclBuf = zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [ attrId: 0x0001, ... ]);
 
-// parse to ZCL object
+// parse to ZCL frame object
 zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ... ]), function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
@@ -90,7 +90,7 @@ Create a new instance of the `Zcl` class.
 
 **Arguments:**  
 
-1. `cmdType` (_String_): The command type, set it to `'foundation'` or `'functional'` of which command you like to invoke.  
+1. `cmdType` (_String_): The command type, set it to `'foundation'` or `'functional'` of which type of command packet you like to process.  
 2. `clusterId` (_Number_): Cluster Id. It is must be filled if `cmdType` is `'functional'`.  
 
 **Returns:**  
@@ -101,6 +101,8 @@ Create a new instance of the `Zcl` class.
 
 ```js
 var Zcl = require('zcl-packet');    
+
+// new `Zcl` instance with given command type 
 var zclFoundation = new Zcl('foundation'),
     zclFunctional = new Zcl('functional', 0x0006);
 ```
@@ -122,7 +124,7 @@ Generates a raw buffer of ZCL command packet.
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
 2. `manuCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
 3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
-4. `cmd` (_String_ | _Number_): Command id of which command you want to invoke.  
+4. `cmd` (_String_ | _Number_): Command ID indicates which command packet you want to build.  
 5. `zclPayload` (_Object_ | _Arrar_): ZCL Frame payload. It contains information specific to individual command types.  
 
 **Returns:**  
@@ -132,7 +134,8 @@ Generates a raw buffer of ZCL command packet.
 **Example:**  
 
 ```js
-// example of calling foundation command 'write'
+// example of generating zcl foundation command buffer
+// foundation command : 'write'
 var zclFoundation = new Zcl('foundation');
 var frameCntl1 = {
         manufSpec: 0,
@@ -147,7 +150,8 @@ var frameCntl1 = {
 
 foundBuf = zclFoundation.frame(frameCntl1, 0, 0, 'write', foundPayload);
 
-// example of calling functional command 'add' from 'genGroups' cluster
+// example of generating zcl functional command buffer
+// functional command 'add' from 'genGroups' cluster
 var zclFunctional = new Zcl('functional', 0x0004);
 var frameCntl2 = {
         manufSpec: 1,
@@ -181,7 +185,7 @@ Parse ZCL raw buffer to a readable command object.
 **Examples:**  
 
 ```js
-// Example of parsing foundation raw buffer.
+// example of parsing foundation raw buffer.
 var zclFoundation = new Zcl('foundation');
 var foundBuf = new Buffer([0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64]);
 
@@ -201,7 +205,7 @@ zclFoundation.parse(foundBuf, function(err, result) {
     // }
 });
 
-// Example of parsing functional raw buffer.
+// example of parsing functional raw buffer.
 var zclFunctional = new Zcl('functional', 0x0004);
 var funcBuf = new Buffer([0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31]);
 
@@ -232,12 +236,13 @@ zclFunctional.parse(funcBuf, function(err, result) {
 <a name="foundCmdTbl"></a>
 ### 3.1 ZCL Foundation Command Reference Table
 
-* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.   
+* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.
 * Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
 
 * The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)]().
 
-<a neme="foundCmdDescTbl></a>
+
+<a name="foundCmdDescTbl"></a>
 #### Foundation Command Description Table  
 
 The following table describe payload format of foundation commands. Here is the description of each column in the table:  
@@ -277,7 +282,7 @@ The following table describe payload format of foundation commands. Here is the 
 
 **********************************************
 
-<a neme="attrRecTbl></a>
+<a name="attrRecTbl"></a>
 #### Attribute Record Table
 
 The following table list each type of attribute record and describe their format.
@@ -306,7 +311,7 @@ The following table list each type of attribute record and describe their format
 
 **********************************************
 
-<a neme="dataUnitTbl></a>
+<a name="dataUnitTbl"></a>
 #### Data Unit Table
 
 | Data Unit | Judge Field          | Field Names                   | Field Types           |
