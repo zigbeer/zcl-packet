@@ -12,7 +12,7 @@ zcl-packet
     1.2 [Installation](#Installation)  
     1.3 [Usage](#Usage)  
 
-2. [APIs](#APIs): new Zcl(), frame(), and parse()  
+2. [APIs](#APIs): [new Zcl()](#API_Zcl), [frame()](#API_frame), and [parse()](#API_parse)  
 
 3. [Appendix](#Appendix)  
     3.1 [ZCL Foundation Command Reference Table](#foundCmdTbl)  
@@ -56,17 +56,18 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 
 To use zcl-packet, just new an instance with `cmdType` from the Zcl class. The property `cmdType` indicates the command type of `'foundation'` or `'functional'`.  
 
-Here is an quick example and the parsed result format can be found in the [parse() API](#API_parse) section.
+Here is an quick example and the parsed/framed result can be found in the [parse() API](#API_parse)/[frame() API](#API_frame) section.
 
 ```js
 var Zcl = require('zcl-packet'),
-    zclFoundation = new Zcl('foundation');
+    zclFoundation = new Zcl('foundation'),
+    zclBuf;
 
-zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [ attrId: 0x0001, ... ]);
+// build a ZCL raw buffer
+zclBuf = zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [ attrId: 0x0001, ... ]);
 
-var zclBuf = new Buffer([0x00, 0x00, 0x02, ... ]);
-
-zclFoundation.parse( zclBuf, function (err, result) {
+// parse to ZCL object
+zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ... ]), function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
 });
@@ -108,7 +109,7 @@ var zclFoundation = new Zcl('foundation'),
 <a name="API_frame"></a>
 ### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload)
 
-Generates a buffer containing a ZCL command packet.  
+Generates a raw buffer of ZCL command packet.  
 
 **Arguments:**  
 
@@ -122,7 +123,7 @@ Generates a buffer containing a ZCL command packet.
 2. `manuCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
 3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
 4. `cmd` (_String_ | _Number_): Command id of which command you want to invoke.  
-5. `zclPayload` (_Object_ | _Arrar_): ZCL Frame payload. An argument passes to the command, it contains information specific to individual command types.  
+5. `zclPayload` (_Object_ | _Arrar_): ZCL Frame payload. It contains information specific to individual command types.  
 
 **Returns:**  
 
@@ -146,7 +147,7 @@ var frameCntl1 = {
 
 foundBuf = zclFoundation.frame(frameCntl1, 0, 0, 'write', foundPayload);
 
-// example of calling 'add' from the cluster 'genGroups'
+// example of calling functional command 'add' from 'genGroups' cluster
 var zclFunctional = new Zcl('functional', 0x0004);
 var frameCntl2 = {
         manufSpec: 1,
@@ -166,7 +167,7 @@ funcBuf = zclFunctional.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload);
 <a name="API_parse"></a>
 ### .parse(zclBuf, callback)
 
-Parse ZCL buffer to a readable ZCL payload object.  
+Parse ZCL raw buffer to a readable command object.  
 
 **Arguments:**  
 
@@ -229,21 +230,30 @@ zclFunctional.parse(funcBuf, function(err, result) {
 <br />
 
 <a name="foundCmdTbl"></a>
-### 3.1 ZCL Foundation Command Related Tables
+### 3.1 ZCL Foundation Command Reference Table
 
-* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster. 
-* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant information of each attribute, attribute information format will vary depending on the command. 
+* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.   
+* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute, attribute record format will vary depending on foundation command.  
 
-(1) Foundation Command Description Table
-The following table describe payload format of each command. Here is the description of each column in the table:
+<a neme="foundCmdDescTbl></a>
+#### Foundation Command Description Table  
+
+The following table describe payload format of foundation commands. Here is the description of each column in the table:  
     
-        * Cmd-API
-        * Cmd-ID
-        * Description
-        * Payload
-        * Parameter Types
+* Cmd-API:  
+    * The command name in **zcl-packet**.    
+* Cmd-ID:  
+    * The command ID corresponding to the command name.  
+* Description:   
+    * Describe the purpose of each command.  
+* Payload:  
+    * Payload format of Cmd-API. 
+    * Payload will be an array of attributes record if command is used to manipulate many attributes.
+* Parameter Types
+    * Indicate property value type of payload object. 
+    * Each attribute record in the array is an object of [command-dependent atribute record](#attrRecTbl).
 
-|       Cmd-API       | Cmd-ID |              Description              |            Payload            |           Field Types          |
+|       Cmd-API       | Cmd-ID |              Description              |            Payload            |           Parameter Types      |
 | ------------------- | ------ | ------------------------------------- | ----------------------------- | ------------------------------ |
 | read                | 0      | Read attributes                       | [ readRec, ... ]              | None                           |
 | readRsp             | 1      | Read attributes response              | [ readStatusRec, ... ]        | None                           |
@@ -263,22 +273,30 @@ The following table describe payload format of each command. Here is the descrip
 | writeStrcut         | 15     | Write attributes structured           | [ writeAttrRec, ... ]         | None                           |
 | writeStrcutRsp      | 16     | Write attributes structured response  | [ writeAttrStstusRec, ... ]   | None                           |
 
+<a neme="attrRecTbl></a>
+#### Attribute Record Table
 
-|       Cmd-API       |              Field Names             |         Field Types        |
-| ------------------- | ------------------------------------ | -------------------------- |
-| readRec             | attrId                               | uint16                     |
-| readStatusRec       | attrId, status, TODO                 | uint16, uint8              |
-| writeRec            | attrId, dataType, attrData           | uint16, uin8, TODO         |
-| writeStatusRec      | status, attrId                       | uint8, uint16              |
-| attrRptCfgRec       | direction, attrId, TODO              | uint8, uint16,             |
-| attrStatusRec       | status, direction, attrId            | uint8, uint8, uint16       |
-| attrRec             | direction, attrId                    | uint8, uint16              |
-| attrRptCfgRec       | status, direction, attrId, TODO      | uint8, uint8, uint16, TODO |
-| attrReport          | attrID, dataType, attrData           | uint16, uin8, TODO         |
-| attrInfo            | attrId, dataType                     | uint16, uint8              |
-| readAttrRec         | attrId, selector                     | uint16, TODO               |
-| writeAttrRec        | attrId, selector, dataType, attrData | uint16, TODO, uint8, TODO  |
-| writeAttrStstusRec  | status, attrId, selector             | uint8, attrId, TODO        |
+|       Cmd-API       |              Field Names                 |         Field Types        |     Judge Field    |
+| ------------------- | ---------------------------------------- | -------------------------- |--------------------|
+| readRec             | { attrId }                               | uint16                     |None                |
+| readStatusRec       | { attrId, status }                       | uint16, uint8              |status(0)           |
+|                     |                                          |                            |status(1)           |
+| readStatusRec       | { attrId, status }                       | uint16, uint8              |None                |
+| writeRec            | { attrId, dataType, attrData }           | uint16, uin8, TODO         |None                |
+| writeStatusRec      | { status, attrId }                       | uint8, uint16              |None                |
+| attrRptCfgRec       | { direction, attrId }                    | uint8, uint16,             |direction(0)           |
+| attrStatusRec       | { status, direction, attrId }            | uint8, uint8, uint16       |None                |
+| attrRec             | { direction, attrId }                    | uint8, uint16              |None                |
+| attrRptCfgRec       | { status, direction, attrId }            | uint8, uint8, uint16, TODO |status              |
+| attrReport          | { attrID, dataType, attrData }           | uint16, uin8, TODO         |None                |
+| attrInfo            | { attrId, dataType }                     | uint16, uint8              |None                |
+| readAttrRec         | { attrId, selector }                     | uint16, TODO               |None                |
+| writeAttrRec        | { attrId, selector, dataType, attrData } | uint16, TODO, uint8, TODO  |None                |
+| writeAttrStstusRec  | { status, attrId, selector }             | uint8, attrId, TODO        |None                |
+
+#### Data Unit Table
+
+
 
 <br />
 
