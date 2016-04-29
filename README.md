@@ -15,8 +15,8 @@ zcl-packet
 2. [APIs](#APIs): [new Zcl()](#API_Zcl), [frame()](#API_frame), and [parse()](#API_parse)  
 
 3. [Appendix](#Appendix)  
-    3.1 [ZCL Foundation Command Reference Table](#foundCmdTbl)  
-    3.2 [ZCL Functional Command Reference Tables](#funcCmdTbl)  
+    3.1 [ZCL Foundation Command Reference Tables](#FoundCmdTbl)  
+    3.2 [ZCL Functional Command Reference Tables](#FuncCmdTbl)  
 
 4. [Contributors](#Contributors)  
 
@@ -27,7 +27,7 @@ zcl-packet
 <a name="Overview"></a>
 ## 1. Overview  
 
-The **zcl-packet** is the packet builder and parser for ZigBee Alliance *ZIGBEE CLUSTER LIBRARY SPECIFICATION* commands.  
+The **zcl-packet** is the packet builder and parser for [_ZIGBEE CLUSTER LIBRARY SPECIFICATION_](http://www.zigbee.org/download/standards-zigbee-cluster-library/) commands.  
 
 <br />
 
@@ -38,9 +38,9 @@ The ZCL is a set of clusters and cross-cluster commands used in the public profi
 
 A *Cluster* is a related collection of *Commands* and *Attributes*, which together define an interface to specific functionality. *Commands* are actions the cluster must perform. *Attributes* are data items or states defined within a cluster.  
 
-* **ZCL Foundation**: Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the *ZCL foundation* which is work across any cluster in the ZCL.  
+**ZCL Foundation:** Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the *ZCL foundation* which is work across any cluster in the ZCL.  
 
-* **ZCL Functional**: The ZCL is divided into a number of functional domains, such as General, Closures, HVAC, and Lighting. Clusters from these functional domains are used in the ZigBee Public Profiles to produce descriptions of devices. Each functional domain define its own specialized clusters. These specific clusters commands are called the *ZCL functional*.  
+**ZCL Functional:** The ZCL is divided into a number of functional domains, such as General, Closures, HVAC, and Lighting. Clusters from these functional domains are used in the ZigBee Public Profiles to produce descriptions of devices. Each functional domain define its own specialized clusters. These specific clusters commands are called the *ZCL functional*.  
 
 <br />
 
@@ -56,7 +56,7 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 
 To use zcl-packet, just new an instance with `cmdType` from the Zcl class. The property `cmdType` indicates the command type of `'foundation'` or `'functional'`.  
 
-Here is an quick example and the detail of parsed/framed result can be found in the [parse() API](#API_parse)/[frame() API](#API_frame) section.
+Here is an quick example and the detail of framed/parsed result can be found in the [frame() API](#API_frame)/[parse() API](#API_parse) section.  
 
 ```js
 var Zcl = require('zcl-packet'),
@@ -64,10 +64,10 @@ var Zcl = require('zcl-packet'),
     zclBuf;
 
 // build a ZCL raw buffer
-zclBuf = zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [ attrId: 0x0001, ... ]);
+zclBuf = zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [attrId: 0x0001, ...]);
 
 // parse to ZCL frame object
-zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ... ]), function (err, result) {
+zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
 });
@@ -91,7 +91,7 @@ Create a new instance of the `Zcl` class.
 **Arguments:**  
 
 1. `cmdType` (_String_): The command type, set it to `'foundation'` or `'functional'` of which type of command packet you like to process.  
-2. `clusterId` (_Number_): Cluster Id. It is must be filled if `cmdType` is `'functional'`.  
+2. `clusterId` (_Number_): Cluster Id. It's must be filled if `cmdType` is `'functional'`.  
 
 **Returns:**  
 
@@ -100,9 +100,9 @@ Create a new instance of the `Zcl` class.
 **Examples:**  
 
 ```js
-var Zcl = require('zcl-packet');    
+var Zcl = require('zcl-packet');
 
-// new `Zcl` instance with given command type 
+// new `Zcl` instance with given command type
 var zclFoundation = new Zcl('foundation'),
     zclFunctional = new Zcl('functional', 0x0006);
 ```
@@ -122,10 +122,10 @@ Generates a raw buffer of ZCL command packet.
     | manufSpec     | 1-bit | required  | Manufacturer specific.                             |
     | direction     | 1-bit | required  | Direction.                                         |
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
-2. `manuCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
+2. `manufCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
 3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
-4. `cmd` (_String_ | _Number_): Command ID indicates which command packet you want to build.  
-5. `zclPayload` (_Object_ | _Arrar_): ZCL Frame payload. It contains information specific to individual command types.  
+4. `cmd` (_String_ | _Number_): Command Id indicates which command packet you want to build.  
+5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types.  
 
 **Returns:**  
 
@@ -135,7 +135,7 @@ Generates a raw buffer of ZCL command packet.
 
 ```js
 // example of generating zcl foundation command buffer
-// foundation command : 'write'
+// foundation command: 'write'
 var zclFoundation = new Zcl('foundation');
 var frameCntl1 = {
         manufSpec: 0,
@@ -151,7 +151,7 @@ var frameCntl1 = {
 foundBuf = zclFoundation.frame(frameCntl1, 0, 0, 'write', foundPayload);
 
 // example of generating zcl functional command buffer
-// functional command 'add' from 'genGroups' cluster
+// functional command: 'add' from 'genGroups' cluster
 var zclFunctional = new Zcl('functional', 0x0004);
 var frameCntl2 = {
         manufSpec: 1,
@@ -192,7 +192,7 @@ var foundBuf = new Buffer([0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65,
 zclFoundation.parse(foundBuf, function(err, result) {
     if (!err)
         console.log(result);
-    // result equal to
+    // the parsed result to show you the format
     // {
     //     frameCntl: { frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 0,
@@ -212,7 +212,7 @@ var funcBuf = new Buffer([0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67,
 zclFunctional.parse(funcBuf, function(err, result) {
     if (!err)
         console.log(result);
-    // result equal to
+    // the parsed result to show you the format
     // {
     //     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 43690,
@@ -231,102 +231,98 @@ zclFunctional.parse(funcBuf, function(err, result) {
 <a name="Appendix"></a>
 ## 3. Appendix  
 
-<br />
+<a name="FoundCmdTbl"></a>
+### 3.1 ZCL Foundation Command Reference Table  
 
-<a name="foundCmdTbl"></a>
-### 3.1 ZCL Foundation Command Reference Table
-
-* ZCl foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.
+* ZCL foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.  
 * Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
+* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)]().  
 
-* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)]().
-
-
-<a name="foundCmdDescTbl"></a>
+<a name="FoundCmdDescTbl"></a>
 #### Foundation Command Description Table  
 
 The following table describe payload format of foundation commands. Here is the description of each column in the table:  
-    
+
 * Cmd-API:  
-    * The command name in **zcl-packet**.    
+    * The command name in **zcl-packet**.  
 * Cmd-ID:  
     * The command ID corresponding to the command name.  
-* Description:   
+* Description:  
     * Describe the purpose of each command.  
 * Payload:  
-    * Payload format of Cmd-API. 
-    * Payload will be an array of attributes record if command is used to manipulate many attributes.
-* Parameter Types
-    * Indicate property value type of payload object. 
-    * Each attribute record in the array is an object of [command-dependent atribute record](#attrRecTbl).
+    * Payload format of Cmd-API.  
+    * Payload will be an array of attributes record if command is used to manipulate many attributes.  
+* Parameter Types  
+    * Indicate property value type of payload object.  
+    * Each attribute record in the array is an object of [command-dependent atribute record](#AttrRecTbl).  
 
-|       Cmd-API       | Cmd-ID |              Description              |            Payload            |           Parameter Types      |
-| ------------------- | ------ | ------------------------------------- | ----------------------------- | ------------------------------ |
-| read                | 0      | Read attributes                       | [ readRec, ... ]              | None                           |
-| readRsp             | 1      | Read attributes response              | [ readStatusRec, ... ]        | None                           |
-| write               | 2      | Write attributes                      | [ writeRec, ... ]             | None                           |
-| writeUndiv          | 3      | Write attributes undivided            | [ writeRec, ... ]             | None                           |
-| writeRsp            | 4      | Write attributes response             | [ writeStatusRec, ... ]       | None                           |
-| writeNoRsp          | 5      | Write attributes no response          | [ writeRec, ...]              | None                           |
-| configReport        | 6      | Configure reporting                   | [ attrRptCfgRec, ...]         | None                           |
-| configReportRsp     | 7      | Configure reporting response          | [ attrStatusRec, ...]         | None                           |
-| readReportConfig    | 8      | Read reporting configuration          | [ attrRec, ... ]              | None                           |
-| readReportConfigRsp | 9      | Read reporting configuration response | [ attrRptCfgRec, ... ]        | None                           |
-| report              | 10     | Report attributes                     | [ attrReport, ...]            | None                           |
-| defaultRsp          | 11     | Default response                      | { cmdId, statusCode }         | uint8, uint8                   |
-| discover            | 12     | Discover attributes                   | { startAttrId, maxAttrIds }   | uint16, uint8                  |
-| discoverRsp         | 13     | Discover attributes response          | { discComplete, attrInfos }   | uint16, array(attrInfo)        |
-| readStruct          | 14     | Read attributes structured            | [ readAttrRec ... ]           | None                           |
-| writeStrcut         | 15     | Write attributes structured           | [ writeAttrRec, ... ]         | None                           |
-| writeStrcutRsp      | 16     | Write attributes structured response  | [ writeAttrStstusRec, ... ]   | None                           |
+| Cmd-API             | Cmd-ID | Description                           | Payload                       | Parameter Types         |
+|---------------------|--------|---------------------------------------|-------------------------------|-------------------------|
+| read                | 0      | Read attributes                       | `[ readRec, ... ]`            | _none_                  |
+| readRsp             | 1      | Read attributes response              | `[ readStatusRec, ... ]`      | _none_                  |
+| write               | 2      | Write attributes                      | `[ writeRec, ... ]`           | _none_                  |
+| writeUndiv          | 3      | Write attributes undivided            | `[ writeRec, ... ]`           | _none_                  |
+| writeRsp            | 4      | Write attributes response             | `[ writeStatusRec, ... ]`     | _none_                  |
+| writeNoRsp          | 5      | Write attributes no response          | `[ writeRec, ... ]`           | _none_                  |
+| configReport        | 6      | Configure reporting                   | `[ attrRptCfgRec, ... ]`      | _none_                  |
+| configReportRsp     | 7      | Configure reporting response          | `[ attrStatusRec, ... ]`      | _none_                  |
+| readReportConfig    | 8      | Read reporting configuration          | `[ attrRec, ... ]`            | _none_                  |
+| readReportConfigRsp | 9      | Read reporting configuration response | `[ attrRptCfgRec, ... ]`      | _none_                  |
+| report              | 10     | Report attributes                     | `[ attrReport, ... ]`         | _none_                  |
+| defaultRsp          | 11     | Default response                      | `{ cmdId, statusCode }`       | uint8, uint8            |
+| discover            | 12     | Discover attributes                   | `{ startAttrId, maxAttrIds }` | uint16, uint8           |
+| discoverRsp         | 13     | Discover attributes response          | `{ discComplete, attrInfos }` | uint16, array(attrInfo) |
+| readStruct          | 14     | Read attributes structured            | `[ readAttrRec, ... ]`        | _none_                  |
+| writeStrcut         | 15     | Write attributes structured           | `[ writeAttrRec, ... ]`       | _none_                  |
+| writeStrcutRsp      | 16     | Write attributes structured response  | `[ writeAttrStstusRec, ... ]` | _none_                  |
 
-**********************************************
+*************************************************
 
-<a name="attrRecTbl"></a>
-#### Attribute Record Table
+<a name="AttrRecTbl"></a>
+#### Attribute Record Table  
 
-The following table list each type of attribute record and describe their format.
+The following table list each type of attribute record and describe their format.  
 
-**Note**: The detail of `multi` and `selector` field type can be found in [Data Unit Table](#dataUnitTbl).
+**Note:** The detail of `multi` and `selector` field type can be found in the [Data Unit Table](#DataUnitTbl).  
 
-|      Cmd-API       |              Field Names                 |         Field Types            |     Judge Field     |               Additional Field Names              |            Additional Field Types          |
-| ------------------ | ---------------------------------------- | ------------------------------ | ------------------- | ------------------------------------------------- | ------------------------------------------ |
-| readRec            | { attrId }                               | uint16                         | None                | None                                              | None                                       |          
-| readStatusRec      | { attrId, status }                       | uint16, uint8                  | status(0)           | None                                              | None                                       |
-|                    |                                          |                                | status(1)           | dataType, attrData                                | uint8, multi                               |
-| readStatusRec      | { attrId, status }                       | uint16, uint8                  | None                | None                                              | None                                       |
-| writeRec           | { attrId, dataType, attrData }           | uint16, uin8, multi            | None                | None                                              | None                                       |
-| writeStatusRec     | { status, attrId }                       | uint8, uint16                  | None                | None                                              | None                                       |
-| attrRptCfgRec      | { direction, attrId }                    | uint8, uint16                  | direction(0)        | dataType, minRepIntval, maxRepIntval, [repChange] | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                          |                                | direction(1)        | timeout                                           | uint16                                     |
-| attrStatusRec      | { status, direction, attrId }            | uint8, uint8, uint16           | None                | None                                              | None                                       |
-| attrRec            | { direction, attrId }                    | uint8, uint16                  | None                | None                                              | None                                       |
-| attrRptCfgRec      | { status, direction, attrId }            | uint8, uint8, uint16           | status(0)           | dataType, minRepIntval, maxRepIntval, [repChange] | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                          |                                | status(1)           | timeout                                           | uint16                                     |
-| attrReport         | { attrID, dataType, attrData }           | uint16, uin8, multi            | None                | None                                              | None                                       |
-| attrInfo           | { attrId, dataType }                     | uint16, uint8                  | None                | None                                              | None                                       |
-| readAttrRec        | { attrId, selector }                     | uint16, selector               | None                | None                                              | None                                       |
-| writeAttrRec       | { attrId, selector, dataType, attrData } | uint16, selector, uint8, multi | None                | None                                              | None                                       |
-| writeAttrStstusRec | { status, attrId, selector }             | uint8, attrId, selector        | None                | None                                              | None                                       |
+| Cmd-API            | Field Names                                | Field Types                    | Judge Field  | Additional Field Names                                  | Additional Field Types                     |
+|--------------------|--------------------------------------------|--------------------------------|--------------|---------------------------------------------------------|--------------------------------------------|
+| readRec            | `{ attrId }`                               | uint16                         | _none_       | _none_                                                  | _none_                                     |
+| readStatusRec      | `{ attrId, status }`                       | uint16, uint8                  | status(0)    | `{ dataType, attrData }`                                | uint8, multi                               |
+|                    |                                            |                                | status(1)    | _none_                                                  | _none_                                     |
+| readStatusRec      | `{ attrId, status }`                       | uint16, uint8                  | _none_       | _none_                                                  | _none_                                     |
+| writeRec           | `{ attrId, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
+| writeStatusRec     | `{ status, attrId }`                       | uint8, uint16                  | _none_       | _none_                                                  | _none_                                     |
+| attrRptCfgRec      | `{ direction, attrId }`                    | uint8, uint16                  | direction(0) | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                            |                                | direction(1) | `{ timeout }`                                           | uint16                                     |
+| attrStatusRec      | `{ status, direction, attrId }`            | uint8, uint8, uint16           | _none_       | _none_                                                  | _none_                                     |
+| attrRec            | `{ direction, attrId }`                    | uint8, uint16                  | _none_       | _none_                                                  | _none_                                     |
+| attrRptCfgRec      | `{ status, direction, attrId }`            | uint8, uint8, uint16           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                            |                                | status(1)    | `{ timeout }`                                           | uint16                                     |
+| attrReport         | `{ attrID, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
+| attrInfo           | `{ attrId, dataType }`                     | uint16, uint8                  | _none_       | _none_                                                  | _none_                                     |
+| readAttrRec        | `{ attrId, selector }`                     | uint16, selector               | _none_       | _none_                                                  | _none_                                     |
+| writeAttrRec       | `{ attrId, selector, dataType, attrData }` | uint16, selector, uint8, multi | _none_       | _none_                                                  | _none_                                     |
+| writeAttrStstusRec | `{ status, attrId, selector }`             | uint8, attrId, selector        | _none_       | _none_                                                  | _none_                                     |
 
-**********************************************
+*************************************************
 
-<a name="dataUnitTbl"></a>
-#### Data Unit Table
+<a name="DataUnitTbl"></a>
+#### Data Unit Table  
 
-| Data Unit | Judge Field          | Field Names                   | Field Types           |
-|-----------|----------------------|-------------------------------|-----------------------|
-| multi     | dataType(72, 80, 81) | { elmType, numElms, elmVals } | uint8, uint16, array(depends(`elmType`))  |
-|           | dataType(76)         | { numElms, structElms }       | uint16, array(`struct`) |
-| selector  | None                 | { indicator, indexes }        | uint8, array(depends(`indicator`))          |
-| struct    | None                 | { elmType, elmVal }           | uint8, depends(`elmType`)       |
+| Data Unit | Judge Field          | Field Names                     | Field Types                              |
+|-----------|----------------------|---------------------------------|------------------------------------------|
+| multi     | dataType(72, 80, 81) | `{ elmType, numElms, elmVals }` | uint8, uint16, array(depends(`elmType`)) |
+|           | dataType(76)         | `{ numElms, structElms }`       | uint16, array(`struct`)                  |
+| selector  | _none_               | `{ indicator, indexes }`        | uint8, array(depends(`indicator`))       |
+| struct    | _none_               | `{ elmType, elmVal }`           | uint8, depends(`elmType`)                |
 
 <br />
 
-<a name="funcCmdTbl"></a>
+<a name="FuncCmdTbl"></a>
 ### 3.2 ZCL Functional Command Reference Table  
 
-Here is the description of each column in the table:  
+The following table describe payload format of functional commands. Here is the description of each column in the table:  
 
 * Cluster:  
     - The ZCL cluster name.  
@@ -341,16 +337,16 @@ Here is the description of each column in the table:
     - Required parameters of a Cmd.  
 
 **Functional domains:**  
-* [General](#GenTable)  
-* [Closures](#ClosuresTable)  
-* [HVAC](#HvacTable)  
-* [Lighting](#LightingTable)  
-* [Security and Safety](#SsTable)  
-* [Protocol Interfaces](#PiTable)  
-* [Home Automation](#HaTable)  
+* [General](#GenTbl)  
+* [Closures](#ClosuresTbl)  
+* [HVAC](#HvacTbl)  
+* [Lighting](#LightingTbl)  
+* [Security and Safety](#SsTbl)  
+* [Protocol Interfaces](#PiTbl)  
+* [Home Automation](#HaTbl)  
 
 *************************************************
-<a name="GenTable"></a>
+<a name="GenTbl"></a>
 ### 3.2.1 General  
 
 | Cluster          | Cmd                     | CmdId | Direction | Arguments                                                                                                           |
@@ -432,7 +428,7 @@ Here is the description of each column in the table:
 |                  | resetStartupParamsRsp   | 3     | s2c       | `{ status }`                                                                                                        |
 
 *************************************************
-<a name="ClosuresTable"></a>
+<a name="ClosuresTbl"></a>
 ### 3.2.2 Closures  
 
 | Cluster                | Cmd                          | CmdId | Direction | Arguments                                                                                         |
@@ -500,7 +496,7 @@ Here is the description of each column in the table:
 |                        | goToTiltPercentage           | 8     | c2s       | `{ percentagetiltvalue }`                                                                         |
 
 *************************************************
-<a name="HvacTable"></a>
+<a name="HvacTbl"></a>
 ### 3.2.3 HVAC  
 
 | Cluster        | Cmd                  | CmdId | Direction | Arguments                                                                  |
@@ -514,7 +510,7 @@ Here is the description of each column in the table:
 |                | getRelayStatusLogRsp | 1     | s2c       | `{ timeofday, relaystatus, localtemp, humidity, setpoint, unreadentries }` |
 
 *************************************************
-<a name="LightingTable"></a>
+<a name="LightingTbl"></a>
 ### 3.2.4 Lighting  
 
 | Cluster           | Cmd                            | CmdId | Direction | Arguments                                            |
@@ -538,7 +534,7 @@ Here is the description of each column in the table:
 |                   | stopMoveStep                   | 71    | c2s       | `{ bits, bytee, action, direction, time, starthue }` |
 
 *************************************************
-<a name="SsTable"></a>
+<a name="SsTbl"></a>
 ### 3.2.5 Security and Safety  
 
 | Cluster   | Cmd                      | CmdId | Direction | Arguments                                                                                                                                                                                                                                                                                                                  |
@@ -569,7 +565,7 @@ Here is the description of each column in the table:
 |           | squawk                   | 1     | c2s       | `{ squawkinfo }`                                                                                                                                                                                                                                                                                                           |
 
 *************************************************
-<a name="PiTable"></a>
+<a name="PiTbl"></a>
 ### 3.2.6 Protocol Interfaces  
 
 | Cluster                | Cmd                   | CmdId | Direction | Arguments                       |
@@ -580,7 +576,7 @@ Here is the description of each column in the table:
 | piBacnetProtocolTunnel | transferNPDU          | 0     | c2s       | `{ npdu }`                      |
 
 *************************************************
-<a name="HaTable"></a>
+<a name="HaTbl"></a>
 ### 3.2.7 Home Automation  
 
 | Cluster                 | Cmd                      | CmdId | Direction | Arguments                                                                              |
