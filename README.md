@@ -235,8 +235,10 @@ zclFunctional.parse(funcBuf, function(err, result) {
 ### 3.1 ZCL Foundation Command Reference Table  
 
 * ZCL foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.  
+
 * Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
-* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)]().  
+
+* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)](https://github.com/jackchased/zcl-packet/blob/master/docs/ZIGBEE%20CLUSTER%20LIBRARY%20SPECIFICATION.pdf).  
 
 <a name="FoundCmdDescTbl"></a>
 #### Foundation Command Description Table  
@@ -244,9 +246,9 @@ zclFunctional.parse(funcBuf, function(err, result) {
 The following table describe payload format of foundation commands. Here is the description of each column in the table:  
 
 * Cmd-API:  
-    * The command name in **zcl-packet**.  
-* Cmd-ID:  
-    * The command ID corresponding to the command name.  
+    * The command name, in zcl-packet, according to a *ZIGBEE CLUSTER LIBRARY SPECIFICATION* command.  
+* CmdId:  
+    * The command Id corresponding to the command name.  
 * Description:  
     * Describe the purpose of each command.  
 * Payload:  
@@ -256,25 +258,25 @@ The following table describe payload format of foundation commands. Here is the 
     * Indicate property value type of payload object.  
     * Each attribute record in the array is an object of [command-dependent atribute record](#AttrRecTbl).  
 
-| Cmd-API             | Cmd-ID | Description                           | Payload                       | Parameter Types         |
-|---------------------|--------|---------------------------------------|-------------------------------|-------------------------|
-| read                | 0      | Read attributes                       | `[ readRec, ... ]`            | _none_                  |
-| readRsp             | 1      | Read attributes response              | `[ readStatusRec, ... ]`      | _none_                  |
-| write               | 2      | Write attributes                      | `[ writeRec, ... ]`           | _none_                  |
-| writeUndiv          | 3      | Write attributes undivided            | `[ writeRec, ... ]`           | _none_                  |
-| writeRsp            | 4      | Write attributes response             | `[ writeStatusRec, ... ]`     | _none_                  |
-| writeNoRsp          | 5      | Write attributes no response          | `[ writeRec, ... ]`           | _none_                  |
-| configReport        | 6      | Configure reporting                   | `[ attrRptCfgRec, ... ]`      | _none_                  |
-| configReportRsp     | 7      | Configure reporting response          | `[ attrStatusRec, ... ]`      | _none_                  |
-| readReportConfig    | 8      | Read reporting configuration          | `[ attrRec, ... ]`            | _none_                  |
-| readReportConfigRsp | 9      | Read reporting configuration response | `[ attrRptCfgRec, ... ]`      | _none_                  |
-| report              | 10     | Report attributes                     | `[ attrReport, ... ]`         | _none_                  |
-| defaultRsp          | 11     | Default response                      | `{ cmdId, statusCode }`       | uint8, uint8            |
-| discover            | 12     | Discover attributes                   | `{ startAttrId, maxAttrIds }` | uint16, uint8           |
-| discoverRsp         | 13     | Discover attributes response          | `{ discComplete, attrInfos }` | uint16, array(attrInfo) |
-| readStruct          | 14     | Read attributes structured            | `[ readAttrRec, ... ]`        | _none_                  |
-| writeStrcut         | 15     | Write attributes structured           | `[ writeAttrRec, ... ]`       | _none_                  |
-| writeStrcutRsp      | 16     | Write attributes structured response  | `[ writeAttrStstusRec, ... ]` | _none_                  |
+| Cmd-API             | CmdId | Description                           | Payload                       | Parameter Types         |
+|---------------------|-------|---------------------------------------|-------------------------------|-------------------------|
+| read                | 0     | Read attributes                       | `[ readRec, ... ]`            | _none_                  |
+| readRsp             | 1     | Read attributes response              | `[ readStatusRec, ... ]`      | _none_                  |
+| write               | 2     | Write attributes                      | `[ writeRec, ... ]`           | _none_                  |
+| writeUndiv          | 3     | Write attributes undivided            | `[ writeRec, ... ]`           | _none_                  |
+| writeRsp            | 4     | Write attributes response             | `[ writeStatusRec, ... ]`     | _none_                  |
+| writeNoRsp          | 5     | Write attributes no response          | `[ writeRec, ... ]`           | _none_                  |
+| configReport        | 6     | Configure reporting                   | `[ attrRptCfgRec, ... ]`      | _none_                  |
+| configReportRsp     | 7     | Configure reporting response          | `[ attrStatusRec, ... ]`      | _none_                  |
+| readReportConfig    | 8     | Read reporting configuration          | `[ attrRec, ... ]`            | _none_                  |
+| readReportConfigRsp | 9     | Read reporting configuration response | `[ attrRptCfgRec, ... ]`      | _none_                  |
+| report              | 10    | Report attributes                     | `[ attrReport, ... ]`         | _none_                  |
+| defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`       | uint8, uint8            |
+| discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }` | uint16, uint8           |
+| discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }` | uint16, array(attrInfo) |
+| readStruct          | 14    | Read attributes structured            | `[ readAttrRec, ... ]`        | _none_                  |
+| writeStrcut         | 15    | Write attributes structured           | `[ writeAttrRec, ... ]`       | _none_                  |
+| writeStrcutRsp      | 16    | Write attributes structured response  | `[ writeAttrStstusRec, ... ]` | _none_                  |
 
 *************************************************
 
@@ -325,16 +327,15 @@ The following table list each type of attribute record and describe their format
 The following table describe payload format of functional commands. Here is the description of each column in the table:  
 
 * Cluster:  
-    - The ZCL cluster name.  
-* Cmd:  
-    - The command name, in zcl-packet, according to a *ZIGBEE CLUSTER LIBRARY SPECIFICATION* command.  
+    * The ZCL cluster name.  
+* Cmd-API:  
+    * The command name, in zcl-packet, according to a *ZIGBEE CLUSTER LIBRARY SPECIFICATION* command.  
 * CmdId:  
-    - The command Id corresponding to the command name.  
+    * The command Id corresponding to the command name.  
 * Direction:  
-    - c2s, Command is sent from the client side to the server side.  
-    - s2c, Command is sent from the server side to the client side.  
+    * Command is sent from client side to server side or server side to client side.  
 * Arguments:  
-    - Required parameters of a Cmd.  
+    * Required parameters of a Cmd-API.  
 
 **Functional domains:**  
 * [General](#GenTbl)  
@@ -349,7 +350,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="GenTbl"></a>
 ### 3.2.1 General  
 
-| Cluster          | Cmd                     | CmdId | Direction | Arguments                                                                                                           |
+| Cluster          | Cmd-API                 | CmdId | Direction | Arguments                                                                                                           |
 |------------------|-------------------------|-------|-----------|---------------------------------------------------------------------------------------------------------------------|
 | genBasic         | resetFactDefault        | 0     | c2s       | `{ }`                                                                                                               |
 | genIdentify      | identify                | 0     | c2s       | `{ identifytime }`                                                                                                  |
@@ -431,7 +432,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="ClosuresTbl"></a>
 ### 3.2.2 Closures  
 
-| Cluster                | Cmd                          | CmdId | Direction | Arguments                                                                                         |
+| Cluster                | Cmd-API                      | CmdId | Direction | Arguments                                                                                         |
 |------------------------|------------------------------|-------|-----------|---------------------------------------------------------------------------------------------------|
 | closuresDoorLock       | lockDoor                     | 0     | c2s       | `{ pincodevalue }`                                                                                |
 |                        | unlockDoor                   | 1     | c2s       | `{ pincodevalue }`                                                                                |
@@ -499,7 +500,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="HvacTbl"></a>
 ### 3.2.3 HVAC  
 
-| Cluster        | Cmd                  | CmdId | Direction | Arguments                                                                  |
+| Cluster        | Cmd-API              | CmdId | Direction | Arguments                                                                  |
 |----------------|----------------------|-------|-----------|----------------------------------------------------------------------------|
 | hvacThermostat | setpointRaiseLower   | 0     | c2s       | `{ mode, amount }`                                                         |
 |                | setWeeklySchedule    | 1     | c2s       | `{ numoftrans, dayofweek, mode, thermoseqmode }`                           |
@@ -513,7 +514,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="LightingTbl"></a>
 ### 3.2.4 Lighting  
 
-| Cluster           | Cmd                            | CmdId | Direction | Arguments                                            |
+| Cluster           | Cmd-API                        | CmdId | Direction | Arguments                                            |
 |-------------------|--------------------------------|-------|-----------|------------------------------------------------------|
 | lightingColorCtrl | moveToHue                      | 0     | c2s       | `{ hue, direction, transtime }`                      |
 |                   | moveHue                        | 1     | c2s       | `{ movemode, rate }`                                 |
@@ -537,7 +538,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="SsTbl"></a>
 ### 3.2.5 Security and Safety  
 
-| Cluster   | Cmd                      | CmdId | Direction | Arguments                                                                                                                                                                                                                                                                                                                  |
+| Cluster   | Cmd-API                  | CmdId | Direction | Arguments                                                                                                                                                                                                                                                                                                                  |
 |-----------|--------------------------|-------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ssIasZone | enrollRsp                | 0     | c2s       | `{ enrollrspcode, zoneid }`                                                                                                                                                                                                                                                                                                |
 |           | statusChangeNotification | 0     | s2c       | `{ zonestatus, extendedstatus }`                                                                                                                                                                                                                                                                                           |
@@ -568,7 +569,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="PiTbl"></a>
 ### 3.2.6 Protocol Interfaces  
 
-| Cluster                | Cmd                   | CmdId | Direction | Arguments                       |
+| Cluster                | Cmd-API               | CmdId | Direction | Arguments                       |
 |------------------------|-----------------------|-------|-----------|---------------------------------|
 | piGenericTunnel        | matchProtocolAddr     | 0     | c2s       | `{ protocoladdr }`              |
 |                        | matchProtocolAddrRsp  | 0     | s2c       | `{ devieeeaddr, protocoladdr }` |
@@ -579,7 +580,7 @@ The following table describe payload format of functional commands. Here is the 
 <a name="HaTbl"></a>
 ### 3.2.7 Home Automation  
 
-| Cluster                 | Cmd                      | CmdId | Direction | Arguments                                                                              |
+| Cluster                 | Cmd-API                  | CmdId | Direction | Arguments                                                                              |
 |-------------------------|--------------------------|-------|-----------|----------------------------------------------------------------------------------------|
 | haApplianceEventsAlerts | getAlerts                | 0     | c2s       | `{ }`                                                                                  |
 |                         | getAlertsRsp             | 0     | s2c       | `{ alertscount, aalert }`                                                              |
@@ -611,8 +612,7 @@ The following table describe payload format of functional commands. Here is the 
 
 The MIT License (MIT)
 
-Copyright (c) 2016  
-Jack Wu <jackchased@gmail.com>, Hedy Wang <hedywings@gmail.com>
+Copyright (c) 2016 Jack Wu <jackchased@gmail.com> and Hedy Wang <hedywings@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
