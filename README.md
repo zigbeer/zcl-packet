@@ -54,20 +54,19 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 <a name="Usage"></a>
 ### 1.3 Usage  
 
-To use zcl-packet, just new an instance with `cmdType` from the Zcl class. The property `cmdType` indicates the command type of `'foundation'` or `'functional'`.  
+To use zcl-packet, just use `.frame()` or `.parse()` method to process your ZCL packet.  
 
 Here is an quick example and the detail of framed/parsed result can be found in the [frame() API](#API_frame)/[parse() API](#API_parse) section.  
 
 ```js
-var Zcl = require('zcl-packet'),
-    zclFoundation = new Zcl('foundation'),
+var zcl = require('zcl-packet'),
     zclBuf;
 
 // build a ZCL raw buffer
-zclBuf = zclFoundation.frame({manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [attrId: 0x0001, ...]);
+zclBuf = zcl.frame({frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [attrId: 0x0001, ...]);
 
 // parse to ZCL frame object
-zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
+zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
 });
@@ -78,38 +77,12 @@ zclFoundation.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) 
 <a name="APIs"></a>
 ## 2. APIs  
 
-* [new Zcl()](#API_Zcl)  
 * [frame()](#API_frame)  
 * [parse()](#API_parse)  
 
 *************************************************
-<a name="API_Zcl"></a>
-### new Zcl(cmdType[, clusterId])
-
-Create a new instance of the `Zcl` class.  
-
-**Arguments:**  
-
-1. `cmdType` (_String_): The command type, set it to `'foundation'` or `'functional'` of which type of command packet you like to process.  
-2. `clusterId` (_Number_): Cluster Id. It's must be filled if `cmdType` is `'functional'`.  
-
-**Returns:**  
-
-* (_Object_): zclFoundation or zclFunctional, an instance of Zcl.
-
-**Examples:**  
-
-```js
-var Zcl = require('zcl-packet');
-
-// new `Zcl` instance with given command type
-var zclFoundation = new Zcl('foundation'),
-    zclFunctional = new Zcl('functional', 0x0006);
-```
-
-*************************************************
 <a name="API_frame"></a>
-### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload)
+### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload[, clusterId])
 
 Generates a raw buffer of ZCL command packet.  
 
@@ -119,13 +92,15 @@ Generates a raw buffer of ZCL command packet.
 
     | Property      | Type  | Mandatory | Description                                        |
     |---------------|-------|-----------|----------------------------------------------------|
+    | frameType     | 2-bit | required  | Frame type                                         |
     | manufSpec     | 1-bit | required  | Manufacturer specific.                             |
     | direction     | 1-bit | required  | Direction.                                         |
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
 2. `manufCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
 3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
 4. `cmd` (_String_ | _Number_): Command Id indicates which command packet you want to build.  
-5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types.  
+5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types. 
+6. `clusterId: Cluster Id. It's must be filled if `frameCntl.frameType` is 1(functional command packet). 
 
 **Returns:**  
 
@@ -136,8 +111,8 @@ Generates a raw buffer of ZCL command packet.
 ```js
 // example of generating zcl foundation command buffer
 // foundation command: 'write'
-var zclFoundation = new Zcl('foundation');
 var frameCntl1 = {
+        frameType: 0,  // Command acts across the entire profile(foundation)
         manufSpec: 0,
         direction: 0,
         disDefaultRsp: 0
@@ -148,12 +123,12 @@ var frameCntl1 = {
     ],
     foundBuf;
 
-foundBuf = zclFoundation.frame(frameCntl1, 0, 0, 'write', foundPayload);
+foundBuf = zcl.frame(frameCntl1, 0, 0, 'write', foundPayload);
 
 // example of generating zcl functional command buffer
 // functional command: 'add' from 'genGroups' cluster
-var zclFunctional = new Zcl('functional', 0x0004);
 var frameCntl2 = {
+        frameType: 1,  // Command is specific to a cluster(functional)
         manufSpec: 1,
         direction: 0,
         disDefaultRsp: 0
@@ -164,7 +139,7 @@ var frameCntl2 = {
     },
     funcBuf;
 
-funcBuf = zclFunctional.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload);
+funcBuf = zcl.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload, 0x0004);
 ```
 
 *************************************************
@@ -186,10 +161,9 @@ Parse ZCL raw buffer to a readable command object.
 
 ```js
 // example of parsing foundation raw buffer.
-var zclFoundation = new Zcl('foundation');
 var foundBuf = new Buffer([0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64]);
 
-zclFoundation.parse(foundBuf, function(err, result) {
+zcl.parse(foundBuf, function(err, result) {
     if (!err)
         console.log(result);
     // the parsed result to show you the format
@@ -206,10 +180,9 @@ zclFoundation.parse(foundBuf, function(err, result) {
 });
 
 // example of parsing functional raw buffer.
-var zclFunctional = new Zcl('functional', 0x0004);
 var funcBuf = new Buffer([0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31]);
 
-zclFunctional.parse(funcBuf, function(err, result) {
+zcl.parse(funcBuf, 0x0004, function(err, result) {
     if (!err)
         console.log(result);
     // the parsed result to show you the format
