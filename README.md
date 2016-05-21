@@ -274,7 +274,7 @@ The following table list each type of attribute record and describe their format
 | attrRec            | `{ direction, attrId }`                    | uint8, uint16                  | _none_       | _none_                                                  | _none_                                     |
 | attrRptCfgRec      | `{ status, direction, attrId }`            | uint8, uint8, uint16           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
 |                    |                                            |                                | status(1)    | `{ timeout }`                                           | uint16                                     |
-| attrReport         | `{ attrID, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
+| attrReport         | `{ attrId, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
 | attrInfo           | `{ attrId, dataType }`                     | uint16, uint8                  | _none_       | _none_                                                  | _none_                                     |
 | readAttrRec        | `{ attrId, selector }`                     | uint16, selector               | _none_       | _none_                                                  | _none_                                     |
 | writeAttrRec       | `{ attrId, selector, dataType, attrData }` | uint16, selector, uint8, multi | _none_       | _none_                                                  | _none_                                     |
@@ -566,9 +566,9 @@ The following table describe payload format of functional commands. Here is the 
 |                         | logQueueRsp              | 2     | s2c       | `{ logqueuesize, logid }`                                                              |
 |                         | statisticsAvailable      | 3     | s2c       | `{ logqueuesize, logid }`                                                              |
 | haElectricalMeasurement | getProfileInfo           | 0     | c2s       | `{ }`                                                                                  |
-|                         | getMeasurementProfile    | 1     | c2s       | `{ attrid, starttime, numofuntervals }`                                                |
+|                         | getMeasurementProfile    | 1     | c2s       | `{ attrId, starttime, numofuntervals }`                                                |
 |                         | getProfileInfoRsp        | 0     | s2c       | `{ profilecount, profileintervalperiod, maxnumofintervals, numofattrs, listofattr }`   |
-|                         | getMeasurementProfileRsp | 1     | s2c       | `{ starttime, status, profileintervalperiod, numofintervalsdeliv, attrid, intervals }` |
+|                         | getMeasurementProfileRsp | 1     | s2c       | `{ starttime, status, profileintervalperiod, numofintervalsdeliv, attrId, intervals }` |
 
 <br />
 

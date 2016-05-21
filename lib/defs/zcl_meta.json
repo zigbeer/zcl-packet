@@ -1921,7 +1921,7 @@
             "getMeasurementProfile":{
                 "cmdId":1,
                 "params":[
-                    {"attrid":"uint16"},
+                    {"attrId":"uint16"},
                     {"starttime":"uint32"},
                     {"numofuntervals":"uint8"}
                 ],
@@ -1943,7 +1943,7 @@
                     {"status":"uint8"},
                     {"profileintervalperiod":"uint8"},
                     {"numofintervalsdeliv":"preLenUint8"},
-                    {"attrid":"uint16"},
+                    {"attrId":"uint16"},
                     {"intervals":"dynUint8"}
                 ],
                 "direction":1}
