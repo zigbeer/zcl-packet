@@ -12,7 +12,7 @@ zcl-packet
     1.2 [Installation](#Installation)  
     1.3 [Usage](#Usage)  
 
-2. [APIs](#APIs): [new Zcl()](#API_Zcl), [frame()](#API_frame), and [parse()](#API_parse)  
+2. [APIs](#APIs): [frame()](#API_frame) and [parse()](#API_parse)  
 
 3. [Appendix](#Appendix)  
     3.1 [ZCL Foundation Command Reference Tables](#FoundCmdTbl)  
@@ -100,7 +100,7 @@ Generates a raw buffer of ZCL command packet.
 3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
 4. `cmd` (_String_ | _Number_): Command Id indicates which command packet you want to build.  
 5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types. 
-6. `clusterId: Cluster Id. It's must be filled if `frameCntl.frameType` is 1(functional command packet). 
+6. `clusterId` (_String_ | _Number_): Cluster Id. It's must be filled if `frameCntl.frameType` is 1(functional command packet). 
 
 **Returns:**  
 
