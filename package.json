@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jackchased/zcl-packet.git"
+    "url": "git+https://github.com/zigbeer/zcl-packet.git"
   },
   "keywords": [
     "zcl",
@@ -17,9 +17,9 @@
   "author": "Jack Wu <jackchased@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jackchased/zcl-packet/issues"
+    "url": "https://github.com/zigbeer/zcl-packet/issues"
   },
-  "homepage": "https://github.com/jackchased/zcl-packet#readme",
+  "homepage": "https://github.com/zigbeer/zcl-packet#readme",
   "dependencies": {
     "concentrate": "^0.2.3",
     "dissolve-chunks": "^1.0.2",
