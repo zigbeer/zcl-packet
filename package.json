@@ -4,7 +4,7 @@
   "description": "zcl-packet is a framer and parser for ZigBee Cluster Library packet.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test-all"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,16 @@
     "zigbee"
   ],
   "author": "Jack Wu <jackchased@gmail.com>",
+  "contributors": [
+    {
+      "name": "Hedy Wang",
+      "email": "hedywings@gmail.com"
+    },
+    {
+      "name": "Simen Li",
+      "email": "simenkid@gmail.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zigbeer/zcl-packet/issues"
@@ -27,7 +37,9 @@
     "zcl-id": "0.0.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "chance": "^1.0.2",
+    "mocha": "^2.5.3",
     "should": "^8.3.1"
   }
 }
