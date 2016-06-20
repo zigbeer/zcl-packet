@@ -580,7 +580,7 @@
             "cmd": [
                 ["reset", 0],
                 ["resetAll", 1],
-                ["get", 2],
+                ["getAlarm", 2],
                 ["resetLog", 3],
                 ["publishEventLog", 4]
             ],
@@ -600,7 +600,7 @@
                 "cmdId":1,
                 "params":[],
                 "direction":0},
-            "get":{
+            "getAlarm":{
                 "cmdId":2,
                 "params":[],
                 "direction":0},
@@ -1807,9 +1807,9 @@
         },
         "piBacnetProtocolTunnel": {
             "cmd": [
-                ["transferNPDU", 0]
+                ["transferNpdu", 0]
             ],
-            "transferNPDU":{
+            "transferNpdu":{
                 "cmdId":0,
                 "params":[
                     {"npdu":"uint8"}
