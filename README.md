@@ -16,7 +16,7 @@ zcl-packet
     1.2 [Installation](#Installation)  
     1.3 [Usage](#Usage)  
 
-2. [APIs](#APIs): [frame()](#API_frame) and [parse()](#API_parse)  
+2. [APIs](#APIs): [frame()](#API_frame), [parse()](#API_parse), and [header()](#API_header)  
 
 3. [Appendix](#Appendix)  
     3.1 [ZCL Foundation Command Reference Tables](#FoundCmdTbl)  
@@ -83,6 +83,7 @@ zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
 
 * [frame()](#API_frame)  
 * [parse()](#API_parse)  
+* [header()](#API_header)  
 
 *************************************************
 <a name="API_frame"></a>
@@ -96,7 +97,7 @@ Generates a raw buffer of ZCL command packet.
 
     | Property      | Type  | Mandatory | Description                                        |
     |---------------|-------|-----------|----------------------------------------------------|
-    | frameType     | 2-bit | required  | Frame type                                         |
+    | frameType     | 2-bit | required  | Frame type.                                        |
     | manufSpec     | 1-bit | required  | Manufacturer specific.                             |
     | direction     | 1-bit | required  | Direction.                                         |
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
@@ -148,14 +149,15 @@ funcBuf = zcl.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload, 0x0004);
 
 *************************************************
 <a name="API_parse"></a>
-### .parse(zclBuf, callback)
+### .parse(zclBuf[, clusterId], callback)
 
 Parse ZCL raw buffer to a readable command object.  
 
 **Arguments:**  
 
 1. `zclBuf` (_Buffer_): ZCL raw buffer to be parsed.  
-2. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL buffer is parsed.  
+2. `clusterId` (_String_ | _Number_): Cluster Id. It should be filled if `zclBuf` is functional command.  
+3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL buffer is parsed.  
 
 **Returns:**  
 
@@ -165,7 +167,7 @@ Parse ZCL raw buffer to a readable command object.
 
 ```js
 // example of parsing foundation raw buffer.
-var foundBuf = new Buffer([0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64]);
+var foundBuf = new Buffer([ 0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64 ]);
 
 zcl.parse(foundBuf, function(err, result) {
     if (!err)
@@ -184,7 +186,7 @@ zcl.parse(foundBuf, function(err, result) {
 });
 
 // example of parsing functional raw buffer.
-var funcBuf = new Buffer([0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31]);
+var funcBuf = new Buffer([ 0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31 ]);
 
 zcl.parse(funcBuf, 0x0004, function(err, result) {
     if (!err)
@@ -201,6 +203,35 @@ zcl.parse(funcBuf, 0x0004, function(err, result) {
     //     }
     // }
 });
+```
+
+*************************************************
+<a name="API_header"></a>
+### .header(zclBuf)
+
+Parse ZCL buffer of header.  
+
+**Arguments:**  
+
+1. `zclBuf` (_Buffer_): ZCL buffer to be parsed.  
+
+**Returns:**  
+
+* (_Object_): ZCL header Object.  
+
+**Examples:**  
+
+```js
+var zclBuf = new Buffer([ 0x05, 0xaa, 0xaa , 0x01, 0x00, ... ]);
+var header = zcl.header(zclBuf);
+
+console.log(header);
+// {
+//     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
+//     manufCode: 43690,
+//     seqNum: 1,
+//     cmd: 0,
+// }
 ```
 
 <br />
@@ -580,6 +611,7 @@ The following table describe payload format of functional commands. Here is the 
 
 * [Jack Wu](https://www.npmjs.com/~jackchased)  
 * [Hedy Wang](https://www.npmjs.com/~hedywings)  
+* [Simen Li](https://www.npmjs.com/~simenkid)  
 
 <br />
 
@@ -588,7 +620,8 @@ The following table describe payload format of functional commands. Here is the 
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Jack Wu <jackchased@gmail.com> and Hedy Wang <hedywings@gmail.com>
+Copyright (c) 2016 
+Jack Wu <jackchased@gmail.com>, Hedy Wang <hedywings@gmail.com>, and Simen Li <simenkid@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
