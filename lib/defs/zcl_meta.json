@@ -1581,6 +1581,14 @@
                     {"zoneid":"uint8"}
                 ],
                 "direction":0},
+            "initNormalOpMode":{
+                "cmdId":1,
+                "params":[],
+                "direction":0},
+            "initTestMode":{
+                "cmdId":2,
+                "params":[],
+                "direction":0},
             "statusChangeNotification":{
                 "cmdId":0,
                 "params":[
@@ -1815,6 +1823,98 @@
                     {"npdu":"uint8"}
                 ],
                 "direction":0}
+        },
+        "piAnalogInputExt": {
+            "cmd": [
+                ["transferApdu", 0]
+            ],
+            "transferApdu":{
+                "cmdId":0,
+                "params":[],
+                "direction":0},
+            "connectReq":{
+                "cmdId":1,
+                "params":[],
+                "direction":0},
+            "disconnectReq":{
+                "cmdId":2,
+                "params":[],
+                "direction":0},
+            "connectStatusNoti":{
+                "cmdId":3,
+                "params":[],
+                "direction":0}
+        },
+        "pi11073ProtocolTunnel": {
+            "cmd": [
+                ["transferNpdu", 0]
+            ],
+            "transferApdu":{
+                "cmdId":0,
+                "params":[],
+                "direction":0},
+            "connectReq":{
+                "cmdId":1,
+                "params":[],
+                "direction":0},
+            "disconnectReq":{
+                "cmdId":2,
+                "params":[],
+                "direction":0},
+            "connectStatusNoti":{
+                "cmdId":3,
+                "params":[],
+                "direction":0}
+        },
+        "seMetering": {
+            "getProfile":{
+                "cmdId":0,
+                "params":[],
+                "direction":0},
+            "reqMirror":{
+                "cmdId":1,
+                "params":[],
+                "direction":0},
+            "mirrorRem":{
+                "cmdId":2,
+                "params":[],
+                "direction":0},
+            "reqFastPollMode":{
+                "cmdId":3,
+                "params":[],
+                "direction":0},
+            "getSnapshot":{
+                "cmdId":4,
+                "params":[],
+                "direction":0},
+            "takeSnapshot":{
+                "cmdId":5,
+                "params":[],
+                "direction":0},
+            "mirrorReportAttrRsp":{
+                "cmdId":6,
+                "params":[],
+                "direction":0},
+            "getProfileRsp":{
+                "cmdId":0,
+                "params":[],
+                "direction":1},
+            "reqMirrorRsp":{
+                "cmdId":1,
+                "params":[],
+                "direction":1},
+            "mirrorRemRsp":{
+                "cmdId":2,
+                "params":[],
+                "direction":1},
+            "reqFastPollModeRsp":{
+                "cmdId":3,
+                "params":[],
+                "direction":1},
+            "getSnapshotRsp":{
+                "cmdId":4,
+                "params":[],
+                "direction":1}
         },
         "haApplianceEventsAlerts": {
             "cmd": [
