@@ -246,7 +246,7 @@ console.log(header);
 
 * Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
 
-* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)](https://github.com/jackchased/zcl-packet/blob/master/docs/ZIGBEE%20CLUSTER%20LIBRARY%20SPECIFICATION.pdf).  
+* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)](https://github.com/zigbeer/documents/blob/master/zcl-id/ZIGBEE_CLUSTER_LIBRARY_SPECIFICATION.pdf).  
 
 <a name="FoundCmdDescTbl"></a>
 #### Foundation Command Description Table  

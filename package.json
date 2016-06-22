@@ -32,15 +32,14 @@
   "homepage": "https://github.com/zigbeer/zcl-packet#readme",
   "dependencies": {
     "concentrate": "^0.2.3",
-    "dissolve-chunks": "^1.0.2",
+    "dissolve-chunks": "^1.0.8",
     "enum": "^2.3.0",
-    "zcl-id": "0.0.2"
+    "zcl-id": "0.0.4"
   },
   "devDependencies": {
     "busyman": "^0.1.1",
     "chai": "^3.5.0",
     "chance": "^1.0.2",
-    "mocha": "^2.5.3",
-    "should": "^8.3.1"
+    "mocha": "^2.5.3"
   }
 }
