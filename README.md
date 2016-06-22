@@ -15,15 +15,11 @@ zcl-packet
     1.1 [ZigBee Cluster Library](#ZCL)  
     1.2 [Installation](#Installation)  
     1.3 [Usage](#Usage)  
-
 2. [APIs](#APIs): [frame()](#API_frame), [parse()](#API_parse), and [header()](#API_header)  
-
 3. [Appendix](#Appendix)  
     3.1 [ZCL Foundation Command Reference Tables](#FoundCmdTbl)  
     3.2 [ZCL Functional Command Reference Tables](#FuncCmdTbl)  
-
 4. [Contributors](#Contributors)  
-
 5. [License](#License)  
 
 <br />
@@ -31,20 +27,24 @@ zcl-packet
 <a name="Overview"></a>
 ## 1. Overview  
 
-The **zcl-packet** is the packet builder and parser for [_ZIGBEE CLUSTER LIBRARY SPECIFICATION_](http://www.zigbee.org/download/standards-zigbee-cluster-library/) commands.  
+The **zcl-packet** is the packet builder and parser for applicaiton layer ZCL commands and responses defined by [_ZigBee Cluster Library Specification_](http://www.zigbee.org/download/standards-zigbee-cluster-library/).  
 
 <br />
 
 <a name="ZCL"></a>
 ### 1.1 ZigBee Cluster Library  
 
-The ZCL is a set of clusters and cross-cluster commands used in the public profiles defined by the ZigBee Alliance to speed the development and standardization of the public profiles.  
+ZCL is a set of clusters and cross-cluster commands defined by the ZigBee Alliance to speed the development and standardization of the public profiles.  
 
-A *Cluster* is a related collection of *Commands* and *Attributes*, which together define an interface to specific functionality. *Commands* are actions the cluster must perform. *Attributes* are data items or states defined within a cluster.  
+A *Cluster* is a related collection of *Commands* and *Attributes*, which together defines an interface to specific functionality. *Commands* are actions a cluster can perform. *Attributes* are data items or states within a cluster.  
 
-**ZCL Foundation:** Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the *ZCL foundation* which is work across any cluster in the ZCL.  
+#### ZCL Foundation  
+  
+Each attribute in a cluster may be read from, written to, and reported over-the-air with cross-cluster ZCL commands. These cross-cluster commands are called *ZCL foundation* commands working across all clusters defined in ZCL.  
 
-**ZCL Functional:** The ZCL is divided into a number of functional domains, such as General, Closures, HVAC, and Lighting. Clusters from these functional domains are used in the ZigBee Public Profiles to produce descriptions of devices. Each functional domain define its own specialized clusters. These specific clusters commands are called the *ZCL functional*.  
+#### ZCL Functional  
+  
+ZCL divides applications into a number of functional domains, such as General, Closures, HVAC, and Lighting. ZigBee public profiles use clusters from these functional domains to describe different kinds of devices. [TODO] Each functional domain has its own specific clusters. These specific clusters commands are called the *ZCL functional*.  
 
 <br />
 
@@ -58,19 +58,20 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 <a name="Usage"></a>
 ### 1.3 Usage  
 
-To use zcl-packet, just use `.frame()` or `.parse()` method to process your ZCL packet.  
-
-Here is an quick example and the detail of framed/parsed result can be found in the [frame() API](#API_frame)/[parse() API](#API_parse) section.  
+Use `.frame()` and `.parse()` methods to build and parse ZCL packets is quite simple. Here is a quick example:  
 
 ```js
 var zcl = require('zcl-packet'),
     zclBuf;
 
 // build a ZCL raw buffer
-zclBuf = zcl.frame({frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [attrId: 0x0001, ...]);
+zclBuf = zcl.frame({ frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
+                   0, 0, 'read', [attrId: 0x0001, ... ]);
 
 // parse to ZCL frame object
-zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
+var fooZclPacket = new Buffer([ 0x00, 0x00, 0x02, ... ]);
+
+zcl.parse(fooZclPacket, function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
 });
@@ -89,11 +90,11 @@ zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
 <a name="API_frame"></a>
 ### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload[, clusterId])
 
-Generates a raw buffer of ZCL command packet.  
+Generate the raw packet of a ZCL command.  
 
 **Arguments:**  
 
-1. `frameCntl` (_Object_): Frame control. The following table shows the details of each property.  
+1. `frameCntl` (_Object_): Frame control. Details of each property are given with the following table:  
 
     | Property      | Type  | Mandatory | Description                                        |
     |---------------|-------|-----------|----------------------------------------------------|
@@ -101,39 +102,42 @@ Generates a raw buffer of ZCL command packet.
     | manufSpec     | 1-bit | required  | Manufacturer specific.                             |
     | direction     | 1-bit | required  | Direction.                                         |
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
-2. `manufCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
-3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
-4. `cmd` (_String_ | _Number_): Command Id indicates which command packet you want to build.  
-5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types. 
-6. `clusterId` (_String_ | _Number_): Cluster Id. It's must be filled if `frameCntl.frameType` is 1(functional command packet). 
+
+2. `manufCode` (_Number_): Manufacturer code, which is an uint16 integer. It will be ignored if `frameCntl.manufSpec` is 0.  
+3. `seqNum` (_Number_): Sequence number, which is a uint8 integer.  
+4. `cmd` (_String_ | _Number_): Command id of which command packet you'd like to build.  
+5. `zclPayload` (_Object_ | _Array_): ZCL payload depending on the given command.  
+6. `clusterId` (_String_ | _Number_): Cluster id. Must be given if `frameCntl.frameType` is 1 (functional command packet).  
 
 **Returns:**  
 
-* (_Buffer_): ZCL raw buffer.
+* (_Buffer_): Raw buffer of the ZCL packet.  
 
 **Example:**  
 
 ```js
-// example of generating zcl foundation command buffer
+// Example of generating zcl foundation command buffer
 // foundation command: 'write'
-var frameCntl1 = {
-        frameType: 0,  // Command acts across the entire profile(foundation)
+
+var foundFrameCntl = {
+        frameType: 0,  // Command acts across the entire profile (foundation)
         manufSpec: 0,
         direction: 0,
         disDefaultRsp: 0
     },
     foundPayload = [
         { attrId: 0x1234, dataType: 0x41, attrData: 'hello' },
-        { attrId: 0xabcd, dataType: 0x24, attrData: [100, 2406] }
+        { attrId: 0xabcd, dataType: 0x24, attrData: [ 100, 2406 ] }
     ],
     foundBuf;
 
-foundBuf = zcl.frame(frameCntl1, 0, 0, 'write', foundPayload);
+foundBuf = zcl.frame(foundFrameCntl, 0, 0, 'write', foundPayload);
 
-// example of generating zcl functional command buffer
+// Example of generating zcl functional command buffer
 // functional command: 'add' from 'genGroups' cluster
-var frameCntl2 = {
-        frameType: 1,  // Command is specific to a cluster(functional)
+
+var funcFrameCntl = {
+        frameType: 1,  // Command is specific to a cluster (functional)
         manufSpec: 1,
         direction: 0,
         disDefaultRsp: 0
@@ -144,20 +148,20 @@ var frameCntl2 = {
     },
     funcBuf;
 
-funcBuf = zcl.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload, 0x0004);
+funcBuf = zcl.frame(funcFrameCntl, 0xaaaa, 1, 'add', funcPayload, 0x0004);
 ```
 
 *************************************************
 <a name="API_parse"></a>
 ### .parse(zclBuf[, clusterId], callback)
 
-Parse ZCL raw buffer to a readable command object.  
+Parse a ZCL packet into a data object.  
 
 **Arguments:**  
 
-1. `zclBuf` (_Buffer_): ZCL raw buffer to be parsed.  
-2. `clusterId` (_String_ | _Number_): Cluster Id. It should be filled if `zclBuf` is functional command.  
-3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL buffer is parsed.  
+1. `zclBuf` (_Buffer_): ZCL raw packet to be parsed.  
+2. `clusterId` (_String_ | _Number_): Cluster id. Must be given if `zclBuf` is a functional command.  
+3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL packet is parsed.  
 
 **Returns:**  
 
@@ -166,13 +170,18 @@ Parse ZCL raw buffer to a readable command object.
 **Examples:**  
 
 ```js
-// example of parsing foundation raw buffer.
-var foundBuf = new Buffer([ 0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64 ]);
+// Example of parsing a foundation command packet.  
+var foundBuf = new Buffer([
+    0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68,
+    0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66,
+    0x09, 0x00, 0x00, 0x64
+]);
 
 zcl.parse(foundBuf, function(err, result) {
     if (!err)
         console.log(result);
-    // the parsed result to show you the format
+
+    // The parsed result is an object
     // {
     //     frameCntl: { frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 0,
@@ -185,13 +194,17 @@ zcl.parse(foundBuf, function(err, result) {
     // }
 });
 
-// example of parsing functional raw buffer.
-var funcBuf = new Buffer([ 0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31 ]);
+// Example of parsing a functional command packet.
+var funcBuf = new Buffer([
+    0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06,
+    0x67, 0x72, 0x6f, 0x75, 0x70, 0x31
+]);
 
 zcl.parse(funcBuf, 0x0004, function(err, result) {
     if (!err)
         console.log(result);
-    // the parsed result to show you the format
+
+    // The parsed result is an object
     // {
     //     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 43690,
@@ -209,15 +222,15 @@ zcl.parse(funcBuf, 0x0004, function(err, result) {
 <a name="API_header"></a>
 ### .header(zclBuf)
 
-Parse ZCL buffer of header.  
+Parse a ZCL header.  
 
 **Arguments:**  
 
-1. `zclBuf` (_Buffer_): ZCL buffer to be parsed.  
+1. `zclBuf` (_Buffer_): ZCL header buffer to be parsed.  
 
 **Returns:**  
 
-* (_Object_): ZCL header Object.  
+* (_Object_): ZCL header data.  
 
 **Examples:**  
 
