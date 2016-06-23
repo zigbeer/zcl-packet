@@ -1,58 +1,51 @@
 { 
     "foundation": {
         "read": {
-            "cmdId": 0,
             "params":[
                 {"attrId":"uint16"}
             ],
             "knownBufLen": 2
         },
-        "readRsp": { 
-            "cmdId": 1,
+        "readRsp": {
             "params":[
-                {"attrId":"uint16"}, 
+                {"attrId":"uint16"},
                 {"status":"uint8"},
                 {"extra":"readRsp"}
             ],
             "knownBufLen": 3
         },
         "write": {
-            "cmdId": 2,
             "params":[
-                {"attrId":"uint16"}, 
-                {"dataType":"uint8"}, 
+                {"attrId":"uint16"},
+                {"dataType":"uint8"},
                 {"attrData": "variable"}
             ],
             "knownBufLen": 3
         },
         "writeUndiv": {
-            "cmdId": 3,
             "params":[
-                {"attrId":"uint16"}, 
-                {"dataType":"uint8"}, 
+                {"attrId":"uint16"},
+                {"dataType":"uint8"},
                 {"attrData": "variable"}
             ],
             "knownBufLen": 3
         },
         "writeRsp": {
-            "cmdId": 4,
             "params":[
-                {"status":"uint8"}, 
+                {"status":"uint8"},
                 {"attrId":"uint16"}
             ],
             "knownBufLen": 3
         },
         "writeNoRsp": {
-            "cmdId": 5,
             "params":[
-                {"attrId":"uint16"}, 
-                {"dataType":"uint8"}, 
+                {"attrId":"uint16"},
+                {"dataType":"uint8"},
                 {"attrData": "variable"}
             ],
             "knownBufLen": 3
         },
-        "configReport": { 
-            "cmdId": 6,
+        "configReport": {
             "params":[
                 {"direction":"uint8"},
                 {"attrId":"uint16"},
@@ -61,24 +54,21 @@
             "knownBufLen": 3
         },
         "configReportRsp": {
-            "cmdId": 7,
             "params":[
-                {"status":"uint8"}, 
-                {"direction": "uint8"}, 
+                {"status":"uint8"},
+                {"direction": "uint8"},
                 {"attrId": "uint16"}
             ],
             "knownBufLen": 4
         },
         "readReportConfig": {
-            "cmdId": 8,
             "params":[
-                {"direction": "uint8"}, 
+                {"direction": "uint8"},
                 {"attrId": "uint16"}
             ],
             "knownBufLen": 3
         },
-        "readReportConfigRsp": { 
-            "cmdId": 9,
+        "readReportConfigRsp": {
             "params":[
                 {"status":"uint8"},
                 {"direction":"uint8"},
@@ -88,32 +78,28 @@
             "knownBufLen": 4
         },
         "report": {
-            "cmdId": 10,
             "params":[
-                {"attrId":"uint16"}, 
-                {"dataType":"uint8"}, 
+                {"attrId":"uint16"},
+                {"dataType":"uint8"},
                 {"attrData":"variable"}
             ],
             "knownBufLen": 3
         },
         "defaultRsp": {
-            "cmdId": 11,
             "params":[
-                {"cmdId":"uint8"}, 
+                {"cmdId":"uint8"},
                 {"statusCode":"uint8"}
             ],
             "knownBufLen": 2
         },
         "discover": {
-            "cmdId": 12,
             "params":[
-                {"startAttrId":"uint16"}, 
+                {"startAttrId":"uint16"},
                 {"maxAttrIds":"uint8"}
             ],
             "knownBufLen": 3
         },
         "discoverRsp": {
-            "cmdId": 13,
             "params":[
                 {"attrId": "uint16"},
                 {"dataType":"uint8"}
@@ -121,7 +107,6 @@
             "knownBufLen": 3
         },
         "readStruct": {
-            "cmdId": 14,
             "params":[
                 {"attrId":"uint16"},
                 {"selector":"selector"} 
@@ -129,7 +114,6 @@
             "knownBufLen": 2
         },
         "writeStrcut": {
-            "cmdId": 15,
             "params":[
                 {"attrId":"uint16"},
                 {"selector":"selector"},
@@ -139,7 +123,6 @@
             "knownBufLen": 3
         },
         "writeStrcutRsp": {
-            "cmdId": 16,
             "params":[
                 {"status":"uint8"},
                 {"attrId":"uint16"},
@@ -150,171 +133,103 @@
     },
     "functional": {
         "genBasic": {
-            "cmd": [
-                ["resetFactDefault", 0]
-            ],
             "resetFactDefault":{
-                "cmdId":0,
                 "params":[],
-                "direction":0}
+                "dir":0}
         },
         "genIdentify": {
-            "cmd": [
-                ["identify", 0],
-                ["identifyQuery", 1],
-                ["ezmodeInvoke", 2],
-                ["updateCommissionState", 3],
-                ["triggerEffect", 64]
-            ],
-            "cmdRsp": [
-                ["identifyQueryRsp", 0]
-            ],
             "identify":{
-                "cmdId":0,
                 "params":[
                     {"identifytime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "identifyQuery":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "ezmodeInvoke":{
-                "cmdId":2,
                 "params":[
                     {"action":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "updateCommissionState":{
-                "cmdId":3,
                 "params":[
                     {"action":"uint8"},
                     {"commstatemask":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "triggerEffect":{
-                "cmdId":64,
                 "params":[
                     {"effectid":"uint8"},
                     {"effectvariant":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "identifyQueryRsp":{
-                "cmdId":0,
                 "params":[
                     {"timeout":"uint16"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "genGroups": {
-            "cmd": [
-                ["add", 0],
-                ["view", 1],
-                ["getMembership", 2],
-                ["remove", 3],
-                ["removeAll", 4],
-                ["addIfIdentifying", 5]
-            ],
-            "cmdRsp": [
-                ["addRsp", 0],
-                ["viewRsp", 1],
-                ["getMembershipRsp", 2],
-                ["removeRsp", 3]
-            ],
             "add":{
-                "cmdId":0,
                 "params":[
                     {"groupid":"uint16"},
                     {"groupname":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "view":{
-                "cmdId":1,
                 "params":[
                     {"groupid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "getMembership":{
-                "cmdId":2,
                 "params":[
                     {"groupcount":"preLenUint8"},
                     {"grouplist":"dynUint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "remove":{
-                "cmdId":3,
                 "params":[
                     {"groupid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "removeAll":{
-                "cmdId":4,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "addIfIdentifying":{
-                "cmdId":5,
                 "params":[
                     {"groupid":"uint16"},
                     {"groupname":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "addRsp":{
-                "cmdId":0,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "viewRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"},
                     {"groupname":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "getMembershipRsp":{
-                "cmdId":2,
                 "params":[
                     {"capacity":"uint8"},
                     {"groupcount":"preLenUint8"},
                     {"grouplist":"dynUint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "removeRsp":{
-                "cmdId":3,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "genScenes": {
-            "cmd": [
-                ["add", 0],
-                ["view", 1],
-                ["remove", 2],
-                ["removeAll", 3],
-                ["store", 4],
-                ["recall", 5],
-                ["getSceneMembership", 6],
-                ["enhancedAdd", 64],
-                ["enhancedView", 65],
-                ["copy", 66]
-            ],
-            "cmdRsp": [
-                ["addRsp", 0],
-                ["viewRsp", 1],
-                ["removeRsp", 2],
-                ["removeAllRsp", 3],
-                ["storeRsp", 4],
-                ["getSceneMembershipRsp", 6],
-                ["enhancedAddRsp", 64],
-                ["enhancedViewRsp", 65],
-                ["copyRsp", 66]
-            ],
             "add":{
-                "cmdId":0,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"},
@@ -322,50 +237,43 @@
                     {"scenename":"stringPreLen"},
                     {"extensionfieldsets":"extfieldsets"}
                 ],
-                "direction":0,
+                "dir":0,
                 "knownBufLen": 6},
             "view":{
-                "cmdId":1,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "remove":{
-                "cmdId":2,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "removeAll":{
-                "cmdId":3,
                 "params":[
                     {"groupid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "store":{
-                "cmdId":4,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "recall":{
-                "cmdId":5,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getSceneMembership":{
-                "cmdId":6,
                 "params":[
                     {"groupid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "enhancedAdd":{
-                "cmdId":64,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"},
@@ -373,17 +281,15 @@
                     {"scenename":"stringPreLen"},
                     {"extensionfieldsets":"extfieldsets"}
                 ],
-                "direction":0,
+                "dir":0,
                 "knownBufLen": 6},
             "enhancedView":{
-                "cmdId":65,
                 "params":[
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "copy":{
-                "cmdId":66,
                 "params":[
                     {"mode":"uint8"},
                     {"groupidfrom":"uint16"},
@@ -391,17 +297,15 @@
                     {"groupidto":"uint16"},
                     {"sceneidto":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "addRsp":{
-                "cmdId":0,
                 "params":[
                     {"status":"uint8"},
                     {"groupId":"uint16"},
                     {"sceneId":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "viewRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"},
@@ -410,33 +314,29 @@
                     {"scenename":"stringPreLen"},
                     {"extensionfieldsets":"extfieldsets"}
                 ],
-                "direction":1,
+                "dir":1,
                 "knownBufLen": 7},
             "removeRsp":{
-                "cmdId":2,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "removeAllRsp":{
-                "cmdId":3,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "storeRsp":{
-                "cmdId":4,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"},
                     {"sceneid":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getSceneMembershipRsp":{
-                "cmdId":6,
                 "params":[
                     {"status":"uint8"},
                     {"capacity":"uint8"},
@@ -444,13 +344,11 @@
                     {"scenecount":"preLenUint8"},
                     {"scenelist":"dynUint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "enhancedAddRsp":{
-                "cmdId":64,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "enhancedViewRsp":{
-                "cmdId":65,
                 "params":[
                     {"status":"uint8"},
                     {"groupid":"uint16"},
@@ -459,196 +357,129 @@
                     {"scenename":"stringPreLen"},
                     {"extensionfieldsets":"extfieldsets"}
                 ],
-                "direction":1,
+                "dir":1,
                 "knownBufLen": 7},
             "copyRsp":{
-                "cmdId":66,
                 "params":[
                     {"status":"uint8"},
                     {"groupidfrom":"uint16"},
                     {"sceneidfrom":"uint8"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "genOnOff": {
-            "cmd": [
-                ["off", 0],
-                ["on", 1],
-                ["toggle", 2],
-                ["offWithEffect", 64],
-                ["onWithRecallGlobalScene", 65],
-                ["onWithTimedOff", 66]
-            ],
             "off":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "on":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "toggle":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "offWithEffect":{
-                "cmdId":64,
                 "params":[
                     {"effectid":"uint8"},
                     {"effectvariant":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "onWithRecallGlobalScene":{
-                "cmdId":65,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "onWithTimedOff":{
-                "cmdId":66,
                 "params":[
                     {"ctrlbits":"uint8"},
                     {"ctrlbyte":"uint8"},
                     {"ontime":"uint16"},
                     {"offwaittime":"uint16"}
                 ],
-                "direction":0}
+                "dir":0}
         },
         "genLevelCtrl": {
-            "cmd": [
-                ["moveToLevel", 0],
-                ["move", 1],
-                ["step", 2],
-                ["stop", 3],
-                ["moveToLevelWithOnOff", 4],
-                ["moveWithOnOff", 5],
-                ["stepWithOnOff", 6],
-                ["stopWithOnOff", 7]
-            ],
             "moveToLevel":{
-                "cmdId":0,
                 "params":[
                     {"level":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "move":{
-                "cmdId":1,
                 "params":[
                     {"movemode":"uint8"},
                     {"rate":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "step":{
-                "cmdId":2,
                 "params":[
                     {"stepmode":"uint8"},
                     {"stepsize":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "stop":{
-                "cmdId":3,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "moveToLevelWithOnOff":{
-                "cmdId":4,
                 "params":[
                     {"level":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveWithOnOff":{
-                "cmdId":5,
                 "params":[
                     {"movemode":"uint8"},
                     {"rate":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "stepWithOnOff":{
-                "cmdId":6,
                 "params":[
                     {"stepmode":"uint8"},
                     {"stepsize":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "stopWithOnOff":{
-                "cmdId":7,
                 "params":[],
-                "direction":0}
+                "dir":0}
         },
         "genAlarms": {
-            "cmd": [
-                ["reset", 0],
-                ["resetAll", 1],
-                ["getAlarm", 2],
-                ["resetLog", 3],
-                ["publishEventLog", 4]
-            ],
-            "cmdRsp": [
-                ["alarm", 0],
-                ["getRsp", 1],
-                ["getEventLog", 2]
-            ],
             "reset":{
-                "cmdId":0,
                 "params":[
                     {"alarmcode":"uint8"},
                     {"clusterid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "resetAll":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getAlarm":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "resetLog":{
-                "cmdId":3,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "publishEventLog":{
-                "cmdId":4,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "alarm":{
-                "cmdId":0,
                 "params":[
                     {"alarmcode":"uint8"},
                     {"clusterid":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "getRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"},
                     {"alarmcode":"uint8"},
                     {"clusterid":"uint16"},
                     {"timestamp":"uint32"}
                 ],
-                "direction":1},
+                "dir":1},
             "getEventLog":{
-                "cmdId":2,
                 "params":[],
-                "direction":1}
+                "dir":1}
         },
         "genRssiLocation": {
-            "cmd": [
-                ["setAbsolute", 0],
-                ["setDevCfg", 1],
-                ["getDevCfg", 2],
-                ["getData", 3]
-            ],
-            "cmdRsp": [
-                ["devCfgRsp", 0],
-                ["dataRsp", 1],
-                ["dataNotif", 2],
-                ["compactDataNotif", 3],
-                ["rssiPing", 4]
-            ],
             "setAbsolute":{
-                "cmdId":0,
                 "params":[
                     {"coord1":"int16"},
                     {"coord2":"int16"},
@@ -656,9 +487,8 @@
                     {"power":"int16"},
                     {"pathlossexponent":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setDevCfg":{
-                "cmdId":1,
                 "params":[
                     {"power":"int16"},
                     {"pathlossexponent":"uint16"},
@@ -666,23 +496,20 @@
                     {"numrssimeasurements":"uint8"},
                     {"reportingperiod":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "getDevCfg":{
-                "cmdId":2,
                 "params":[
                     {"targetaddr":"longaddr"}
                 ],
-                "direction":0},
+                "dir":0},
             "getData":{
-                "cmdId":3,
                 "params":[
                     {"getdatainfo":"uint8"},
                     {"numrsp":"uint8"},
                     {"targetaddr":"longaddr"}
                 ],
-                "direction":0},
+                "dir":0},
             "rssiRsp":{
-                "cmdId":4,
                 "params":[
                     {"replyingdev":"longaddr"},
                     {"coord1":"int16"},
@@ -691,26 +518,23 @@
                     {"rssi":"int8"},
                     {"numrssimeasurements":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "sendPings":{
-                "cmdId":5,
                 "params":[
                     {"targetaddr":"longaddr"},
                     {"numrssimeasurements":"uint8"},
                     {"calperiod":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "anchorNodeAnnounce":{
-                "cmdId":6,
                 "params":[
                     {"anchornodeaddr":"longaddr"},
                     {"coord1":"int16"},
                     {"coord2":"int16"},
                     {"coord3":"int16"}
                 ],
-                "direction":0},
+                "dir":0},
             "devCfgRsp":{
-                "cmdId":0,
                 "params":[
                     {"status":"uint8"},
                     {"power":"int16"},
@@ -719,9 +543,8 @@
                     {"numrssimeasurements":"uint8"},
                     {"reportingperiod":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "dataRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"},
                     {"locationtype":"uint8"},
@@ -734,9 +557,8 @@
                     {"qualitymeasure":"uint8"},
                     {"locationage":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "dataNotif":{
-                "cmdId":2,
                 "params":[
                     {"locationtype":"uint8"},
                     {"coord1":"int16"},
@@ -748,9 +570,8 @@
                     {"qualitymeasure":"uint8"},
                     {"locationage":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "compactDataNotif":{
-                "cmdId":3,
                 "params":[
                     {"locationtype":"uint8"},
                     {"coord1":"int16"},
@@ -759,229 +580,135 @@
                     {"qualitymeasure":"uint8"},
                     {"locationage":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "rssiPing":{
-                "cmdId":4,
                 "params":[
                     {"locationtype":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "rssiReq":{
-                "cmdId":5,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "reportRssiMeas":{
-                "cmdId":6,
                 "params":[
                     {"reportingaddr":"longaddr"},
                     {"numofneighbors":"preLenUint8"},
                     {"neighborsinfo":"locationbuffer"}
                 ],
-                "direction":1},
+                "dir":1},
             "reqOwnLocation":{
-                "cmdId":7,
                 "params":[
                     {"reqaddr":"longaddr"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "genCommissioning": {
-            "cmd": [
-                ["restartDevice", 0],
-                ["saveStartupParams", 1],
-                ["restoreStartupParams", 2],
-                ["resetStartupParams", 3]
-            ],
-            "cmdRsp": [
-                ["restartDeviceRsp", 0],
-                ["saveStartupParamsRsp", 1],
-                ["restoreStartupParamsRsp", 2],
-                ["resetStartupParamsRsp", 3]
-            ],
             "restartDevice":{
-                "cmdId":0,
                 "params":[
                     {"options":"uint8"},
                     {"delay":"uint8"},
                     {"jitter":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "saveStartupParams":{
-                "cmdId":1,
                 "params":[
                     {"options":"uint8"},
                     {"index":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "restoreStartupParams":{
-                "cmdId":2,
                 "params":[
                     {"options":"uint8"},
                     {"index":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "resetStartupParams":{
-                "cmdId":3,
                 "params":[
                     {"options":"uint8"},
                     {"index":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "restartDeviceRsp":{
-                "cmdId":0,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "saveStartupParamsRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "restoreStartupParamsRsp":{
-                "cmdId":2,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "resetStartupParamsRsp":{
-                "cmdId":3,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "closuresDoorLock": {
-            "cmd": [
-                ["lockDoor", 0],
-                ["unlockDoor", 1],
-                ["toggleDoor", 2],
-                ["unlockWithTimeout", 3],
-                ["getLogRecord", 4],
-                ["setPinCode", 5],
-                ["getPinCode", 6],
-                ["clearPinCode", 7],
-                ["clearAllPinCodes", 8],
-                ["setUserStatus", 9],
-                ["getUserStatus", 10],
-                ["setWeekDaySchedule", 11],
-                ["getWeekDaySchedule", 12],
-                ["clearWeekDaySchedule", 13],
-                ["setYearDaySchedule", 14],
-                ["getYearDaySchedule", 15],
-                ["clearYearDaySchedule", 16],
-                ["setHolidaySchedule", 17],
-                ["getHolidaySchedule", 18],
-                ["clearHolidaySchedule", 19],
-                ["setUserType", 20],
-                ["getUserType", 21],
-                ["setRfidCode", 22],
-                ["getRfidCode", 23],
-                ["clearRfidCode", 24],
-                ["clearAllRfidCodes", 25]
-            ],
-            "cmdRsp": [
-                ["lockDoorRsp", 0],
-                ["unlockDoorRsp", 1],
-                ["toggleDoorRsp", 2],
-                ["unlockWithTimeoutRsp", 3],
-                ["getLogRecordRsp", 4],
-                ["setPinCodeRsp", 5],
-                ["getPinCodeRsp", 6],
-                ["clearPinCodeRsp", 7],
-                ["clearAllPinCodesRsp", 8],
-                ["setUserStatusRsp", 9],
-                ["getUserStatusRsp", 10],
-                ["setWeekDayScheduleRsp", 11],
-                ["getWeekDayScheduleRsp", 12],
-                ["clearWeekDayScheduleRsp", 13],
-                ["setYearDayScheduleRsp", 14],
-                ["getYearDayScheduleRsp", 15],
-                ["clearYearDayScheduleRsp", 16],
-                ["setHolidayScheduleRsp", 17],
-                ["getHolidayScheduleRsp", 18],
-                ["clearHolidayScheduleRsp", 19],
-                ["setUserTypeRsp", 20],
-                ["getUserTypeRsp", 21],
-                ["setRfidCodeRsp", 22],
-                ["getRfidCodeRsp", 23],
-                ["clearRfidCodeRsp", 24],
-                ["clearAllRfidCodesRsp", 25],
-                ["operationEventNotification", 32],
-                ["programmingEventNotification", 33]
-            ],
             "lockDoor":{
-                "cmdId":0,
                 "params":[
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "unlockDoor":{
-                "cmdId":1,
                 "params":[
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "toggleDoor":{
-                "cmdId":2,
                 "params":[
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "unlockWithTimeout":{
-                "cmdId":3,
                 "params":[
                     {"timeout":"uint16"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "getLogRecord":{
-                "cmdId":4,
                 "params":[
                     {"logindex":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setPinCode":{
-                "cmdId":5,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "getPinCode":{
-                "cmdId":6,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearPinCode":{
-                "cmdId":7,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearAllPinCodes":{
-                "cmdId":8,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "setUserStatus":{
-                "cmdId":9,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getUserStatus":{
-                "cmdId":10,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setWeekDaySchedule":{
-                "cmdId":11,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"},
@@ -991,129 +718,110 @@
                     {"endhour":"uint8"},
                     {"endminute":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getWeekDaySchedule":{
-                "cmdId":12,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearWeekDaySchedule":{
-                "cmdId":13,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setYearDaySchedule":{
-                "cmdId":14,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"},
                     {"zigbeelocalstarttime":"uint32"},
                     {"zigbeelocalendtime":"uint32"}
                 ],
-                "direction":0},
+                "dir":0},
             "getYearDaySchedule":{
-                "cmdId":15,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearYearDaySchedule":{
-                "cmdId":16,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setHolidaySchedule":{
-                "cmdId":17,
                 "params":[
                     {"holidayscheduleid":"uint8"},
                     {"zigbeelocalstarttime":"uint32"},
                     {"zigbeelocalendtime":"uint32"},
                     {"opermodelduringholiday":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getHolidaySchedule":{
-                "cmdId":18,
                 "params":[
                     {"holidayscheduleid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearHolidaySchedule":{
-                "cmdId":19,
                 "params":[
                     {"holidayscheduleid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "setUserType":{
-                "cmdId":20,
                 "params":[
                     {"userid":"uint16"},
                     {"usertype":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getUserType":{
-                "cmdId":21,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "setRfidCode":{
-                "cmdId":22,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "getRfidCode":{
-                "cmdId":23,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearRfidCode":{
-                "cmdId":24,
                 "params":[
                     {"userid":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearAllRfidCodes":{
-                "cmdId":25,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "lockDoorRsp":{
-                "cmdId":0,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "unlockDoorRsp":{
-                "cmdId":1,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "toggleDoorRsp":{
-                "cmdId":2,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "unlockWithTimeoutRsp":{
-                "cmdId":3,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getLogRecordRsp":{
-                "cmdId":4,
                 "params":[
                     {"logentryid":"uint16"},
                     {"timestamp":"uint32"},
@@ -1123,55 +831,47 @@
                     {"userid":"uint16"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "setPinCodeRsp":{
-                "cmdId":5,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getPinCodeRsp":{
-                "cmdId":6,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearPinCodeRsp":{
-                "cmdId":7,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearAllPinCodesRsp":{
-                "cmdId":8,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setUserStatusRsp":{
-                "cmdId":9,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getUserStatusRsp":{
-                "cmdId":10,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setWeekDayScheduleRsp":{
-                "cmdId":11,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getWeekDayScheduleRsp":{
-                "cmdId":12,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"},
@@ -1182,21 +882,18 @@
                     {"endhour":"uint8"},
                     {"endminute":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearWeekDayScheduleRsp":{
-                "cmdId":13,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setYearDayScheduleRsp":{
-                "cmdId":14,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getYearDayScheduleRsp":{
-                "cmdId":15,
                 "params":[
                     {"scheduleid":"uint8"},
                     {"userid":"uint16"},
@@ -1204,21 +901,18 @@
                     {"zigbeelocalstarttime":"uint32"},
                     {"zigbeelocalendtime":"uint32"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearYearDayScheduleRsp":{
-                "cmdId":16,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setHolidayScheduleRsp":{
-                "cmdId":17,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getHolidayScheduleRsp":{
-                "cmdId":18,
                 "params":[
                     {"holidayscheduleid":"uint8"},
                     {"status":"uint8"},
@@ -1226,55 +920,47 @@
                     {"zigbeelocalendtime":"uint32"},
                     {"opermodelduringholiday":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearHolidayScheduleRsp":{
-                "cmdId":19,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setUserTypeRsp":{
-                "cmdId":20,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getUserTypeRsp":{
-                "cmdId":21,
                 "params":[
                     {"userid":"uint16"},
                     {"usertype":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setRfidCodeRsp":{
-                "cmdId":22,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getRfidCodeRsp":{
-                "cmdId":23,
                 "params":[
                     {"userid":"uint16"},
                     {"userstatus":"uint8"},
                     {"usertype":"uint8"},
                     {"pincodevalue":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearRfidCodeRsp":{
-                "cmdId":24,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "clearAllRfidCodesRsp":{
-                "cmdId":25,
                 "params":[
                     {"status":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "operationEventNotification":{
-                "cmdId":32,
                 "params":[
                     {"opereventsrc":"uint8"},
                     {"opereventcode":"uint8"},
@@ -1283,9 +969,8 @@
                     {"zigbeelocaltime":"uint32"},
                     {"data":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "programmingEventNotification":{
-                "cmdId":33,
                 "params":[
                     {"programeventsrc":"uint8"},
                     {"programeventcode":"uint8"},
@@ -1296,109 +981,75 @@
                     {"zigbeelocaltime":"uint32"},
                     {"data":"uint8"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "closuresWindowCovering": {
-            "cmd": [
-                ["upOpen", 0],
-                ["downClose", 1],
-                ["stop", 2],
-                ["goToLiftValue", 4],
-                ["goToLiftPercentage", 5],
-                ["goToTiltValue", 7],
-                ["goToTiltPercentage", 8]
-            ],
             "upOpen":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "downClose":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "stop":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "goToLiftValue":{
-                "cmdId":4,
                 "params":[
                     {"liftvalue":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "goToLiftPercentage":{
-                "cmdId":5,
                 "params":[
                     {"percentageliftvalue":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "goToTiltValue":{
-                "cmdId":7,
                 "params":[
                     {"tiltvalue":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "goToTiltPercentage":{
-                "cmdId":8,
                 "params":[
                     {"percentagetiltvalue":"uint8"}
                 ],
-                "direction":0}
+                "dir":0}
         },
         "hvacThermostat": {
-            "cmd": [
-                ["setpointRaiseLower", 0],
-                ["setWeeklySchedule", 1],
-                ["getWeeklySchedule", 2],
-                ["clearWeeklySchedule", 3],
-                ["getRelayStatusLog", 4]
-            ],
-            "cmdRsp": [
-                ["getWeeklyScheduleRsp", 0],
-                ["getRelayStatusLogRsp", 1]
-            ],
             "setpointRaiseLower":{
-                "cmdId":0,
                 "params":[
                     {"mode":"uint8"},
                     {"amount":"int8"}
                 ],
-                "direction":0},
+                "dir":0},
             "setWeeklySchedule":{
-                "cmdId":1,
                 "params":[
                     {"numoftrans":"uint8"},
                     {"dayofweek":"uint8"},
                     {"mode":"preLenUint8"},
                     {"thermoseqmode":"dynUint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "getWeeklySchedule":{
-                "cmdId":2,
                 "params":[
                     {"daystoreturn":"uint8"},
                     {"modetoreturn":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "clearWeeklySchedule":{
-                "cmdId":3,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getRelayStatusLog":{
-                "cmdId":4,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getWeeklyScheduleRsp":{
-                "cmdId":0,
                 "params":[
                     {"numoftrans":"uint8"},
                     {"dayofweek":"uint8"},
                     {"mode":"preLenUint8"},
                     {"thermoseqmode":"dynUint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "getRelayStatusLogRsp":{
-                "cmdId":1,
                 "params":[
                     {"timeofday":"uint16"},
                     {"relaystatus":"uint16"},
@@ -1407,144 +1058,109 @@
                     {"setpoint":"uint16"},
                     {"unreadentries":"uint16"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "lightingColorCtrl": {
-            "cmd": [
-                ["moveToHue", 0],
-                ["moveHue", 1],
-                ["stepHue", 2],
-                ["moveToSaturation", 3],
-                ["moveSaturation", 4],
-                ["stepSaturation", 5],
-                ["moveToHueAndSaturation", 6],
-                ["moveToColor", 7],
-                ["moveColor", 8],
-                ["stepColor", 9],
-                ["moveToColorTemp", 10],
-                ["enhancedMoveToHue", 64],
-                ["enhancedMoveHue", 65],
-                ["enhancedStepHue", 66],
-                ["enhancedMoveToHueAndSaturation", 67],
-                ["colorLoopSet", 68],
-                ["stopMoveStep", 71]
-            ],
             "moveToHue":{
-                "cmdId":0,
                 "params":[
                     {"hue":"uint8"},
                     {"direction":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveHue":{
-                "cmdId":1,
                 "params":[
                     {"movemode":"uint8"},
                     {"rate":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "stepHue":{
-                "cmdId":2,
                 "params":[
                     {"stepmode":"uint8"},
                     {"stepsize":"uint8"},
                     {"transtime":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveToSaturation":{
-                "cmdId":3,
                 "params":[
                     {"saturation":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveSaturation":{
-                "cmdId":4,
                 "params":[
                     {"movemode":"uint8"},
                     {"rate":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "stepSaturation":{
-                "cmdId":5,
                 "params":[
                     {"stepmode":"uint8"},
                     {"stepsize":"uint8"},
                     {"transtime":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveToHueAndSaturation":{
-                "cmdId":6,
                 "params":[
                     {"hue":"uint8"},
                     {"saturation":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveToColor":{
-                "cmdId":7,
                 "params":[
                     {"colorx":"uint16"},
                     {"colory":"uint16"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveColor":{
-                "cmdId":8,
                 "params":[
                     {"ratex":"int16"},
                     {"ratey":"int16"}
                 ],
-                "direction":0},
+                "dir":0},
             "stepColor":{
-                "cmdId":9,
                 "params":[
                     {"stepx":"int16"},
                     {"stepy":"int16"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "moveToColorTemp":{
-                "cmdId":10,
                 "params":[
                     {"colortemp":"uint16"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "enhancedMoveToHue":{
-                "cmdId":64,
                 "params":[
                     {"enhancehue":"uint16"},
                     {"direction":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "enhancedMoveHue":{
-                "cmdId":65,
                 "params":[
                     {"movemode":"uint8"},
                     {"rate":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "enhancedStepHue":{
-                "cmdId":66,
                 "params":[
                     {"stepmode":"uint8"},
                     {"stepsize":"uint16"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "enhancedMoveToHueAndSaturation":{
-                "cmdId":67,
                 "params":[
                     {"enhancehue":"uint16"},
                     {"saturation":"uint8"},
                     {"transtime":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "colorLoopSet":{
-                "cmdId":68,
                 "params":[
                     {"bits":"uint8"},
                     {"bytee":"uint8"},
@@ -1553,9 +1169,8 @@
                     {"time":"uint16"},
                     {"starthue":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "stopMoveStep":{
-                "cmdId":71,
                 "params":[
                     {"bits":"uint8"},
                     {"bytee":"uint8"},
@@ -1564,130 +1179,83 @@
                     {"time":"uint16"},
                     {"starthue":"uint16"}
                 ],
-                "direction":0}
+                "dir":0}
         },
         "ssIasZone": {
-            "cmd": [
-                ["enrollRsp", 0]
-            ],
-            "cmdRsp": [
-                ["statusChangeNotification", 0],
-                ["enrollReq", 1]
-            ],
             "enrollRsp":{
-                "cmdId":0,
                 "params":[
                     {"enrollrspcode":"uint8"},
                     {"zoneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "initNormalOpMode":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "initTestMode":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "statusChangeNotification":{
-                "cmdId":0,
                 "params":[
                     {"zonestatus":"uint16"},
                     {"extendedstatus":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "enrollReq":{
-                "cmdId":1,
                 "params":[
                     {"zonetype":"uint16"},
                     {"manucode":"uint16"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "ssIasAce": {
-            "cmd": [
-                ["arm", 0],
-                ["bypass", 1],
-                ["emergency", 2],
-                ["fire", 3],
-                ["panic", 4],
-                ["getZoneIDMap", 5],
-                ["getZoneInfo", 6],
-                ["getPanelStatus", 7],
-                ["getBypassedZoneList", 8],
-                ["getZoneStatus", 9]
-            ],
-            "cmdRsp": [
-                ["armRsp", 0],
-                ["getZoneIDMapRsp", 1],
-                ["getZoneInfoRsp", 2],
-                ["zoneStatusChanged", 3],
-                ["panelStatusChanged", 4],
-                ["getPanelStatusRsp", 5],
-                ["setBypassedZoneList", 6],
-                ["bypassRsp", 7],
-                ["getZoneStatusRsp", 8]
-            ],
             "arm":{
-                "cmdId":0,
                 "params":[
                     {"armmode":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "bypass":{
-                "cmdId":1,
                 "params":[
                     {"numofzones":"preLenUint8"},
                     {"zoneidlist":"dynUint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "emergency":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "fire":{
-                "cmdId":3,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "panic":{
-                "cmdId":4,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getZoneIDMap":{
-                "cmdId":5,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getZoneInfo":{
-                "cmdId":6,
                 "params":[
                     {"zoneid":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getPanelStatus":{
-                "cmdId":7,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getBypassedZoneList":{
-                "cmdId":8,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getZoneStatus":{
-                "cmdId":9,
                 "params":[
                     {"startzoneid":"uint8"},
                     {"maxnumzoneid":"uint8"},
                     {"zonestatusmaskflag":"uint8"},
                     {"zonestatusmask":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "armRsp":{
-                "cmdId":0,
                 "params":[
                     {"armnotification":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getZoneIDMapRsp":{
-                "cmdId":1,
                 "params":[
                     {"zoneidmapsection0":"uint16"},
                     {"zoneidmapsection1":"uint16"},
@@ -1706,17 +1274,15 @@
                     {"zoneidmapsection14":"uint16"},
                     {"zoneidmapsection15":"uint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "getZoneInfoRsp":{
-                "cmdId":2,
                 "params":[
                     {"zoneid":"uint8"},
                     {"zonetype":"uint16"},
                     {"ieeeaddr":"longaddr"}
                 ],
-                "direction":1},
+                "dir":1},
             "zoneStatusChanged":{
-                "cmdId":3,
                 "params":[
                     {"zoneid":"uint8"},
                     {"zonestatus":"uint16"},
@@ -1724,310 +1290,220 @@
                     {"strlen":"uint8"},
                     {"string":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "panelStatusChanged":{
-                "cmdId":4,
                 "params":[
                     {"panelstatus":"uint8"},
                     {"secondsremain":"uint8"},
                     {"audiblenotif":"uint8"},
                     {"alarmstatus":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getPanelStatusRsp":{
-                "cmdId":5,
                 "params":[
                     {"panelstatus":"uint8"},
                     {"secondsremain":"uint8"},
                     {"audiblenotif":"uint8"},
                     {"alarmstatus":"uint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "setBypassedZoneList":{
-                "cmdId":6,
                 "params":[
                     {"numofzones":"preLenUint8"},
                     {"zoneid":"dynUint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "bypassRsp":{
-                "cmdId":7,
                 "params":[
                     {"numofzones":"preLenUint8"},
                     {"bypassresult":"dynUint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "getZoneStatusRsp":{
-                "cmdId":8,
                 "params":[
                     {"zonestatuscomplete":"uint8"},
                     {"numofzones":"preLenUint8"},
                     {"zoneinfo":"zonebuffer"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "ssIasWd": {
-            "cmd": [
-                ["startWarning", 0],
-                ["squawk", 1]
-            ],
             "startWarning":{
-                "cmdId":0,
                 "params":[
                     {"startwarninginfo":"uint8"},
                     {"warningduration":"uint16"}
                 ],
-                "direction":0},
+                "dir":0},
             "squawk":{
-                "cmdId":1,
                 "params":[
                     {"squawkinfo":"uint8"}
                 ],
-                "direction":0}
+                "dir":0}
         },
         "piGenericTunnel": {
-            "cmd": [
-                ["matchProtocolAddr", 0]
-            ],
-            "cmdRsp": [
-                ["matchProtocolAddrRsp", 0],
-                ["advertiseProtocolAddr", 1]
-            ],
             "matchProtocolAddr":{
-                "cmdId":0,
                 "params":[
                     {"protocoladdr":"stringPreLen"}
                 ],
-                "direction":0},
+                "dir":0},
             "matchProtocolAddrRsp":{
-                "cmdId":0,
                 "params":[
                     {"devieeeaddr":"longaddr"},
                     {"protocoladdr":"stringPreLen"}
                 ],
-                "direction":1},
+                "dir":1},
             "advertiseProtocolAddr":{
-                "cmdId":1,
                 "params":[
                     {"protocoladdr":"stringPreLen"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "piBacnetProtocolTunnel": {
-            "cmd": [
-                ["transferNpdu", 0]
-            ],
             "transferNpdu":{
-                "cmdId":0,
                 "params":[
                     {"npdu":"uint8"}
                 ],
-                "direction":0}
+                "dir":0}
         },
         "piAnalogInputExt": {
-            "cmd": [
-                ["transferApdu", 0]
-            ],
             "transferApdu":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "connectReq":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "disconnectReq":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "connectStatusNoti":{
-                "cmdId":3,
                 "params":[],
-                "direction":0}
+                "dir":0}
         },
         "pi11073ProtocolTunnel": {
-            "cmd": [
-                ["transferNpdu", 0]
-            ],
             "transferApdu":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "connectReq":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "disconnectReq":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "connectStatusNoti":{
-                "cmdId":3,
                 "params":[],
-                "direction":0}
+                "dir":0}
         },
         "seMetering": {
             "getProfile":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "reqMirror":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "mirrorRem":{
-                "cmdId":2,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "reqFastPollMode":{
-                "cmdId":3,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getSnapshot":{
-                "cmdId":4,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "takeSnapshot":{
-                "cmdId":5,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "mirrorReportAttrRsp":{
-                "cmdId":6,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getProfileRsp":{
-                "cmdId":0,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "reqMirrorRsp":{
-                "cmdId":1,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "mirrorRemRsp":{
-                "cmdId":2,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "reqFastPollModeRsp":{
-                "cmdId":3,
                 "params":[],
-                "direction":1},
+                "dir":1},
             "getSnapshotRsp":{
-                "cmdId":4,
                 "params":[],
-                "direction":1}
+                "dir":1}
         },
         "haApplianceEventsAlerts": {
-            "cmd": [
-                ["getAlerts", 0]
-            ],
-            "cmdRsp": [
-                ["getAlertsRsp", 0],
-                ["alertsNotification", 1],
-                ["eventNotification", 2]
-            ],
             "getAlerts":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getAlertsRsp":{
-                "cmdId":0,
                 "params":[
                     {"alertscount":"preLenUint8"},
                     {"aalert":"dynUint24"}
                 ],
-                "direction":1},
+                "dir":1},
             "alertsNotification":{
-                "cmdId":1,
                 "params":[
                     {"alertscount":"preLenUint8"},
                     {"aalert":"dynUint24"}
                 ],
-                "direction":1},
+                "dir":1},
             "eventNotification":{
-                "cmdId":2,
                 "params":[
                     {"eventheader":"uint8"},
                     {"eventid":"uint8"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "haApplianceStatistics": {
-            "cmd": [
-                ["log", 0],
-                ["logQueue", 1]
-            ],
-            "cmdRsp": [
-                ["logNotification", 0],
-                ["logRsp", 1],
-                ["logQueueRsp", 2],
-                ["statisticsAvailable", 3]
-            ],
             "log":{
-                "cmdId":0,
                 "params":[
                     {"logid":"uint32"}
                 ],
-                "direction":0},
+                "dir":0},
             "logQueue":{
-                "cmdId":1,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "logNotification":{
-                "cmdId":0,
                 "params":[
                     {"timestamp":"uint32"},
                     {"logid":"uint32"},
                     {"loglength":"preLenUint32"},
                     {"logpayload":"dynUint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "logRsp":{
-                "cmdId":1,
                 "params":[
                     {"timestamp":"uint32"},
                     {"logid":"uint32"},
                     {"loglength":"preLenUint32"},
                     {"logpayload":"dynUint8"}
                 ],
-                "direction":1},
+                "dir":1},
             "logQueueRsp":{
-                "cmdId":2,
                 "params":[
                     {"logqueuesize":"preLenUint8"},
                     {"logid":"dynUint32"}
                 ],
-                "direction":1},
+                "dir":1},
             "statisticsAvailable":{
-                "cmdId":3,
                 "params":[
                     {"logqueuesize":"preLenUint8"},
                     {"logid":"dynUint32"}
                 ],
-                "direction":1}
+                "dir":1}
         },
         "haElectricalMeasurement": {
-            "cmd": [
-                ["getProfileInfo", 0],
-                ["getMeasurementProfile", 1]
-            ],
-            "cmdRsp": [
-                ["getProfileInfoRsp", 0],
-                ["getMeasurementProfileRsp", 1]
-            ],
             "getProfileInfo":{
-                "cmdId":0,
                 "params":[],
-                "direction":0},
+                "dir":0},
             "getMeasurementProfile":{
-                "cmdId":1,
                 "params":[
                     {"attrId":"uint16"},
                     {"starttime":"uint32"},
                     {"numofuntervals":"uint8"}
                 ],
-                "direction":0},
+                "dir":0},
             "getProfileInfoRsp":{
-                "cmdId":0,
                 "params":[
                     {"profilecount":"uint8"},
                     {"profileintervalperiod":"uint8"},
@@ -2035,9 +1511,8 @@
                     {"numofattrs":"preLenUint8"},
                     {"listofattr":"dynUint16"}
                 ],
-                "direction":1},
+                "dir":1},
             "getMeasurementProfileRsp":{
-                "cmdId":1,
                 "params":[
                     {"starttime":"uint32"},
                     {"status":"uint8"},
@@ -2046,7 +1521,7 @@
                     {"attrId":"uint16"},
                     {"intervals":"dynUint8"}
                 ],
-                "direction":1}
+                "dir":1}
         }
     }
 }
