@@ -15,15 +15,11 @@ zcl-packet
     1.1 [ZigBee Cluster Library](#ZCL)  
     1.2 [Installation](#Installation)  
     1.3 [Usage](#Usage)  
-
 2. [APIs](#APIs): [frame()](#API_frame), [parse()](#API_parse), and [header()](#API_header)  
-
 3. [Appendix](#Appendix)  
     3.1 [ZCL Foundation Command Reference Tables](#FoundCmdTbl)  
     3.2 [ZCL Functional Command Reference Tables](#FuncCmdTbl)  
-
 4. [Contributors](#Contributors)  
-
 5. [License](#License)  
 
 <br />
@@ -31,20 +27,25 @@ zcl-packet
 <a name="Overview"></a>
 ## 1. Overview  
 
-The **zcl-packet** is the packet builder and parser for [_ZIGBEE CLUSTER LIBRARY SPECIFICATION_](http://www.zigbee.org/download/standards-zigbee-cluster-library/) commands.  
+The **zcl-packet** is the packet builder and parser for ZigBee applicaiton layer ZCL commands and responses defined by [_ZigBee Cluster Library Specification_](http://www.zigbee.org/download/standards-zigbee-cluster-library/).  
 
 <br />
 
 <a name="ZCL"></a>
 ### 1.1 ZigBee Cluster Library  
 
-The ZCL is a set of clusters and cross-cluster commands used in the public profiles defined by the ZigBee Alliance to speed the development and standardization of the public profiles.  
+ZCL is a set of clusters and cross-cluster commands defined by the ZigBee Alliance to speed the development and standardization of public profiles. With ZCL, manufacturers are able to quickly build ZigBee products with consistency and compatibility.  
 
-A *Cluster* is a related collection of *Commands* and *Attributes*, which together define an interface to specific functionality. *Commands* are actions the cluster must perform. *Attributes* are data items or states defined within a cluster.  
+A *Cluster* is a related collection of *Commands* and *Attributes*, which together defines an interface to specific functionality. *Commands* are actions a cluster can take. *Attributes* are data or states within a cluster.  
 
-**ZCL Foundation:** Each attribute of clusters may be read from, written to, and reported over-the-air with standard, cross-cluster ZCL commands. These cross-cluster commands are called the *ZCL foundation* which is work across any cluster in the ZCL.  
+#### ZCL Foundation  
+  
+Each attribute in a cluster may be read from, written to, and reported over-the-air with cross-cluster ZCL commands. These cross-cluster commands are called *ZCL foundation* commands working across all clusters defined in ZCL.  
 
-**ZCL Functional:** The ZCL is divided into a number of functional domains, such as General, Closures, HVAC, and Lighting. Clusters from these functional domains are used in the ZigBee Public Profiles to produce descriptions of devices. Each functional domain define its own specialized clusters. These specific clusters commands are called the *ZCL functional*.  
+#### ZCL Functional  
+  
+ZCL divides applications into a number of functional domains, such as General, Closures, HVAC, and Lighting. Each functional domain includes a goupr of well-defined clusters. Commands of these specific clusters are called the *ZCL functional*. ZigBee public profiles use clusters from these functional domains to describe the character and behavior of different kinds of devices.  
+  
 
 <br />
 
@@ -58,19 +59,27 @@ A *Cluster* is a related collection of *Commands* and *Attributes*, which togeth
 <a name="Usage"></a>
 ### 1.3 Usage  
 
-To use zcl-packet, just use `.frame()` or `.parse()` method to process your ZCL packet.  
-
-Here is an quick example and the detail of framed/parsed result can be found in the [frame() API](#API_frame)/[parse() API](#API_parse) section.  
+Require this module:
 
 ```js
-var zcl = require('zcl-packet'),
-    zclBuf;
+var zcl = require('zcl-packet');
+```
 
-// build a ZCL raw buffer
-zclBuf = zcl.frame({frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0}, 0, 0, 'read', [attrId: 0x0001, ...]);
+Using `.frame()` and `.parse()` methods to build and parse ZCL packets is quite simple. Here are some quick examples:  
 
-// parse to ZCL frame object
-zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
+* Build a ZCL raw buffer  
+
+```js
+var zclBuf = zcl.frame({ frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
+                       0, 0, 'read', [attrId: 0x0001, ... ]);
+```
+
+* Parse a ZCL raw packet into an object  
+
+```js
+var fooZclPacket = new Buffer([ 0x00, 0x00, 0x02, ... ]);
+
+zcl.parse(fooZclPacket, function (err, result) {
     if (!err)
         console.log(result);  // The parsed result
 });
@@ -89,11 +98,11 @@ zcl.parse(new Buffer([0x00, 0x00, 0x02, ...]), function (err, result) {
 <a name="API_frame"></a>
 ### .frame(frameCntl, manufCode, seqNum, cmd, zclPayload[, clusterId])
 
-Generates a raw buffer of ZCL command packet.  
+Generate the raw packet of a ZCL command. Please see [_Section 2.3.1 General ZCL Frame Format_](http://www.zigbee.org/download/standards-zigbee-cluster-library/) in specification for more information.  
 
 **Arguments:**  
 
-1. `frameCntl` (_Object_): Frame control. The following table shows the details of each property.  
+1. `frameCntl` (_Object_): Frame control. Details of each property are given with the following table:  
 
     | Property      | Type  | Mandatory | Description                                        |
     |---------------|-------|-----------|----------------------------------------------------|
@@ -101,39 +110,42 @@ Generates a raw buffer of ZCL command packet.
     | manufSpec     | 1-bit | required  | Manufacturer specific.                             |
     | direction     | 1-bit | required  | Direction.                                         |
     | disDefaultRsp | 1-bit | required  | Disable default response.                          |
-2. `manufCode` (_Number_): Manufacturer code. This argument is 16-bit and it will be invalid if `frameCntl.manufSpec` is equal to 0.  
-3. `seqNum` (_Number_): Transaction sequence number. This argument is 8-bit.  
-4. `cmd` (_String_ | _Number_): Command Id indicates which command packet you want to build.  
-5. `zclPayload` (_Object_ | _Array_): ZCL Frame payload. It contains information specific to individual command types. 
-6. `clusterId` (_String_ | _Number_): Cluster Id. It's must be filled if `frameCntl.frameType` is 1(functional command packet). 
+
+2. `manufCode` (_Number_): Manufacturer code, which is an uint16 integer. This field is ignored if `frameCntl.manufSpec` is 0.  
+3. `seqNum` (_Number_): Sequence number, which is a uint8 integer.  
+4. `cmd` (_String_ | _Number_): Command id of which command packet you'd like to build.  
+5. `zclPayload` (_Object_ | _Array_): [ZCL payload](#Appendix) depending on the given command.  
+6. `clusterId` (_String_ | _Number_): Cluster id. Must be given if `frameCntl.frameType` is 1 (functional command packet).  
 
 **Returns:**  
 
-* (_Buffer_): ZCL raw buffer.
+* (_Buffer_): Raw buffer of the ZCL packet.  
 
-**Example:**  
+**Examples:**  
+
+* Generate a ZCL foundation command packet
 
 ```js
-// example of generating zcl foundation command buffer
 // foundation command: 'write'
-var frameCntl1 = {
-        frameType: 0,  // Command acts across the entire profile(foundation)
+var foundFrameCntl = {
+        frameType: 0,  // Command acts across the entire profile (foundation)
         manufSpec: 0,
         direction: 0,
         disDefaultRsp: 0
     },
     foundPayload = [
         { attrId: 0x1234, dataType: 0x41, attrData: 'hello' },
-        { attrId: 0xabcd, dataType: 0x24, attrData: [100, 2406] }
-    ],
-    foundBuf;
+        { attrId: 0xabcd, dataType: 0x24, attrData: [ 100, 2406 ] }
+    ];
 
-foundBuf = zcl.frame(frameCntl1, 0, 0, 'write', foundPayload);
+var foundBuf = zcl.frame(foundFrameCntl, 0, 0, 'write', foundPayload);
+```
 
-// example of generating zcl functional command buffer
-// functional command: 'add' from 'genGroups' cluster
-var frameCntl2 = {
-        frameType: 1,  // Command is specific to a cluster(functional)
+* Generate a ZCL functional command packet
+
+```js
+var funcFrameCntl = {
+        frameType: 1,  // Command is specific to a cluster (functional)
         manufSpec: 1,
         direction: 0,
         disDefaultRsp: 0
@@ -141,23 +153,31 @@ var frameCntl2 = {
     funcPayload = {
         groupid: 0x0001,
         groupname: 'group1'
-    },
-    funcBuf;
+    };
 
-funcBuf = zcl.frame(frameCntl2, 0xaaaa, 1, 'add', funcPayload, 0x0004);
+var funcBuf = zcl.frame(funcFrameCntl, 0xaaaa, 1, 'add', funcPayload, 0x0004);
 ```
 
 *************************************************
 <a name="API_parse"></a>
 ### .parse(zclBuf[, clusterId], callback)
 
-Parse ZCL raw buffer to a readable command object.  
+Parse a ZCL packet into a data object.  
 
 **Arguments:**  
 
-1. `zclBuf` (_Buffer_): ZCL raw buffer to be parsed.  
-2. `clusterId` (_String_ | _Number_): Cluster Id. It should be filled if `zclBuf` is functional command.  
-3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL buffer is parsed.  
+1. `zclBuf` (_Buffer_): ZCL raw packet to be parsed.  
+2. `clusterId` (_String_ | _Number_): Cluster id. Must be given if `zclBuf` is a functional command.  
+3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL packet is parsed. The result is an data object with following properties:  
+
+    | Property      | Type    | Description                                        |
+    |---------------|---------|----------------------------------------------------|
+    | frameCntl     | Object  | Frame type.                                        |
+    | manufCode     | Number  | Manufacturer code.                                 |
+    | seqNum        | Number  | Sequence number.                                   |
+    | cmd           | String  | Command id.                                        |
+    | payload       | Object \| Object[] | [ZCL payload](#Appendix).               |
+
 
 **Returns:**  
 
@@ -165,14 +185,20 @@ Parse ZCL raw buffer to a readable command object.
 
 **Examples:**  
 
+* Parse a foundation command packet.  
+
 ```js
-// example of parsing foundation raw buffer.
-var foundBuf = new Buffer([ 0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66, 0x09, 0x00, 0x00, 0x64 ]);
+var foundBuf = new Buffer([
+    0x00, 0x00, 0x02, 0x34, 0x12, 0x41, 0x05, 0x68,
+    0x65, 0x6c, 0x6c, 0x6f, 0xcd, 0xab, 0x24, 0x66,
+    0x09, 0x00, 0x00, 0x64
+]);
 
 zcl.parse(foundBuf, function(err, result) {
     if (!err)
         console.log(result);
-    // the parsed result to show you the format
+
+    // The parsed result is an object
     // {
     //     frameCntl: { frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 0,
@@ -184,14 +210,21 @@ zcl.parse(foundBuf, function(err, result) {
     //     ]
     // }
 });
+```
 
-// example of parsing functional raw buffer.
-var funcBuf = new Buffer([ 0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31 ]);
+* Parse a functional command packet.  
+
+```js
+var funcBuf = new Buffer([
+    0x05, 0xaa, 0xaa , 0x01, 0x00, 0x01, 0x00, 0x06,
+    0x67, 0x72, 0x6f, 0x75, 0x70, 0x31
+]);
 
 zcl.parse(funcBuf, 0x0004, function(err, result) {
     if (!err)
         console.log(result);
-    // the parsed result to show you the format
+
+    // The parsed result is an object
     // {
     //     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 43690,
@@ -209,15 +242,15 @@ zcl.parse(funcBuf, 0x0004, function(err, result) {
 <a name="API_header"></a>
 ### .header(zclBuf)
 
-Parse ZCL buffer of header.  
+Parse the ZCL header only.  
 
 **Arguments:**  
 
-1. `zclBuf` (_Buffer_): ZCL buffer to be parsed.  
+1. `zclBuf` (_Buffer_): ZCL header buffer to be parsed.  
 
 **Returns:**  
 
-* (_Object_): ZCL header Object.  
+* (_Object_): ZCL header data.  
 
 **Examples:**  
 
@@ -244,75 +277,68 @@ console.log(header);
 
 * ZCL foundation commands are used for manipulating attributes and other general tasks that are not specific to an individual cluster.  
 
-* Since ZCL foundation commands are usually used for operating many attributes, you need to fill in the relevant record of each attribute you want to operate, attribute record format will vary depending on foundation command.  
+* Foundation commands are usually used to read/write attributes, attribute record objects should be given within `zclPayload` for `.frame()` to build a ZCL command packet. [Format of an attribute record](#AttrRecTbl) depends on the foundation command.  
 
-* The detail of each foundation command is documented in [ZIGBEE CLUSTER LIBRARY SPECIFICATION(Section 2.4)](https://github.com/zigbeer/documents/blob/master/zcl-id/ZIGBEE_CLUSTER_LIBRARY_SPECIFICATION.pdf).  
+* Description of each foundation command is documented in [_Section 2.4 General Command Frames_](https://github.com/zigbeer/documents/blob/master/zcl-id/ZIGBEE_CLUSTER_LIBRARY_SPECIFICATION.pdf).  
 
 <a name="FoundCmdDescTbl"></a>
 #### Foundation Command Description Table  
 
-The following table describe payload format of foundation commands. Here is the description of each column in the table:  
+The following table describes what kind of payload format should a foundation command have. Each column in the table tells:  
 
-* Cmd-API:  
-    * The command name, in zcl-packet, according to a *ZIGBEE CLUSTER LIBRARY SPECIFICATION* command.  
-* CmdId:  
-    * The command Id corresponding to the command name.  
-* Description:  
-    * Describe the purpose of each command.  
-* Payload:  
-    * Payload format of Cmd-API.  
-    * Payload will be an array of attributes record if command is used to manipulate many attributes.  
-* Parameter Types  
-    * Indicate property value type of payload object.  
-    * Each attribute record in the array is an object of [command-dependent atribute record](#AttrRecTbl).  
+* Cmd-API: Command name.  
+* CmdId: Command id in number.  
+* Description: Purpose of the command.  
+* Payload: Payload should be an array of attribute records if the command is used to manipulate many attributes.  
+* Parameter Types: Indicates the data type of each property in the payload object.  
 
-| Cmd-API             | CmdId | Description                           | Payload                       | Parameter Types         |
-|---------------------|-------|---------------------------------------|-------------------------------|-------------------------|
-| read                | 0     | Read attributes                       | `[ readRec, ... ]`            | _none_                  |
-| readRsp             | 1     | Read attributes response              | `[ readStatusRec, ... ]`      | _none_                  |
-| write               | 2     | Write attributes                      | `[ writeRec, ... ]`           | _none_                  |
-| writeUndiv          | 3     | Write attributes undivided            | `[ writeRec, ... ]`           | _none_                  |
-| writeRsp            | 4     | Write attributes response             | `[ writeStatusRec, ... ]`     | _none_                  |
-| writeNoRsp          | 5     | Write attributes no response          | `[ writeRec, ... ]`           | _none_                  |
-| configReport        | 6     | Configure reporting                   | `[ attrRptCfgRec, ... ]`      | _none_                  |
-| configReportRsp     | 7     | Configure reporting response          | `[ attrStatusRec, ... ]`      | _none_                  |
-| readReportConfig    | 8     | Read reporting configuration          | `[ attrRec, ... ]`            | _none_                  |
-| readReportConfigRsp | 9     | Read reporting configuration response | `[ attrRptCfgRec, ... ]`      | _none_                  |
-| report              | 10    | Report attributes                     | `[ attrReport, ... ]`         | _none_                  |
-| defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`       | uint8, uint8            |
-| discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }` | uint16, uint8           |
-| discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }` | uint16, array(attrInfo) |
-| readStruct          | 14    | Read attributes structured            | `[ readAttrRec, ... ]`        | _none_                  |
-| writeStrcut         | 15    | Write attributes structured           | `[ writeAttrRec, ... ]`       | _none_                  |
-| writeStrcutRsp      | 16    | Write attributes structured response  | `[ writeAttrStstusRec, ... ]` | _none_                  |
+| Cmd-API             | CmdId | Description                           | Payload                                        | Parameter Types         |
+|---------------------|-------|---------------------------------------|------------------------------------------------|-------------------------|
+| read                | 0     | Read attributes                       | `[ `[readRec](#AttrRecTbl)`, ... ]`            | _none_                  |
+| readRsp             | 1     | Read attributes response              | `[ `[readStatusRec](#AttrRecTbl)`, ... ]`      | _none_                  |
+| write               | 2     | Write attributes                      | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
+| writeUndiv          | 3     | Write attributes undivided            | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
+| writeRsp            | 4     | Write attributes response             | `[ `[writeStatusRec](#AttrRecTbl),` ... ]`     | _none_                  |
+| writeNoRsp          | 5     | Write attributes no response          | `[ `[writeRec](#AttrRecTbl)', ... ]`           | _none_                  |
+| configReport        | 6     | Configure reporting                   | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
+| configReportRsp     | 7     | Configure reporting response          | `[ `[attrStatusRec](#AttrRecTbl)`, ... ]`      | _none_                  |
+| readReportConfig    | 8     | Read reporting configuration          | `[ `[attrRec](#AttrRecTbl)`, ... ]`            | _none_                  |
+| readReportConfigRsp | 9     | Read reporting configuration response | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
+| report              | 10    | Report attributes                     | `[ `[attrReport](#AttrRecTbl), ... ]`          | _none_                  |
+| defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`                        | uint8, uint8            |
+| discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }`                  | uint16, uint8           |
+| discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }`                  | uint16, array(attrInfo) |
+| readStruct          | 14    | Read attributes structured            | `[ `[readAttrRec](#AttrRecTbl)`, ... ]`        | _none_                  |
+| writeStrcut         | 15    | Write attributes structured           | `[ `[writeAttrRec](#AttrRecTbl)`, ... ]`       | _none_                  |
+| writeStrcutRsp      | 16    | Write attributes structured response  | `[ `[writeAttrStstusRec](#AttrRecTbl)`, ... ]` | _none_                  |
 
 *************************************************
 
 <a name="AttrRecTbl"></a>
 #### Attribute Record Table  
 
-The following table list each type of attribute record and describe their format.  
+The following table lists each kind of the attribute records.  
 
-**Note:** The detail of `multi` and `selector` field type can be found in the [Data Unit Table](#DataUnitTbl).  
+**Note:** Field types of `multi` and `selector` are given in [Data Unit Table](#DataUnitTbl).  
 
-| Cmd-API            | Field Names                                | Field Types                    | Judge Field  | Additional Field Names                                  | Additional Field Types                     |
-|--------------------|--------------------------------------------|--------------------------------|--------------|---------------------------------------------------------|--------------------------------------------|
-| readRec            | `{ attrId }`                               | uint16                         | _none_       | _none_                                                  | _none_                                     |
-| readStatusRec      | `{ attrId, status }`                       | uint16, uint8                  | status(0)    | `{ dataType, attrData }`                                | uint8, multi                               |
-|                    |                                            |                                | status(1)    | _none_                                                  | _none_                                     |
-| writeRec           | `{ attrId, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
-| writeStatusRec     | `{ status, attrId }`                       | uint8, uint16                  | _none_       | _none_                                                  | _none_                                     |
-| attrRptCfgRec      | `{ direction, attrId }`                    | uint8, uint16                  | direction(0) | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                            |                                | direction(1) | `{ timeout }`                                           | uint16                                     |
-| attrStatusRec      | `{ status, direction, attrId }`            | uint8, uint8, uint16           | _none_       | _none_                                                  | _none_                                     |
-| attrRec            | `{ direction, attrId }`                    | uint8, uint16                  | _none_       | _none_                                                  | _none_                                     |
-| attrRptCfgRec      | `{ status, direction, attrId }`            | uint8, uint8, uint16           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                            |                                | status(1)    | `{ timeout }`                                           | uint16                                     |
-| attrReport         | `{ attrId, dataType, attrData }`           | uint16, uin8, multi            | _none_       | _none_                                                  | _none_                                     |
-| attrInfo           | `{ attrId, dataType }`                     | uint16, uint8                  | _none_       | _none_                                                  | _none_                                     |
-| readAttrRec        | `{ attrId, selector }`                     | uint16, selector               | _none_       | _none_                                                  | _none_                                     |
-| writeAttrRec       | `{ attrId, selector, dataType, attrData }` | uint16, selector, uint8, multi | _none_       | _none_                                                  | _none_                                     |
-| writeAttrStstusRec | `{ status, attrId, selector }`             | uint8, attrId, selector        | _none_       | _none_                                                  | _none_                                     |
+| Cmd-API            | Field Names                                                  | Field Types                                                    | Judge Field  | Additional Field Names                                  | Additional Field Types                     |
+|--------------------|--------------------------------------------------------------|----------------------------------------------------------------|--------------|---------------------------------------------------------|--------------------------------------------|
+| readRec            | `{ attrId }`                                                 | uint16                                                         | _none_       | _none_                                                  | _none_                                     |
+| readStatusRec      | `{ attrId, status }`                                         | uint16, uint8                                                  | status(0)    | `{ dataType, attrData }`                                | uint8, [multi](#DataUnitTbl)               |
+|                    |                                                              |                                                                | status(1)    | _none_                                                  | _none_                                     |
+| writeRec           | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
+| writeStatusRec     | `{ status, attrId }`                                         | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
+| attrRptCfgRec      | `{ direction, attrId }`                                      | uint8, uint16                                                  | direction(0) | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                                              |                                                                | direction(1) | `{ timeout }`                                           | uint16                                     |
+| attrStatusRec      | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | _none_       | _none_                                                  | _none_                                     |
+| attrRec            | `{ direction, attrId }`                                      | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
+| attrRptCfgRec      | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                    |                                                              |                                                                | status(1)    | `{ timeout }`                                           | uint16                                     |
+| attrReport         | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
+| attrInfo           | `{ attrId, dataType }`                                       | uint16, uint8                                                  | _none_       | _none_                                                  | _none_                                     |
+| readAttrRec        | `{ attrId, `[selector](#DataUnitTbl)` }`                     | uint16, [selector](#DataUnitTbl)                               | _none_       | _none_                                                  | _none_                                     |
+| writeAttrRec       | `{ attrId, `[selector](#DataUnitTbl)`, dataType, attrData }` | uint16, [selector](#DataUnitTbl), uint8, [multi](#DataUnitTbl) | _none_       | _none_                                                  | _none_                                     |
+| writeAttrStstusRec | `{ status, attrId, `[selector](#DataUnitTbl)` }`             | uint8, attrId, [selector](#DataUnitTbl)                        | _none_       | _none_                                                  | _none_                                     |
 
 *************************************************
 
@@ -331,18 +357,13 @@ The following table list each type of attribute record and describe their format
 <a name="FuncCmdTbl"></a>
 ### 3.2 ZCL Functional Command Reference Table  
 
-The following table describe payload format of functional commands. Here is the description of each column in the table:  
+The following table describes the payload format of functional commands. Each column in the table is:  
 
-* Cluster:  
-    * The ZCL cluster name.  
-* Cmd-API:  
-    * The command name, in zcl-packet, according to a *ZIGBEE CLUSTER LIBRARY SPECIFICATION* command.  
-* CmdId:  
-    * The command Id corresponding to the command name.  
-* Direction:  
-    * Command is sent from client side to server side or server side to client side.  
-* Arguments:  
-    * Required parameters of a Cmd-API.  
+* Cluster: Cluster name.  
+* Cmd-API: Command name.  
+* CmdId: Command id in number.  
+* Direction: Tells whether a command is sent from **client-to-server (c2s)** or from **server-to-client (s2c)**.  
+* Arguments: Required parameters of a Cmd-API.  
 
 **Functional domains:**  
 * [General](#GenTbl)  
