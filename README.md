@@ -44,7 +44,7 @@ Each attribute in a cluster may be read from, written to, and reported over-the-
 
 #### ZCL Functional  
   
-ZCL divides applications into a number of functional domains, such as General, Closures, HVAC, and Lighting. Each functional domain includes a goupr of well-defined clusters. Commands of these specific clusters are called the *ZCL functional*. ZigBee public profiles use clusters from these functional domains to describe the character and behavior of different kinds of devices.  
+ZCL divides applications into a number of functional domains, such as General, Closures, HVAC, and Lighting. Each functional domain includes a group of well-defined clusters. Commands of these specific clusters are called the *ZCL functional*. ZigBee public profiles use clusters from these functional domains to describe the character and behavior of different kinds of devices.  
   
 
 <br />
@@ -71,7 +71,7 @@ Using `.frame()` and `.parse()` methods to build and parse ZCL packets is quite 
 
 ```js
 var zclBuf = zcl.frame({ frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
-                       0, 0, 'read', [attrId: 0x0001, ... ]);
+                       0, 0, 'read', [ attrId: 0x0001, ... ]);
 ```
 
 * Parse a ZCL raw packet into an object  
@@ -144,6 +144,7 @@ var foundBuf = zcl.frame(foundFrameCntl, 0, 0, 'write', foundPayload);
 * Generate a ZCL functional command packet
 
 ```js
+// functional command: 'add', cluster: 'genGroups'(0x0004)
 var funcFrameCntl = {
         frameType: 1,  // Command is specific to a cluster (functional)
         manufSpec: 1,
@@ -299,12 +300,12 @@ The following table describes what kind of payload format should a foundation co
 | write               | 2     | Write attributes                      | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
 | writeUndiv          | 3     | Write attributes undivided            | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
 | writeRsp            | 4     | Write attributes response             | `[ `[writeStatusRec](#AttrRecTbl),` ... ]`     | _none_                  |
-| writeNoRsp          | 5     | Write attributes no response          | `[ `[writeRec](#AttrRecTbl)', ... ]`           | _none_                  |
+| writeNoRsp          | 5     | Write attributes no response          | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
 | configReport        | 6     | Configure reporting                   | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
 | configReportRsp     | 7     | Configure reporting response          | `[ `[attrStatusRec](#AttrRecTbl)`, ... ]`      | _none_                  |
 | readReportConfig    | 8     | Read reporting configuration          | `[ `[attrRec](#AttrRecTbl)`, ... ]`            | _none_                  |
 | readReportConfigRsp | 9     | Read reporting configuration response | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
-| report              | 10    | Report attributes                     | `[ `[attrReport](#AttrRecTbl), ... ]`          | _none_                  |
+| report              | 10    | Report attributes                     | `[ `[attrReport](#AttrRecTbl)`, ... ]`         | _none_                  |
 | defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`                        | uint8, uint8            |
 | discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }`                  | uint16, uint8           |
 | discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }`                  | uint16, array(attrInfo) |
