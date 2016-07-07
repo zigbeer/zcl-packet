@@ -176,7 +176,7 @@ Parse a ZCL packet into a data object.
     | frameCntl     | Object  | Frame type.                                        |
     | manufCode     | Number  | Manufacturer code.                                 |
     | seqNum        | Number  | Sequence number.                                   |
-    | cmd           | String  | Command id.                                        |
+    | cmdId         | String  | Command id.                                        |
     | payload       | Object \| Object[] | [ZCL payload](#Appendix).               |
 
 
@@ -204,7 +204,7 @@ zcl.parse(foundBuf, function(err, result) {
     //     frameCntl: { frameType: 0, manufSpec: 0, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 0,
     //     seqNum: 0,
-    //     cmd: 'write',
+    //     cmdId: 'write',
     //     payload: [ 
     //         { attrId: 4660, dataType: 65, attrData: 'hello' },
     //         { attrId: 43981, dataType: 36, attrData: [ 100, 2406 ] }
@@ -230,7 +230,7 @@ zcl.parse(funcBuf, 0x0004, function(err, result) {
     //     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
     //     manufCode: 43690,
     //     seqNum: 1,
-    //     cmd: 'add',
+    //     cmdId: 'add',
     //     payload: {
     //         groupid: 1,
     //         groupname: 'group1'
@@ -264,7 +264,7 @@ console.log(header);
 //     frameCntl: { frameType: 1, manufSpec: 1, direction: 0, disDefaultRsp: 0 },
 //     manufCode: 43690,
 //     seqNum: 1,
-//     cmd: 0,
+//     cmdId: 0,
 // }
 ```
 
