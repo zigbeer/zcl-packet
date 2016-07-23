@@ -1,6 +1,6 @@
 {
   "name": "zcl-packet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "zcl-packet is a framer and parser for ZigBee Cluster Library packet.",
   "main": "index.js",
   "scripts": {
@@ -34,10 +34,10 @@
     "concentrate": "^0.2.3",
     "dissolve-chunks": "^1.0.8",
     "enum": "^2.3.0",
-    "zcl-id": "0.0.4"
+    "zcl-id": "^0.0.5"
   },
   "devDependencies": {
-    "busyman": "^0.1.1",
+    "busyman": "^0.1.2",
     "chai": "^3.5.0",
     "chance": "^1.0.2",
     "mocha": "^2.5.3"
