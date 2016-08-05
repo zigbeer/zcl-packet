@@ -1,6 +1,6 @@
 {
   "name": "zcl-packet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "zcl-packet is a framer and parser for ZigBee Cluster Library packet.",
   "main": "index.js",
   "scripts": {

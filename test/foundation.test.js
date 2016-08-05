@@ -20,7 +20,7 @@ var valObj = {
             {attrId: 0x1111, status: 0, dataType: 0x48, attrData: {elmType: 0x20, numElms: 5, elmVals: [1, 2, 3, 4, 5]}},
             {attrId: 0x2222, status: 0, dataType: 0x4c, attrData: {numElms: 0x03, structElms: [{elmType: 0x20, elmVal: 1}, {elmType: 0x21, elmVal: 300}, {elmType: 0x22, elmVal: 65539}]}},
             {attrId: 0x3333, status: 1},
-            {attrId: 0x4444, status: 0, dataType: 0x27, attrData: [132456, 123456]}
+            {attrId: 0x4444, status: 0, dataType: 0x27, attrData: '0x000205680001e240'}
         ],
         write: [
             {attrId: 0x1234, dataType: 0x41, attrData: 'hello'},
