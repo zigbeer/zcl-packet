@@ -649,6 +649,30 @@
                 ],
                 "dir":1}
         },
+        "genPollCtrl": {
+            "checkinRsp":{
+                "params":[
+                    {"startfastpolling":"uint8"},
+                    {"fastpolltimeout":"uint16"}
+                ],
+                "dir":0},
+            "fastPollStop":{
+                "params":[],
+                "dir":0},
+            "setLongPollInterval":{
+                "params":[
+                    {"newlongpollinterval":"uint32"}
+                ],
+                "dir":0},
+            "setShortPollInterval":{
+                "params":[
+                    {"newshortpollinterval":"uint16"}
+                ],
+                "dir":0},
+            "checkin":{
+                "params":[],
+                "dir":1}
+        },
         "closuresDoorLock": {
             "lockDoor":{
                 "params":[
