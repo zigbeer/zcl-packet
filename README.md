@@ -27,7 +27,7 @@ zcl-packet
 <a name="Overview"></a>
 ## 1. Overview  
 
-The **zcl-packet** is the packet builder and parser for ZigBee applicaiton layer ZCL commands and responses defined by [_ZigBee Cluster Library Specification_](http://www.zigbee.org/download/standards-zigbee-cluster-library/).  
+The **zcl-packet** is the packet builder and parser for ZigBee application layer ZCL commands and responses defined by [_ZigBee Cluster Library Specification_](http://www.zigbee.org/download/standards-zigbee-cluster-library/).  
 
 <br />
 
@@ -169,7 +169,7 @@ Parse a ZCL packet into a data object.
 
 1. `zclBuf` (_Buffer_): ZCL raw packet to be parsed.  
 2. `clusterId` (_String_ | _Number_): Cluster id. Must be given if `zclBuf` is a functional command.  
-3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL packet is parsed. The result is an data object with following properties:  
+3. `callback` (_Function_): `function (err, result) {...}`. Get called when the ZCL packet is parsed. The result is a data object with following properties:  
 
     | Property      | Type    | Description                                        |
     |---------------|---------|----------------------------------------------------|
@@ -293,25 +293,25 @@ The following table describes what kind of payload format should a foundation co
 * Payload: Payload should be an array of attribute records if the command is used to manipulate many attributes.  
 * Parameter Types: Indicates the data type of each property in the payload object.  
 
-| Cmd-API             | CmdId | Description                           | Payload                                        | Parameter Types         |
-|---------------------|-------|---------------------------------------|------------------------------------------------|-------------------------|
-| read                | 0     | Read attributes                       | `[ `[readRec](#AttrRecTbl)`, ... ]`            | _none_                  |
-| readRsp             | 1     | Read attributes response              | `[ `[readStatusRec](#AttrRecTbl)`, ... ]`      | _none_                  |
-| write               | 2     | Write attributes                      | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
-| writeUndiv          | 3     | Write attributes undivided            | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
-| writeRsp            | 4     | Write attributes response             | `[ `[writeStatusRec](#AttrRecTbl),` ... ]`     | _none_                  |
-| writeNoRsp          | 5     | Write attributes no response          | `[ `[writeRec](#AttrRecTbl)`, ... ]`           | _none_                  |
-| configReport        | 6     | Configure reporting                   | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
-| configReportRsp     | 7     | Configure reporting response          | `[ `[attrStatusRec](#AttrRecTbl)`, ... ]`      | _none_                  |
-| readReportConfig    | 8     | Read reporting configuration          | `[ `[attrRec](#AttrRecTbl)`, ... ]`            | _none_                  |
-| readReportConfigRsp | 9     | Read reporting configuration response | `[ `[attrRptCfgRec](#AttrRecTbl)`, ... ]`      | _none_                  |
-| report              | 10    | Report attributes                     | `[ `[attrReport](#AttrRecTbl)`, ... ]`         | _none_                  |
-| defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`                        | uint8, uint8            |
-| discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }`                  | uint16, uint8           |
-| discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }`                  | uint16, array(attrInfo) |
-| readStruct          | 14    | Read attributes structured            | `[ `[readAttrRec](#AttrRecTbl)`, ... ]`        | _none_                  |
-| writeStrcut         | 15    | Write attributes structured           | `[ `[writeAttrRec](#AttrRecTbl)`, ... ]`       | _none_                  |
-| writeStrcutRsp      | 16    | Write attributes structured response  | `[ `[writeAttrStstusRec](#AttrRecTbl)`, ... ]` | _none_                  |
+| Cmd-API             | CmdId | Description                           | Payload                                          | Parameter Types                        |
+|---------------------|-------|---------------------------------------|--------------------------------------------------|----------------------------------------|
+| read                | 0     | Read attributes                       | `[ `[readRec](#AttrRecTbl)`, ... ]`              | _none_                                 |
+| readRsp             | 1     | Read attributes response              | `[ `[readStatusRec](#AttrRecTbl)`, ... ]`        | _none_                                 |
+| write               | 2     | Write attributes                      | `[ `[writeRec](#AttrRecTbl)`, ... ]`             | _none_                                 |
+| writeUndiv          | 3     | Write attributes undivided            | `[ `[writeRec](#AttrRecTbl)`, ... ]`             | _none_                                 |
+| writeRsp            | 4     | Write attributes response             | `[ `[writeStatusRec](#AttrRecTbl),` ... ]`       | _none_                                 |
+| writeNoRsp          | 5     | Write attributes no response          | `[ `[writeRec](#AttrRecTbl)`, ... ]`             | _none_                                 |
+| configReport        | 6     | Configure reporting                   | `[ `[cfgRptRec](#AttrRecTbl)`, ... ]`            | _none_                                 |
+| configReportRsp     | 7     | Configure reporting response          | `[ `[cfgRptStatusRec](#AttrRecTbl)`, ... ]`      | _none_                                 |
+| readReportConfig    | 8     | Read reporting configuration          | `[ `[readRptRec](#AttrRecTbl)`, ... ]`           | _none_                                 |
+| readReportConfigRsp | 9     | Read reporting configuration response | `[ `[readRptStatusRec](#AttrRecTbl)`, ... ]`     | _none_                                 |
+| report              | 10    | Report attributes                     | `[ `[reportRec](#AttrRecTbl)`, ... ]`            | _none_                                 |
+| defaultRsp          | 11    | Default response                      | `{ cmdId, statusCode }`                          | uint8, uint8                           |
+| discover            | 12    | Discover attributes                   | `{ startAttrId, maxAttrIds }`                    | uint16, uint8                          |
+| discoverRsp         | 13    | Discover attributes response          | `{ discComplete, attrInfos }`                    | uint16, array([attrInfo](#AttrRecTbl)) |
+| readStruct          | 14    | Read attributes structured            | `[ `[readStructRec](#AttrRecTbl)`, ... ]`        | _none_                                 |
+| writeStruct         | 15    | Write attributes structured           | `[ `[writeStructRec](#AttrRecTbl)`, ... ]`       | _none_                                 |
+| writeStructRsp      | 16    | Write attributes structured response  | `[ `[writeStructStstusRec](#AttrRecTbl)`, ... ]` | _none_                                 |
 
 *************************************************
 
@@ -322,36 +322,36 @@ The following table lists each kind of the attribute records.
 
 **Note:** Field types of `multi` and `selector` are given in [Data Unit Table](#DataUnitTbl).  
 
-| Cmd-API            | Field Names                                                  | Field Types                                                    | Judge Field  | Additional Field Names                                  | Additional Field Types                     |
-|--------------------|--------------------------------------------------------------|----------------------------------------------------------------|--------------|---------------------------------------------------------|--------------------------------------------|
-| readRec            | `{ attrId }`                                                 | uint16                                                         | _none_       | _none_                                                  | _none_                                     |
-| readStatusRec      | `{ attrId, status }`                                         | uint16, uint8                                                  | status(0)    | `{ dataType, attrData }`                                | uint8, [multi](#DataUnitTbl)               |
-|                    |                                                              |                                                                | status(1)    | _none_                                                  | _none_                                     |
-| writeRec           | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
-| writeStatusRec     | `{ status, attrId }`                                         | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
-| attrRptCfgRec      | `{ direction, attrId }`                                      | uint8, uint16                                                  | direction(0) | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                                              |                                                                | direction(1) | `{ timeout }`                                           | uint16                                     |
-| attrStatusRec      | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | _none_       | _none_                                                  | _none_                                     |
-| attrRec            | `{ direction, attrId }`                                      | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
-| attrRptCfgRec      | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
-|                    |                                                              |                                                                | status(1)    | `{ timeout }`                                           | uint16                                     |
-| attrReport         | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
-| attrInfo           | `{ attrId, dataType }`                                       | uint16, uint8                                                  | _none_       | _none_                                                  | _none_                                     |
-| readAttrRec        | `{ attrId, `[selector](#DataUnitTbl)` }`                     | uint16, [selector](#DataUnitTbl)                               | _none_       | _none_                                                  | _none_                                     |
-| writeAttrRec       | `{ attrId, `[selector](#DataUnitTbl)`, dataType, attrData }` | uint16, [selector](#DataUnitTbl), uint8, [multi](#DataUnitTbl) | _none_       | _none_                                                  | _none_                                     |
-| writeAttrStstusRec | `{ status, attrId, `[selector](#DataUnitTbl)` }`             | uint8, attrId, [selector](#DataUnitTbl)                        | _none_       | _none_                                                  | _none_                                     |
+| Cmd-API              | Field Names                                                  | Field Types                                                    | Judge Field  | Additional Field Names                                  | Additional Field Types                     |
+|----------------------|--------------------------------------------------------------|----------------------------------------------------------------|--------------|---------------------------------------------------------|--------------------------------------------|
+| readRec              | `{ attrId }`                                                 | uint16                                                         | _none_       | _none_                                                  | _none_                                     |
+| readStatusRec        | `{ attrId, status }`                                         | uint16, uint8                                                  | status(0)    | `{ dataType, attrData }`                                | uint8, [multi](#DataUnitTbl)               |
+|                      |                                                              |                                                                | status(1)    | _none_                                                  | _none_                                     |
+| writeRec             | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
+| writeStatusRec       | `{ status, attrId }`                                         | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
+| cfgRptRec            | `{ direction, attrId }`                                      | uint8, uint16                                                  | direction(0) | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                      |                                                              |                                                                | direction(1) | `{ timeout }`                                           | uint16                                     |
+| cfgRptStatusRec      | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | _none_       | _none_                                                  | _none_                                     |
+| readRptRec           | `{ direction, attrId }`                                      | uint8, uint16                                                  | _none_       | _none_                                                  | _none_                                     |
+| readRptStatusRec     | `{ status, direction, attrId }`                              | uint8, uint8, uint16                                           | status(0)    | `{ dataType, minRepIntval, maxRepIntval, [repChange] }` | uint8, uint16, uint16, depends(`dataType`) |
+|                      |                                                              |                                                                | status(1)    | `{ timeout }`                                           | uint16                                     |
+| reportRec            | `{ attrId, dataType, attrData }`                             | uint16, uin8, [multi](#DataUnitTbl)                            | _none_       | _none_                                                  | _none_                                     |
+| attrInfo             | `{ attrId, dataType }`                                       | uint16, uint8                                                  | _none_       | _none_                                                  | _none_                                     |
+| readStructRec        | `{ attrId, `[selector](#DataUnitTbl)` }`                     | uint16, [selector](#DataUnitTbl)                               | _none_       | _none_                                                  | _none_                                     |
+| writeStructRec       | `{ attrId, `[selector](#DataUnitTbl)`, dataType, attrData }` | uint16, [selector](#DataUnitTbl), uint8, [multi](#DataUnitTbl) | _none_       | _none_                                                  | _none_                                     |
+| writeStructStstusRec | `{ status, attrId, `[selector](#DataUnitTbl)` }`             | uint8, attrId, [selector](#DataUnitTbl)                        | _none_       | _none_                                                  | _none_                                     |
 
 *************************************************
 
 <a name="DataUnitTbl"></a>
 #### Data Unit Table  
 
-| Data Unit | Judge Field          | Field Names                     | Field Types                              |
-|-----------|----------------------|---------------------------------|------------------------------------------|
-| multi     | dataType(72, 80, 81) | `{ elmType, numElms, elmVals }` | uint8, uint16, array(depends(`elmType`)) |
-|           | dataType(76)         | `{ numElms, structElms }`       | uint16, array(`struct`)                  |
-| selector  | _none_               | `{ indicator, indexes }`        | uint8, array(depends(`indicator`))       |
-| struct    | _none_               | `{ elmType, elmVal }`           | uint8, depends(`elmType`)                |
+| Data Unit | Judge Field                     | Field Names                     | Field Types                              |
+|-----------|---------------------------------|---------------------------------|------------------------------------------|
+| multi     | dataType(`array`, `set`, `bag`) | `{ elmType, numElms, elmVals }` | uint8, uint16, array(depends(`elmType`)) |
+|           | dataType(`struct`)              | `{ numElms, structElms }`       | uint16, array(`struct`)                  |
+| selector  | _none_                          | `{ indicator, indexes }`        | uint8, array(depends(`indicator`))       |
+| struct    | _none_                          | `{ elmType, elmVal }`           | uint8, depends(`elmType`)                |
 
 <br />
 
