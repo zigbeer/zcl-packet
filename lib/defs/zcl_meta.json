@@ -55,11 +55,9 @@
         },
         "configReportRsp": {
             "params":[
-                {"status":"uint8"},
-                {"direction": "uint8"},
-                {"attrId": "uint16"}
+                {"extra":"configReportRsp"}
             ],
-            "knownBufLen": 4
+            "knownBufLen": 0
         },
         "readReportConfig": {
             "params":[
