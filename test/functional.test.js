@@ -32,6 +32,9 @@ describe('Functional Cmd framer and parser Check', function() {
 
             reqParams = zclmeta.functional.getParams(cluster, cmd);
 
+            if (reqParams === undefined)
+                console.log(cluster);
+
             reqParams.forEach(function (arg) {
                 args[arg.name] = randomArg(arg.type);
             });
