@@ -34,7 +34,7 @@
     "concentrate": "^0.2.3",
     "dissolve-chunks": "^1.2.0",
     "enum": "^2.3.0",
-    "zcl-id": "^0.1.2"
+    "zcl-id": "^0.1.5"
   },
   "devDependencies": {
     "busyman": "^0.2.1",
