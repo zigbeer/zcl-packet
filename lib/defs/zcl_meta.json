@@ -32,10 +32,9 @@
         },
         "writeRsp": {
             "params":[
-                {"status":"uint8"},
-                {"attrId":"uint16"}
+                {"extra":"writeRsp"}
             ],
-            "knownBufLen": 3
+            "knownBufLen": 0
         },
         "writeNoRsp": {
             "params":[

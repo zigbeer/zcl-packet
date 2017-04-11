@@ -33,8 +33,8 @@ var valObj = {
             { attrId: 0x1234, dataType: 0x08, attrData: 60 }
         ],
         writeRsp: [
-            { status: 0, attrId: 0xaaaa },
-            { status: 0, attrId: 0xbbbb }, 
+            { status: 0 },
+            { status: 1, attrId: 0xbbbb },
             { status: 1, attrId: 0xcccc }
         ],
         writeNoRsp: [
