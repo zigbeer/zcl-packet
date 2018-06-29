@@ -1,4 +1,4 @@
-{ 
+{
     "foundation": {
         "read": {
             "params":[
@@ -106,7 +106,7 @@
         "readStruct": {
             "params":[
                 {"attrId":"uint16"},
-                {"selector":"selector"} 
+                {"selector":"selector"}
             ],
             "knownBufLen": 2
         },
