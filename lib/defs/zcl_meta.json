@@ -1,4 +1,4 @@
-{ 
+{
     "foundation": {
         "read": {
             "params":[
@@ -106,7 +106,7 @@
         "readStruct": {
             "params":[
                 {"attrId":"uint16"},
-                {"selector":"selector"} 
+                {"selector":"selector"}
             ],
             "knownBufLen": 2
         },
@@ -1202,7 +1202,85 @@
                 ],
                 "dir":0}
         },
-        "ssIasZone": {
+        "genOta": {
+          "imageNotify":{
+            "params":[
+              {"payloadType":"uint8"},
+              {"queryJitter":"uint8"}
+            ],
+            "dir":1},
+          "queryNextImageReq":{
+            "params":[
+              {"fieldCtrl":"uint8"},
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"}
+            ],
+            "dir":0},
+          "queryNextImageRsp":{
+            "params":[
+              {"status":"uint8"}
+            ],
+            "dir":1},
+          "imageBlockReq":{
+            "params":[
+              {"fieldCtrl":"uint8"},
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"},
+              {"fileVersion":"uint32"},
+              {"fileOffset":"uint32"},
+              {"maxDataSize":"uint8"}
+            ],
+            "dir":0},
+          "imagePageReq":{
+            "params":[
+              {"fieldCtrl":"uint8"},
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"},
+              {"fileVersion":"uint32"},
+              {"fileOffset":"uint32"},
+              {"maxDataSize":"uint8"},
+              {"pageSize":"uint16"},
+              {"respSpacing":"uint16"}
+            ],
+            "dir":0},
+          "imageBlockRsp":{
+            "params":[
+              {"status":"uint8"}
+            ],
+            "dir":1},
+          "upgradeEndReq":{
+            "params":[
+              {"status":"uint8"},
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"},
+              {"fileVersion":"uint32"}
+            ],
+            "dir":0},
+          "upgradeEndRsp":{
+            "params":[
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"},
+              {"fileVersion":"uint32"},
+              {"currentTime":"uint32"},
+              {"upgradeTime":"uint32"}
+            ],
+            "dir":1},
+          "querySpecificFileReq":{
+            "params":[
+              {"reqNodeAddr":"longaddr"},
+              {"manufCode":"uint16"},
+              {"imageType":"uint16"},
+              {"fileVersion":"uint32"},
+              {"zigbeeStackVersion":"uint16"}
+            ],
+            "dir":0},
+          "querySpecificFileRsp":{
+            "params":[
+              {"status":"uint8"}
+            ],
+            "dir":1}
+      },
+      "ssIasZone": {
             "enrollRsp":{
                 "params":[
                     {"enrollrspcode":"uint8"},
