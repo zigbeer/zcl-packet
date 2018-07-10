@@ -129,10 +129,11 @@ describe('XIAOMI', function () {
         '01219f0b0328200421a84305217400062417010500000a210000641002',
     ].join('');
 
-    const buffer = Buffer.from(data, 'hex');
+    const buffer = new Buffer(data, 'hex')
+
     it('should parse structure', function (done) {
         const parser = new FoundClass(10);
-        parser.parse(buffer, (err, parsed) => {
+        parser.parse(buffer, function (err, parsed) {
             expect(err).to.be.null;
             expect(parsed[0].attrId).to.equal(5);
             expect(parsed[0].attrData).to.equal('lumi.sensor_magnet.aq2');
