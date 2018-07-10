@@ -174,7 +174,11 @@ describe('Module Methods Check', function() {
                     payload: [
                         {attrId: 0x0011, selector: {indicator: 3, indexes: [0x0101, 0x0202, 0x0303]}, dataType: 0x21, attrData: 60000},
                         {attrId: 0x0022, selector: {indicator: 0}, dataType: 0x50, attrData: {elmType: 0x20, numElms: 3, elmVals: [1, 2, 3]}},
-                        {attrId: 0x0033, selector: {indicator: 1, indexes: [0x0101]}, dataType: 0x4c, attrData: {numElms: 0x01, structElms: [{elmType: 0x20, elmVal: 1}]}}
+                        {attrId: 0x0033, selector: {indicator: 1, indexes: [0x0101]}, dataType: 0x4c, attrData: {
+                            numElms: 0x01,
+                            structElms: [{elmType: 0x20, elmVal: 1}],
+                            attrData: [{elmType: 0x20, elmVal: 1}]
+                        }}
                     ]
                 }
             ];
@@ -208,7 +212,7 @@ describe('Module Methods Check', function() {
                     sceneid: 0x08,
                     transtime: 0x2468,
                     scenename: 'genscenes',
-                    extensionfieldsets: [ { clstId: 0x0006, len: 0x3, extField: [0x01, 0x02, 0x03]}, 
+                    extensionfieldsets: [ { clstId: 0x0006, len: 0x3, extField: [0x01, 0x02, 0x03]},
                                           { clstId: 0x0009, len: 0x5, extField: [0x05, 0x04, 0x03, 0x02, 0x01]} ]
                 }
             },
@@ -256,7 +260,7 @@ describe('Module Methods Check', function() {
                 zcl.parse(zBuf, 0x0005, function (err, result) {
                     if (result.cmdId === 'add')
                         result.frameCntl.direction = 0;
-                    else 
+                    else
                         result.frameCntl.direction = 1;
 
                     expect(result).to.eql(zclFrame);
