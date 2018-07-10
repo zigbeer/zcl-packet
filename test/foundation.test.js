@@ -123,20 +123,20 @@ describe('Foundation Cmd framer and parser Check', function () {
     });
 });
 
-describe('XIAOMI', () => {
+describe('XIAOMI', function () {
     const data = [
         '050042166c756d692e73656e736f725f6d61676e65742e61713201ff421d',
         '01219f0b0328200421a84305217400062417010500000a210000641002',
-    ].join('')
+    ].join('');
 
-    const buffer = Buffer.from(data, 'hex')
-    it('should parse structure', (done) => {
-        const parser = new FoundClass(10)
+    const buffer = Buffer.from(data, 'hex');
+    it('should parse structure', function (done) {
+        const parser = new FoundClass(10);
         parser.parse(buffer, (err, parsed) => {
             expect(err).to.be.null;
-            expect(parsed[0].attrId).to.equal(5)
-            expect(parsed[0].attrData).to.equal('lumi.sensor_magnet.aq2')
-            expect(parsed[1].attrId).to.equal(65281)
+            expect(parsed[0].attrId).to.equal(5);
+            expect(parsed[0].attrData).to.equal('lumi.sensor_magnet.aq2');
+            expect(parsed[1].attrId).to.equal(65281);
             expect(parsed[1].attrData).to.deep.equal({
                 "1": 2975,
                 "3": 32,
@@ -150,7 +150,7 @@ describe('XIAOMI', () => {
                 "100": 2,
             });
 
-            done()
-        })
-    })
-})
+            done();
+        });
+    });
+});
