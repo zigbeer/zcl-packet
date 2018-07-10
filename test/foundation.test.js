@@ -18,7 +18,11 @@ var valObj = {
         ],
         readRsp: [
             { attrId: 0x1111, status: 0, dataType: 0x48, attrData: { elmType: 0x20, numElms: 5, elmVals: [ 1, 2, 3, 4, 5 ] } },
-            { attrId: 0x2222, status: 0, dataType: 0x4c, attrData: { numElms: 0x03, structElms: [ { elmType: 0x20, elmVal: 1 }, { elmType: 0x21, elmVal: 300 }, { elmType: 0x22, elmVal: 65539 } ] } },
+            { attrId: 0x2222, status: 0, dataType: 0x4c, attrData: {
+                numElms: 0x03,
+                structElms: [ { elmType: 0x20, elmVal: 1 }, { elmType: 0x21, elmVal: 300 }, { elmType: 0x22, elmVal: 65539 } ],
+                attrData: [ { elmType: 0x20, elmVal: 1 }, { elmType: 0x21, elmVal: 300 }, { elmType: 0x22, elmVal: 65539 } ]
+            } },
             { attrId: 0x3333, status: 1 },
             { attrId: 0x4444, status: 0, dataType: 0x27, attrData: '0x000205680001e240' }
         ],
@@ -91,7 +95,11 @@ var valObj = {
         writeStrcut: [
             { attrId: 0x0011, selector: { indicator: 3, indexes: [ 0x0101, 0x0202, 0x0303 ] }, dataType: 0x21, attrData: 60000 },
             { attrId: 0x0022, selector: { indicator: 0 }, dataType: 0x50, attrData: { elmType: 0x20, numElms: 3, elmVals: [ 1, 2, 3 ] } },
-            { attrId: 0x0033, selector: { indicator: 1, indexes: [ 0x0101 ] }, dataType: 0x4c, attrData: { numElms: 0x01, structElms: [ { elmType: 0x20, elmVal: 1 } ] } }
+            { attrId: 0x0033, selector: { indicator: 1, indexes: [ 0x0101 ] }, dataType: 0x4c, attrData: {
+                numElms: 0x01,
+                structElms: [ { elmType: 0x20, elmVal: 1 } ],
+                attrData: [ { elmType: 0x20, elmVal: 1 } ]
+            } }
         ],
         writeStrcutRsp: [
             { status: 0, attrId: 0x0001, selector: { indicator: 3, indexes: [ 0x0101, 0x0202, 0x0303 ] } },
