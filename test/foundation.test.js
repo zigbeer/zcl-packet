@@ -124,15 +124,15 @@ describe('Foundation Cmd framer and parser Check', function () {
 });
 
 describe('XIAOMI', function () {
-    const data = [
+    var data = [
         '050042166c756d692e73656e736f725f6d61676e65742e61713201ff421d',
         '01219f0b0328200421a84305217400062417010500000a210000641002',
     ].join('');
 
-    const buffer = new Buffer(data, 'hex')
+    var buffer = new Buffer(data, 'hex')
 
     it('should parse structure', function (done) {
-        const parser = new FoundClass(10);
+        var parser = new FoundClass(10);
         parser.parse(buffer, function (err, parsed) {
             expect(err).to.be.null;
             expect(parsed[0].attrId).to.equal(5);
