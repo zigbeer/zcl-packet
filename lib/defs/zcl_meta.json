@@ -1200,6 +1200,19 @@
                     {"time":"uint16"},
                     {"starthue":"uint16"}
                 ],
+                "dir":0},
+            "moveColorTemp":{
+                "params":[
+                    {"ratex":"int16"},
+                    {"ratey":"int16"}
+                ],
+                "dir":0},
+            "stepColorTemp":{
+                "params":[
+                    {"stepx":"int16"},
+                    {"stepy":"int16"},
+                    {"transtime":"uint16"}
+                ],
                 "dir":0}
         },
         "ssIasZone": {
