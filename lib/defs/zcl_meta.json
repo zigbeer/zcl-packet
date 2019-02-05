@@ -1571,6 +1571,12 @@
                     {"intervals":"dynUint8"}
                 ],
                 "dir":1}
-        }
+        },
+        "manuSpecificClusterAduroSmart": {   
+            "cmd0": {                
+                "params":[],            
+                "dir":0
+            }               
+        } 
     }
 }
