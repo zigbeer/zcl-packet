@@ -401,7 +401,6 @@
             "onWithTimedOff":{
                 "params":[
                     {"ctrlbits":"uint8"},
-                    {"ctrlbyte":"uint8"},
                     {"ontime":"uint16"},
                     {"offwaittime":"uint16"}
                 ],
