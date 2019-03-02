@@ -1576,6 +1576,18 @@
                 "params":[],            
                 "dir":0
             }               
-        } 
+        },
+        "manuSpecificPhilips": {
+            "hueNotification":{
+                "params":[
+                    {"button":"uint8"},
+                    {"unknown1":"uint24"},
+                    {"type":"uint8"},
+                    {"unknown2":"uint8"},
+                    {"time":"uint8"},
+                    {"unknown2":"uint8"}
+                ],
+                "dir":1}
+        }
     }
 }
